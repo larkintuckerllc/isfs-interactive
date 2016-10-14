@@ -29,7 +29,8 @@ class Map extends Component {
   render() {
     const { children } = this.props;
     return (
-      <div id={fromStyles.root}>
+      <div>
+        <div id={fromStyles.root} />
         {children !== null ? React.cloneElement(children, { map: this.map }) : null}
       </div>
     );

@@ -1,5 +1,6 @@
-import { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import L from 'leaflet';
+import * as fromStyles from './index.scss';
 
 class Trade extends Component {
   componentWillMount() {
@@ -12,7 +13,9 @@ class Trade extends Component {
     this.marker.removeFrom(map);
   }
   render() {
-    return null;
+    return (
+      <div id={fromStyles.root} />
+    );
   }
 }
 Trade.propTypes = {

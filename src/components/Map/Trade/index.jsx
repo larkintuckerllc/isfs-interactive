@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import L from 'leaflet';
-import * as fromStyles from './index.scss';
+import styles from './index.scss';
 
 class Trade extends Component {
   componentWillMount() {
@@ -14,7 +14,7 @@ class Trade extends Component {
   }
   render() {
     return (
-      <div id={fromStyles.root} />
+      <div id={styles.root} />
     );
   }
 }

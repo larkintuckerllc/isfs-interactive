@@ -3,7 +3,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { CENTER, DAY_TILES_URL, DAY_TILES_MAX_ZOOM,
   DAY_TILES_ATTRIBUTION, ZOOM } from '../../config';
-import * as fromStyles from './index.scss';
+import styles from './index.scss';
 
 class Map extends Component {
   componentWillMount() {
@@ -30,7 +30,7 @@ class Map extends Component {
     const { children } = this.props;
     return (
       <div>
-        <div id={fromStyles.root} />
+        <div id={styles.root} />
         {children !== null ? React.cloneElement(children, { map: this.map }) : null}
       </div>
     );

@@ -4,7 +4,7 @@ import { Field, reduxForm, SubmissionError } from 'redux-form';
 import * as fromAuthenticated from 'thr0w-client-module/lib/ducks/authenticated';
 import ValidatedTextInput from '../../ValidatedTextInput';
 import ValidatedPasswordInput from '../../ValidatedPasswordInput';
-import * as fromStylesheet from './index.scss';
+import styles from './index.scss';
 
 const LOGIN_FORM = 'LOGIN_FORM';
 const Authentication = ({
@@ -13,7 +13,7 @@ const Authentication = ({
   submitting,
   valid,
  }) => (
-  <div id={fromStylesheet.root}>
+  <div id={styles.root}>
     <form onSubmit={handleSubmit}>
       <Field
         component={ValidatedTextInput} name="username"

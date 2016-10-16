@@ -4,7 +4,7 @@ import { Field, reduxForm } from 'redux-form';
 import * as fromAuthenticated from 'thr0w-client-module/lib/ducks/authenticated';
 import * as fromChannel from 'thr0w-client-module/lib/ducks/channel';
 import ValidatedTextInput from '../../ValidatedTextInput';
-import * as fromStylesheet from './index.scss';
+import styles from './index.scss';
 
 const CHANNEL_FORM = 'CHANNEL_FORM';
 const Channel = ({
@@ -13,7 +13,7 @@ const Channel = ({
   submitting,
   valid,
  }) => (
-  <div id={fromStylesheet.root}>
+  <div id={styles.root}>
     <form onSubmit={handleSubmit}>
       <Field
         component={ValidatedTextInput} name="channel"

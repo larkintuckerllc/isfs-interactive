@@ -12,7 +12,10 @@ import {
   getFrameWidth,
   getScale,
 } from '../../util/grid';
-import { HAND_WIDTH, MAX_LAT, MIN_LAT, ZOOM_MIN, ZOOM_MAX } from '../../config';
+import { HAND_WIDTH, MAX_LAT, MIN_LAT,
+  SATELLITE_TILE_BG, SATELLITE_TILE_ID, SATELLITE_TILE_URL,
+  WHITE_TILE_BG, WHITE_TILE_ID, WHITE_TILE_URL,
+  ZOOM_MIN, ZOOM_MAX } from '../../config';
 import styles from './index.scss';
 
 class Map extends Component {
@@ -33,14 +36,12 @@ class Map extends Component {
     this.frameHeight = getFrameHeight();
     const frameContentContainPositionEl = document.createElement('div');
     const frameContentContainMapEl = document.createElement('div');
-    // CREATE DOM ELEMENTS
     this.frameContentEl = document.getElementById('frame__content');
+    // CREATE CONTAINER
     this.frameContentContainEl = document.createElement('div');
     this.frameContentContainEl.id = styles.frameContentContain;
     this.frameContentEl.appendChild(this.frameContentContainEl);
-    frameContentContainPositionEl.id = styles.frameContentContainPosition;
-    this.frameContentContainEl.appendChild(frameContentContainPositionEl);
-    this.position = L.map(styles.frameContentContainPosition);
+    // CREATE MAP
     frameContentContainMapEl.id = styles.frameContentContainMap;
     frameContentContainMapEl.style.left = `${this.visibleContentLeft}px`;
     frameContentContainMapEl.style.top = `${this.visibleContentTop}px`;
@@ -54,21 +55,21 @@ class Map extends Component {
         attributionControl: false,
       }
     );
+    // CREATE POSITION
+    frameContentContainPositionEl.id = styles.frameContentContainPosition;
+    this.frameContentContainEl.appendChild(frameContentContainPositionEl);
+    this.position = L.map(styles.frameContentContainPosition);
     // EVENT LISTENERS
     this.frameContentContainEl.addEventListener('touchstart', this.handleTouchStart, true);
     this.frameContentContainEl.addEventListener('touchmove', this.handleTouchMove, true);
     this.frameContentContainEl.addEventListener('touchend', this.handleTouchEnd, true);
     this.frameContentContainEl.addEventListener('touchcancel', this.handleTouchEnd, true);
-    // SETTING POSITION
     this.positionMap(mapView);
-    // SETTING TILES
-    L.tileLayer(tile.url).addTo(this.map);
+    this.changeTile(tile);
   }
   componentWillUpdate({ mapView, tile }) {
     const oldTile = this.props.tile;
-    if (tile.id !== oldTile.id) {
-      window.console.log('CHANGE TILES');
-    }
+    if (tile.id !== oldTile.id) this.changeTile(tile);
     this.positionMap(mapView);
   }
   componentWillUnmount() {
@@ -233,11 +234,39 @@ class Map extends Component {
       { animate: false }
     );
   }
+  changeTile(tile) {
+    if (this.tileLayer) this.tileLayer.removeFrom(this.map);
+    this.tileLayer = null;
+    if (tile.url !== null) {
+      this.tileLayer = L.tileLayer(tile.url).addTo(this.map);
+    }
+    document.querySelector('.leaflet-container')
+      .style.backgroundColor = tile.bg;
+  }
   render() {
-    const { children } = this.props;
+    const { children, setTile } = this.props;
     return (
       <div>
-        <div id={styles.root} />
+        <div id={styles.root}>
+          <div
+            className={styles.rootButton}
+            style={{ backgroundColor: 'red' }}
+            onClick={() => setTile({
+              bg: WHITE_TILE_BG,
+              id: WHITE_TILE_ID,
+              url: WHITE_TILE_URL,
+            })}
+          />
+          <div
+            className={styles.rootButton}
+            style={{ backgroundColor: 'green' }}
+            onClick={() => setTile({
+              bg: SATELLITE_TILE_BG,
+              id: SATELLITE_TILE_ID,
+              url: SATELLITE_TILE_URL,
+            })}
+          />
+        </div>
         {children !== null ? React.cloneElement(children, { map: this.map }) : null}
       </div>
     );
@@ -247,6 +276,7 @@ Map.propTypes = {
   children: PropTypes.node,
   mapView: PropTypes.object.isRequired,
   setMapView: PropTypes.func.isRequired,
+  setTile: PropTypes.func.isRequired,
   tile: PropTypes.object.isRequired,
 };
 export default connect(
@@ -256,5 +286,6 @@ export default connect(
   }),
   {
     setMapView: fromMapView.setMapView,
+    setTile: fromTile.setTile,
   }
 )(Map);

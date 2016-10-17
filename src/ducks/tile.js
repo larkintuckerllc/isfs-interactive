@@ -1,4 +1,5 @@
-import { ACTION_PREFIX, SATELLITE_TILE_ID, SATELLITE_TILE_URL } from '../config';
+import { ACTION_PREFIX,
+  SATELLITE_TILE_BG, SATELLITE_TILE_ID, SATELLITE_TILE_URL } from '../config';
 
 // API
 // REDUCER MOUNT POINT
@@ -13,6 +14,7 @@ const validTile = value =>
 export default (state = {
   id: SATELLITE_TILE_ID,
   url: SATELLITE_TILE_URL,
+  bg: SATELLITE_TILE_BG,
 }, action) => {
   switch (action.type) {
     case SET_TILE:

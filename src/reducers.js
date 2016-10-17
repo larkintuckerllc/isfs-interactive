@@ -4,6 +4,7 @@ import { routerReducer } from 'react-router-redux';
 import authenticated from './ducks/authenticated';
 import channel from './ducks/channel';
 import connected from './ducks/connected';
+import mapView from './ducks/mapView';
 
 export default combineReducers({
   form: formReducer,
@@ -11,4 +12,5 @@ export default combineReducers({
   authenticated,
   channel,
   connected,
+  mapView,
 });

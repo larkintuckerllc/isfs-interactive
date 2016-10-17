@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import * as fromMapView from '../../ducks/mapView';
 import {
   frameXYToContentXY,
   getContentHeight,
@@ -9,8 +11,8 @@ import {
   getFrameWidth,
   getScale,
 } from '../../util/grid';
-import { CENTER, DAY_TILES_URL, DAY_TILES_MAX_ZOOM,
-   DAY_TILES_ATTRIBUTION, ZOOM } from '../../config';
+import { DAY_TILES_URL, DAY_TILES_MAX_ZOOM,
+   DAY_TILES_ATTRIBUTION } from '../../config';
 import styles from './index.scss';
 
 class Map extends Component {
@@ -21,7 +23,7 @@ class Map extends Component {
     this.handleTouchEnd = this.handleTouchEnd.bind(this);
   }
   componentWillMount() {
-    this.center = CENTER;
+    const { mapView } = this.props;
     this.contentCenterX = getContentWidth() / 2;
     this.contentCenterY = getContentHeight() / 2;
     this.scale = getScale();
@@ -58,12 +60,15 @@ class Map extends Component {
     this.frameContentContainEl.addEventListener('touchend', this.handleTouchEnd, true);
     this.frameContentContainEl.addEventListener('touchcancel', this.handleTouchEnd, true);
     // SETTING POSITION
-    this.positionMap();
+    this.positionMap(mapView);
     // SETTING TILES
     L.tileLayer(DAY_TILES_URL, {
       attribution: DAY_TILES_ATTRIBUTION,
       maxZoom: DAY_TILES_MAX_ZOOM,
     }).addTo(this.map);
+  }
+  componentWillUpdate({ mapView }) {
+    this.positionMap(mapView);
   }
   componentWillUnmount() {
     this.frameContentContainEl.removeEventListener('touchstart', this.handleTouchStart);
@@ -83,6 +88,7 @@ class Map extends Component {
   }
   handleTouchMove(e) {
     e.stopPropagation();
+    const { mapView, setMapView } = this.props;
     const touchOneX = (e.touches[0].pageX * this.scale) + this.visibleContentLeft;
     const touchOneY = (e.touches[0].pageY * this.scale) + this.visibleContentTop;
     const centerLatLng = this.position.containerPointToLatLng(
@@ -91,11 +97,13 @@ class Map extends Component {
         this.contentCenterY + (this.touchOneLastY - touchOneY)
       )
     );
-    this.center = {
-      lat: centerLatLng.lat,
-      lng: centerLatLng.lng,
-    };
-    this.positionMap();
+    setMapView({
+      center: {
+        lat: centerLatLng.lat,
+        lng: centerLatLng.lng,
+      },
+      zoom: mapView.zoom,
+    });
     this.touchOneLastX = touchOneX;
     this.touchOneLastY = touchOneY;
   }
@@ -106,10 +114,10 @@ class Map extends Component {
       this.touchOneLastY = (e.touches[0].pageY * this.scale) + this.visibleContentTop;
     }
   }
-  positionMap() {
+  positionMap(view) {
     this.position.setView(
-      L.latLng(this.center.lat, this.center.lng),
-      ZOOM,
+      L.latLng(view.center.lat, view.center.lng),
+      view.zoom,
       { animate: false }
     );
     this.map.setView(
@@ -119,7 +127,7 @@ class Map extends Component {
           this.visibleContentTop + (this.frameHeight / 2)
         )
       ),
-      ZOOM,
+      view.zoom,
       { animate: false }
     );
   }
@@ -135,5 +143,14 @@ class Map extends Component {
 }
 Map.propTypes = {
   children: PropTypes.node,
+  mapView: PropTypes.object.isRequired,
+  setMapView: PropTypes.func.isRequired,
 };
-export default Map;
+export default connect(
+  state => ({
+    mapView: fromMapView.getMapView(state),
+  }),
+  {
+    setMapView: fromMapView.setMapView,
+  }
+)(Map);

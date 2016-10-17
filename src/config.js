@@ -45,9 +45,8 @@ export const ZOOM_MAX = 7;
 // eslint-disable-next-line
 // export const DAY_TILES_ATTRIBUTION = 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
 // export const DAY_TILES_MAX_ZOOM = 18;
-export const DAY_TILES_URL = 'http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}';
-export const DAY_TILES_ATTRIBUTION = 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ';
-export const DAY_TILES_MAX_ZOOM = 16;
+export const SATELLITE_TILE_ID = 'satellite';
+export const SATELLITE_TILE_URL = 'http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}';
 export const MAX_LAT = 85;
 export const MIN_LAT = -85;
 export const HAND_WIDTH = 400;

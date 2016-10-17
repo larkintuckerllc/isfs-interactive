@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import * as fromMapView from '../../ducks/mapView';
+import * as fromTile from '../../ducks/tile';
 import {
   frameXYToContentXY,
   getContentHeight,
@@ -11,10 +12,7 @@ import {
   getFrameWidth,
   getScale,
 } from '../../util/grid';
-import { DAY_TILES_URL, DAY_TILES_MAX_ZOOM,
-   DAY_TILES_ATTRIBUTION, HAND_WIDTH, MAX_LAT, MIN_LAT,
-   ZOOM_MIN, ZOOM_MAX,
-} from '../../config';
+import { HAND_WIDTH, MAX_LAT, MIN_LAT, ZOOM_MIN, ZOOM_MAX } from '../../config';
 import styles from './index.scss';
 
 class Map extends Component {
@@ -25,7 +23,7 @@ class Map extends Component {
     this.handleTouchEnd = this.handleTouchEnd.bind(this);
   }
   componentWillMount() {
-    const { mapView } = this.props;
+    const { mapView, tile } = this.props;
     this.contentCenterX = getContentWidth() / 2;
     this.contentCenterY = getContentHeight() / 2;
     this.scale = getScale();
@@ -64,12 +62,13 @@ class Map extends Component {
     // SETTING POSITION
     this.positionMap(mapView);
     // SETTING TILES
-    L.tileLayer(DAY_TILES_URL, {
-      attribution: DAY_TILES_ATTRIBUTION,
-      maxZoom: DAY_TILES_MAX_ZOOM,
-    }).addTo(this.map);
+    L.tileLayer(tile.url).addTo(this.map);
   }
-  componentWillUpdate({ mapView }) {
+  componentWillUpdate({ mapView, tile }) {
+    const oldTile = this.props.tile;
+    if (tile.id !== oldTile.id) {
+      window.console.log('CHANGE TILES');
+    }
     this.positionMap(mapView);
   }
   componentWillUnmount() {
@@ -248,10 +247,12 @@ Map.propTypes = {
   children: PropTypes.node,
   mapView: PropTypes.object.isRequired,
   setMapView: PropTypes.func.isRequired,
+  tile: PropTypes.object.isRequired,
 };
 export default connect(
   state => ({
     mapView: fromMapView.getMapView(state),
+    tile: fromTile.getTile(state),
   }),
   {
     setMapView: fromMapView.setMapView,

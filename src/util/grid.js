@@ -76,3 +76,4 @@ export const getContentWidth = () => contentWidth;
 export const getContentHeight = () => contentHeight;
 export const getFrameWidth = () => frameWidth;
 export const getFrameHeight = () => frameHeight;
+export const getScale = () => dimensions[vpos].scale;

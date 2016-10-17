@@ -3,8 +3,11 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import {
   frameXYToContentXY,
+  getContentHeight,
+  getContentWidth,
   getFrameHeight,
   getFrameWidth,
+  getScale,
 } from '../../util/grid';
 import { CENTER, DAY_TILES_URL, DAY_TILES_MAX_ZOOM,
    DAY_TILES_ATTRIBUTION, ZOOM } from '../../config';
@@ -18,10 +21,14 @@ class Map extends Component {
     this.handleTouchEnd = this.handleTouchEnd.bind(this);
   }
   componentWillMount() {
-    const visibleContentLeft = frameXYToContentXY([0, 0])[0];
-    const visibleContentTop = frameXYToContentXY([0, 0])[1];
-    const frameWidth = getFrameWidth();
-    const frameHeight = getFrameHeight();
+    this.center = CENTER;
+    this.contentCenterX = getContentWidth() / 2;
+    this.contentCenterY = getContentHeight() / 2;
+    this.scale = getScale();
+    this.visibleContentLeft = frameXYToContentXY([0, 0])[0];
+    this.visibleContentTop = frameXYToContentXY([0, 0])[1];
+    this.frameWidth = getFrameWidth();
+    this.frameHeight = getFrameHeight();
     const frameContentContainPositionEl = document.createElement('div');
     const frameContentContainMapEl = document.createElement('div');
     // CREATE DOM ELEMENTS
@@ -33,10 +40,10 @@ class Map extends Component {
     this.frameContentContainEl.appendChild(frameContentContainPositionEl);
     this.position = L.map(styles.frameContentContainPosition);
     frameContentContainMapEl.id = styles.frameContentContainMap;
-    frameContentContainMapEl.style.left = `${visibleContentLeft}px`;
-    frameContentContainMapEl.style.top = `${visibleContentTop}px`;
-    frameContentContainMapEl.style.width = `${frameWidth}px`;
-    frameContentContainMapEl.style.height = `${frameHeight}px`;
+    frameContentContainMapEl.style.left = `${this.visibleContentLeft}px`;
+    frameContentContainMapEl.style.top = `${this.visibleContentTop}px`;
+    frameContentContainMapEl.style.width = `${this.frameWidth}px`;
+    frameContentContainMapEl.style.height = `${this.frameHeight}px`;
     this.frameContentContainEl.appendChild(frameContentContainMapEl);
     this.map = L.map(
       styles.frameContentContainMap,
@@ -51,21 +58,8 @@ class Map extends Component {
     this.frameContentContainEl.addEventListener('touchend', this.handleTouchEnd, true);
     this.frameContentContainEl.addEventListener('touchcancel', this.handleTouchEnd, true);
     // SETTING POSITION
-    this.position.setView(
-      L.latLng(CENTER.lat, CENTER.lng),
-      ZOOM,
-      { animate: false }
-    );
-    this.map.setView(
-      this.position.containerPointToLatLng(
-        L.point(
-          visibleContentLeft + (frameWidth / 2),
-          visibleContentTop + (frameHeight / 2)
-        )
-      ),
-      ZOOM,
-      { animate: false }
-    );
+    this.positionMap();
+    // SETTING TILES
     L.tileLayer(DAY_TILES_URL, {
       attribution: DAY_TILES_ATTRIBUTION,
       maxZoom: DAY_TILES_MAX_ZOOM,
@@ -82,15 +76,52 @@ class Map extends Component {
   }
   handleTouchStart(e) {
     e.stopPropagation();
-    window.console.log('START');
+    if (e.touches.length !== 1) return;
+    this.touchStartRadius = 0;
+    this.touchOneLastX = (e.touches[0].pageX * this.scale) + this.visibleContentLeft;
+    this.touchOneLastY = (e.touches[0].pageY * this.scale) + this.visibleContentTop;
   }
   handleTouchMove(e) {
     e.stopPropagation();
-    window.console.log('MOVE');
+    const touchOneX = (e.touches[0].pageX * this.scale) + this.visibleContentLeft;
+    const touchOneY = (e.touches[0].pageY * this.scale) + this.visibleContentTop;
+    const centerLatLng = this.position.containerPointToLatLng(
+      L.point(
+        this.contentCenterX + (this.touchOneLastX - touchOneX),
+        this.contentCenterY + (this.touchOneLastY - touchOneY)
+      )
+    );
+    this.center = {
+      lat: centerLatLng.lat,
+      lng: centerLatLng.lng,
+    };
+    this.positionMap();
+    this.touchOneLastX = touchOneX;
+    this.touchOneLastY = touchOneY;
   }
   handleTouchEnd(e) {
     e.stopPropagation();
-    window.console.log('END');
+    if (e.touches.length > 0) {
+      this.touchOneLastX = (e.touches[0].pageX * this.scale) + this.visibleContentLeft;
+      this.touchOneLastY = (e.touches[0].pageY * this.scale) + this.visibleContentTop;
+    }
+  }
+  positionMap() {
+    this.position.setView(
+      L.latLng(this.center.lat, this.center.lng),
+      ZOOM,
+      { animate: false }
+    );
+    this.map.setView(
+      this.position.containerPointToLatLng(
+        L.point(
+          this.visibleContentLeft + (this.frameWidth / 2),
+          this.visibleContentTop + (this.frameHeight / 2)
+        )
+      ),
+      ZOOM,
+      { animate: false }
+    );
   }
   render() {
     const { children } = this.props;

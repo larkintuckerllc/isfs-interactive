@@ -152,8 +152,13 @@ class Map extends Component {
     const { mapView, setMapView } = this.props;
     let radius = 0;
     let zoom = mapView.zoom;
+    let center = mapView.center;
+    let totalX = (e.changedTouches[0].pageX * this.scale) + this.visibleContentLeft;
+    let totalY = (e.changedTouches[0].pageY * this.scale) + this.visibleContentTop;
     this.zooming = false;
     for (let i = 0; i < e.touches.length; i++) {
+      totalX += (e.touches[i].pageX * this.scale) + this.visibleContentLeft;
+      totalY += (e.touches[i].pageY * this.scale) + this.visibleContentTop;
       for (let j = 0; j < e.touches.length; j++) {
         if (i < j) {
           radius = Math.max(Math.floor(this.scale * Math.sqrt(
@@ -167,15 +172,48 @@ class Map extends Component {
         Math.pow(e.touches[i].pageY - e.changedTouches[0].pageY, 2)
       )), radius);
     }
-    // TODO: REPOSITION BASED ON ZOOM
     if (radius >= this.startRadius && mapView.zoom < ZOOM_MAX) {
+      const centerLatLng = this.position.containerPointToLatLng(
+        L.point(
+          ((totalX / (e.touches.length + 1)) + this.contentCenterX) / 2,
+          ((totalY / (e.touches.length + 1)) + this.contentCenterY) / 2
+        )
+      );
+      center = {
+        lat: centerLatLng.lat,
+        lng: centerLatLng.lng,
+      };
       zoom = mapView.zoom + 1;
     }
     if (radius <= this.startRadius && mapView.zoom > ZOOM_MIN) {
+      const topLeftLatLng = this.position.containerPointToLatLng(
+        L.point(0, 0)
+      );
+      const bottomRightLatLng = this.position.containerPointToLatLng(
+        L.point(this.contentCenterX * 2, this.contentCenterY * 2)
+      );
+      if (topLeftLatLng.lat >= 0 && bottomRightLatLng.lat >= 0) {
+        center = {
+          lat: bottomRightLatLng.lat,
+          lng: mapView.center.lng,
+        };
+      }
+      if (topLeftLatLng.lat >= 0 && bottomRightLatLng.lat < 0) {
+        center = {
+          lat: 0,
+          lng: mapView.center.lng,
+        };
+      }
+      if (topLeftLatLng.lat < 0 && bottomRightLatLng.lat < 0) {
+        center = {
+          lat: topLeftLatLng.lat,
+          lng: mapView.center.lng,
+        };
+      }
       zoom = mapView.zoom - 1;
     }
     setMapView({
-      center: mapView.center,
+      center,
       zoom,
     });
   }

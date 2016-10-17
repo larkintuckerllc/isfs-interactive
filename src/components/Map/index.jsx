@@ -12,7 +12,9 @@ import {
   getScale,
 } from '../../util/grid';
 import { DAY_TILES_URL, DAY_TILES_MAX_ZOOM,
-   DAY_TILES_ATTRIBUTION, MAX_LAT, MIN_LAT } from '../../config';
+   DAY_TILES_ATTRIBUTION, HAND_WIDTH, MAX_LAT, MIN_LAT,
+   ZOOM_MIN, ZOOM_MAX,
+} from '../../config';
 import styles from './index.scss';
 
 class Map extends Component {
@@ -82,12 +84,31 @@ class Map extends Component {
   handleTouchStart(e) {
     e.stopPropagation();
     if (e.touches.length !== 1) return;
-    this.touchStartRadius = 0;
+    this.moving = true;
+    this.zooming = false;
     this.touchOneLastX = (e.touches[0].pageX * this.scale) + this.visibleContentLeft;
     this.touchOneLastY = (e.touches[0].pageY * this.scale) + this.visibleContentTop;
   }
   handleTouchMove(e) {
     e.stopPropagation();
+    if (!this.moving) return;
+    if (this.zooming) return;
+    let radius = 0;
+    for (let i = 0; i < e.touches.length; i++) {
+      for (let j = 0; j < e.touches.length; j++) {
+        if (i < j) {
+          radius = Math.max(Math.floor(this.scale * Math.sqrt(
+            Math.pow(e.touches[i].pageX - e.touches[j].pageX, 2) +
+            Math.pow(e.touches[i].pageY - e.touches[j].pageY, 2)
+          )), radius);
+        }
+      }
+    }
+    if (radius >= HAND_WIDTH) {
+      this.moving = false;
+      this.zooming = true;
+      this.startRadius = radius;
+    }
     const { mapView, setMapView } = this.props;
     const touchOneX = (e.touches[0].pageX * this.scale) + this.visibleContentLeft;
     const touchOneY = (e.touches[0].pageY * this.scale) + this.visibleContentTop;
@@ -123,10 +144,40 @@ class Map extends Component {
   }
   handleTouchEnd(e) {
     e.stopPropagation();
-    if (e.touches.length > 0) {
+    if (this.moving && e.touches.length > 0) {
       this.touchOneLastX = (e.touches[0].pageX * this.scale) + this.visibleContentLeft;
       this.touchOneLastY = (e.touches[0].pageY * this.scale) + this.visibleContentTop;
     }
+    if (!this.zooming) return;
+    const { mapView, setMapView } = this.props;
+    let radius = 0;
+    let zoom = mapView.zoom;
+    this.zooming = false;
+    for (let i = 0; i < e.touches.length; i++) {
+      for (let j = 0; j < e.touches.length; j++) {
+        if (i < j) {
+          radius = Math.max(Math.floor(this.scale * Math.sqrt(
+            Math.pow(e.touches[i].pageX - e.touches[j].pageX, 2) +
+            Math.pow(e.touches[i].pageY - e.touches[j].pageY, 2)
+          )), radius);
+        }
+      }
+      radius = Math.max(Math.floor(this.scale * Math.sqrt(
+        Math.pow(e.touches[i].pageX - e.changedTouches[0].pageX, 2) +
+        Math.pow(e.touches[i].pageY - e.changedTouches[0].pageY, 2)
+      )), radius);
+    }
+    // TODO: REPOSITION BASED ON ZOOM
+    if (radius >= this.startRadius && mapView.zoom < ZOOM_MAX) {
+      zoom = mapView.zoom + 1;
+    }
+    if (radius <= this.startRadius && mapView.zoom > ZOOM_MIN) {
+      zoom = mapView.zoom - 1;
+    }
+    setMapView({
+      center: mapView.center,
+      zoom,
+    });
   }
   positionMap(view) {
     this.position.setView(

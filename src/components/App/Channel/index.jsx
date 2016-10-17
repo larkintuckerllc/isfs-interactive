@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import * as fromAuthenticated from 'thr0w-client-module/lib/ducks/authenticated';
-import * as fromChannel from 'thr0w-client-module/lib/ducks/channel';
+import * as fromAuthenticated from '../../../ducks/authenticated';
+import * as fromChannel from '../../../ducks/channel';
 import ValidatedTextInput from '../../ValidatedTextInput';
 import styles from './index.scss';
 

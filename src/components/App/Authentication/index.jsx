@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
-import * as fromAuthenticated from 'thr0w-client-module/lib/ducks/authenticated';
+import * as fromAuthenticated from '../../../ducks/authenticated';
 import ValidatedTextInput from '../../ValidatedTextInput';
 import ValidatedPasswordInput from '../../ValidatedPasswordInput';
 import styles from './index.scss';

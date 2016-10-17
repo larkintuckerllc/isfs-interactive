@@ -1,7 +1,7 @@
 import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import * as fromChannel from 'thr0w-client-module/lib/ducks/channel';
-import * as fromConnected from 'thr0w-client-module/lib/ducks/connected';
+import * as fromChannel from '../../ducks/channel';
+import * as fromConnected from '../../ducks/connected';
 
 class Connect extends Component {
   componentDidMount() {

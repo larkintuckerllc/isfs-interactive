@@ -46,6 +46,6 @@
     "redux": "^3.5.2",
     "redux-form": "^6.0.2",
     "redux-thunk": "^2.1.0",
-    "thr0w-client-module": "0.0.4"
+    "socket.io-client": "^1.5.0"
   }
 }

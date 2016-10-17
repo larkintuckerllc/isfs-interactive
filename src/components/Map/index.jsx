@@ -5,7 +5,7 @@ import {
   frameXYToContentXY,
   getFrameHeight,
   getFrameWidth,
-} from 'thr0w-client-module/lib/grid';
+} from '../../util/grid';
 import { CENTER, DAY_TILES_URL, DAY_TILES_MAX_ZOOM,
    DAY_TILES_ATTRIBUTION, ZOOM } from '../../config';
 import styles from './index.scss';

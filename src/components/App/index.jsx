@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { getAuthenticated } from 'thr0w-client-module/lib/ducks/authenticated';
-import { getChannel } from 'thr0w-client-module/lib/ducks/channel';
-import { getConnected } from 'thr0w-client-module/lib/ducks/connected';
+import { getAuthenticated } from '../../ducks/authenticated';
+import { getChannel } from '../../ducks/channel';
+import { getConnected } from '../../ducks/connected';
 import Authentication from './Authentication';
 import Channel from './Channel';
 import Connect from './Connect';

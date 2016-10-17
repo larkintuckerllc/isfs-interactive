@@ -1,9 +1,9 @@
 import 'babel-polyfill';
 import 'bootstrap-loader';
 import React from 'react';
-import { setBaseHttp, setBaseSocket } from 'thr0w-client-module';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
+import { setBaseHttp, setBaseSocket } from './api/thr0w';
 import { BASE_URL_HTTP, BASE_URL_SOCKET } from './config';
 import configureStore from './configureStore';
 import App from './components/App';

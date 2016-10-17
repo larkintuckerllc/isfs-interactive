@@ -1,7 +1,7 @@
 import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { getChannel } from 'thr0w-client-module/lib/ducks/channel';
-import { grid } from 'thr0w-client-module/lib/grid';
+import { getChannel } from '../../ducks/channel';
+import { grid } from '../../util/grid';
 import { MATRIX, DIMENSIONS } from '../../config';
 
 class Frame extends Component {

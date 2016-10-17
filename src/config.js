@@ -38,7 +38,7 @@ export const CENTER = {
   lat: 0,
   lng: 0,
 };
-export const ZOOM = 4;
+export const ZOOM = 5;
 // export const DAY_TILES_URL = 'http://192.168.1.2:8080/satellite/{z}/{y}/{x}';
 // eslint-disable-next-line
 // export const DAY_TILES_ATTRIBUTION = 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
@@ -46,3 +46,5 @@ export const ZOOM = 4;
 export const DAY_TILES_URL = 'http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}';
 export const DAY_TILES_ATTRIBUTION = 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ';
 export const DAY_TILES_MAX_ZOOM = 16;
+export const MAX_LAT = 85;
+export const MIN_LAT = -85;

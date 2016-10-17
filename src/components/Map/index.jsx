@@ -12,7 +12,7 @@ import {
   getScale,
 } from '../../util/grid';
 import { DAY_TILES_URL, DAY_TILES_MAX_ZOOM,
-   DAY_TILES_ATTRIBUTION } from '../../config';
+   DAY_TILES_ATTRIBUTION, MAX_LAT, MIN_LAT } from '../../config';
 import styles from './index.scss';
 
 class Map extends Component {
@@ -91,15 +91,29 @@ class Map extends Component {
     const { mapView, setMapView } = this.props;
     const touchOneX = (e.touches[0].pageX * this.scale) + this.visibleContentLeft;
     const touchOneY = (e.touches[0].pageY * this.scale) + this.visibleContentTop;
+    const shiftY = this.touchOneLastY - touchOneY;
+    let atBoundary = false;
+    const topLeftLatLng = this.position.containerPointToLatLng(
+      L.point(0, 0)
+    );
+    const bottomRightLatLng = this.position.containerPointToLatLng(
+      L.point(this.contentCenterX * 2, this.contentCenterY * 2)
+    );
+    if (topLeftLatLng.lat > MAX_LAT && shiftY < 0) {
+      atBoundary = true;
+    }
+    if (bottomRightLatLng.lat < MIN_LAT && shiftY > 0) {
+      atBoundary = true;
+    }
     const centerLatLng = this.position.containerPointToLatLng(
       L.point(
         this.contentCenterX + (this.touchOneLastX - touchOneX),
-        this.contentCenterY + (this.touchOneLastY - touchOneY)
+        this.contentCenterY + shiftY
       )
     );
     setMapView({
       center: {
-        lat: centerLatLng.lat,
+        lat: atBoundary ? mapView.center.lat : centerLatLng.lat,
         lng: centerLatLng.lng,
       },
       zoom: mapView.zoom,

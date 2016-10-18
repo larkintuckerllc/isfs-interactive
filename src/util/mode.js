@@ -24,7 +24,7 @@ if (modeId !== undefined && MODES[modeId] !== undefined) {
   mode = MODES[modeId];
 }
 export const valid = (channel) => (mode !== null && mode.channels.indexOf(channel) !== -1);
-export const getModeId = () => (mode !== null ? modeId : null);
 export const getChannels = () => (mode !== null ? mode.channels : []);
 export const getMatrix = () => (mode !== null ? mode.matrix : [[]]);
 export const getDimensions = () => (mode !== null ? mode.dimensions : []);
+export const getLeftBottom = () => (mode !== null ? mode.leftBottom : 0);

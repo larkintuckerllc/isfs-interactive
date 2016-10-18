@@ -14,6 +14,7 @@ export const MODES = {
       spacing: 0,
       margin: 0,
     }],
+    leftBottom: 0,
   },
   full: {
     channels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -45,6 +46,7 @@ export const MODES = {
       margin: 0,
     }],
   },
+  leftBottom: 111,
 };
 export const CENTER = {
   lat: 0,

@@ -12,7 +12,7 @@ import {
   getFrameWidth,
   getScale,
 } from '../../util/grid';
-import { getModeId } from '../../util/mode';
+import { getLeftBottom } from '../../util/mode';
 import { HAND_WIDTH, MAX_LAT, MIN_LAT, TILES,
   ZOOM_MIN, ZOOM_MAX } from '../../config';
 import styles from './index.scss';
@@ -257,12 +257,11 @@ class Map extends Component {
   }
   render() {
     const { children, setTile, tile } = this.props;
-    const modeId = getModeId();
     return (
       <div>
         <div
           id={styles.root}
-          style={{ left: modeId === 'full' ? 111 : 0 }}
+          style={{ left: getLeftBottom() }}
         >
           {TILES.ids.map(id => (
             <div

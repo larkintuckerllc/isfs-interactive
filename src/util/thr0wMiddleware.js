@@ -2,7 +2,6 @@ import { getChannel, onMessage, offMessage, thr0w } from '../api/thr0w';
 import { SET_CONNECTED_SUCCESS, SET_CONNECTED_REQUEST, getConnected } from '../ducks/connected';
 
 export default (actionTypes, channels) => {
-  // TODO: VALIDATE
   const actionTypesLookup = {};
   for (let i = 0; i < actionTypes.length; i++) {
     actionTypesLookup[actionTypes[i]] = true;

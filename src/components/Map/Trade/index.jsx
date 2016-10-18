@@ -1,11 +1,21 @@
 import React, { Component, PropTypes } from 'react';
 import L from 'leaflet';
 import styles from './index.scss';
+import cat from './img/cat.png';
 
 class Trade extends Component {
   componentWillMount() {
     const { map } = this.props;
-    this.marker = L.marker([29, -82]);
+    const catIcon = L.icon({
+      iconUrl: cat,
+      iconSize: [64, 64],
+    });
+    this.marker = L.marker(
+      [29, -82],
+      {
+        icon: catIcon,
+      }
+    );
     this.marker.addTo(map);
   }
   componentWillUnmount() {
@@ -14,7 +24,9 @@ class Trade extends Component {
   }
   render() {
     return (
-      <div id={styles.root} />
+      <div id={styles.root}>
+        <div id={styles.rootMedia} />
+      </div>
     );
   }
 }

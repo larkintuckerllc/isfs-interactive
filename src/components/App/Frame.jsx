@@ -2,17 +2,19 @@ import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { getChannel } from '../../ducks/channel';
 import { grid } from '../../util/grid';
-import { MATRIX, DIMENSIONS } from '../../config';
+import { getMatrix, getDimensions, valid } from '../../util/mode';
 
 class Frame extends Component {
   componentWillMount() {
     const { channel } = this.props;
+    if (!valid(channel)) return;
     const frameEl = document.getElementById('frame');
     const frameContentEl = document.getElementById('frame__content');
-    grid(channel, frameEl, frameContentEl, MATRIX, DIMENSIONS);
+    grid(channel, frameEl, frameContentEl, getMatrix(), getDimensions());
   }
   render() {
-    const { children } = this.props;
+    const { channel, children } = this.props;
+    if (!valid(channel)) return null;
     return children;
   }
 }

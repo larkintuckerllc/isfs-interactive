@@ -12,6 +12,7 @@ import {
   getFrameWidth,
   getScale,
 } from '../../util/grid';
+import { getModeId } from '../../util/mode';
 import { HAND_WIDTH, MAX_LAT, MIN_LAT, TILES,
   ZOOM_MIN, ZOOM_MAX } from '../../config';
 import styles from './index.scss';
@@ -27,6 +28,7 @@ const buttonIcons = {
   night,
   white,
   black,
+  lights: night,
 };
 class Map extends Component {
   constructor() {
@@ -255,9 +257,13 @@ class Map extends Component {
   }
   render() {
     const { children, setTile, tile } = this.props;
+    const modeId = getModeId();
     return (
       <div>
-        <div id={styles.root}>
+        <div
+          id={styles.root}
+          style={{ left: modeId === 'full' ? 111 : 0 }}
+        >
           {TILES.ids.map(id => (
             <div
               key={id}

@@ -3,15 +3,15 @@ import thunk from 'redux-thunk';
 import { routerMiddleware } from 'react-router-redux';
 import { hashHistory } from 'react-router';
 import thr0wMiddleware from './util/thr0wMiddleware';
-import { CHANNELS } from './config';
 import reducers from './reducers';
 import { SET_MAP_VIEW } from './ducks/mapView';
 import { SET_TILE } from './ducks/tile';
+import { getChannels } from './util/mode';
 
 export default () => {
   const middlewares = [
     thunk,
-    thr0wMiddleware([SET_MAP_VIEW, SET_TILE], CHANNELS),
+    thr0wMiddleware([SET_MAP_VIEW, SET_TILE], getChannels()),
     routerMiddleware(hashHistory),
   ];
   return createStore(

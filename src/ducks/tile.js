@@ -1,5 +1,4 @@
-import { ACTION_PREFIX,
-  SATELLITE_TILE_BG, SATELLITE_TILE_ID, SATELLITE_TILE_URL } from '../config';
+import { ACTION_PREFIX, TILES } from '../config';
 
 // API
 // REDUCER MOUNT POINT
@@ -11,11 +10,7 @@ const validTile = value =>
   !(value === undefined || typeof value !== 'object');
 // SCHEMA
 // REDUCERS
-export default (state = {
-  id: SATELLITE_TILE_ID,
-  url: SATELLITE_TILE_URL,
-  bg: SATELLITE_TILE_BG,
-}, action) => {
+export default (state = TILES[0], action) => {
   switch (action.type) {
     case SET_TILE:
       return action.value;

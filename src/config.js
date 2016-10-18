@@ -45,12 +45,14 @@ export const ZOOM_MAX = 7;
 // eslint-disable-next-line
 // export const DAY_TILES_ATTRIBUTION = 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
 // export const DAY_TILES_MAX_ZOOM = 18;
-export const SATELLITE_TILE_ID = 'satellite';
-export const SATELLITE_TILE_URL = 'http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}';
-export const SATELLITE_TILE_BG = 'rgb(0,0,0)';
-export const WHITE_TILE_ID = 'white';
-export const WHITE_TILE_URL = null;
-export const WHITE_TILE_BG = 'rgb(255,255,255)';
 export const MAX_LAT = 85;
 export const MIN_LAT = -85;
 export const HAND_WIDTH = 400;
+export const TILES = [{
+  url: 'http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+  bg: 'rgb(0,0,0)',
+}, {
+  url: null,
+  bg: 'rgb(255,255,255)',
+},
+];

@@ -12,9 +12,7 @@ import {
   getFrameWidth,
   getScale,
 } from '../../util/grid';
-import { HAND_WIDTH, MAX_LAT, MIN_LAT,
-  SATELLITE_TILE_BG, SATELLITE_TILE_ID, SATELLITE_TILE_URL,
-  WHITE_TILE_BG, WHITE_TILE_ID, WHITE_TILE_URL,
+import { HAND_WIDTH, MAX_LAT, MIN_LAT, TILES,
   ZOOM_MIN, ZOOM_MAX } from '../../config';
 import styles from './index.scss';
 
@@ -69,7 +67,7 @@ class Map extends Component {
   }
   componentWillUpdate({ mapView, tile }) {
     const oldTile = this.props.tile;
-    if (tile.id !== oldTile.id) this.changeTile(tile);
+    if (tile !== oldTile) this.changeTile(tile);
     this.positionMap(mapView);
   }
   componentWillUnmount() {
@@ -251,20 +249,12 @@ class Map extends Component {
           <div
             className={styles.rootButton}
             style={{ backgroundColor: 'red' }}
-            onClick={() => setTile({
-              bg: WHITE_TILE_BG,
-              id: WHITE_TILE_ID,
-              url: WHITE_TILE_URL,
-            })}
+            onClick={() => setTile(TILES[0])}
           />
           <div
             className={styles.rootButton}
             style={{ backgroundColor: 'green' }}
-            onClick={() => setTile({
-              bg: SATELLITE_TILE_BG,
-              id: SATELLITE_TILE_ID,
-              url: SATELLITE_TILE_URL,
-            })}
+            onClick={() => setTile(TILES[1])}
           />
         </div>
         {children !== null ? React.cloneElement(children, { map: this.map }) : null}

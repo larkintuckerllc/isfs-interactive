@@ -1,6 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import { Component, PropTypes } from 'react';
 import L from 'leaflet';
-import styles from './index.scss';
 import cat from './img/cat.png';
 
 class Trade extends Component {
@@ -23,11 +22,7 @@ class Trade extends Component {
     this.marker.removeFrom(map);
   }
   render() {
-    return (
-      <div id={styles.root}>
-        <div id={styles.rootMedia} />
-      </div>
-    );
+    return null;
   }
 }
 Trade.propTypes = {

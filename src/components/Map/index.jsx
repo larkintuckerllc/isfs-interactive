@@ -15,12 +15,18 @@ import {
 import { HAND_WIDTH, MAX_LAT, MIN_LAT, TILES,
   ZOOM_MIN, ZOOM_MAX } from '../../config';
 import styles from './index.scss';
-import satellite from './satellite.png';
-import white from './white.png';
+import satellite from './img/satellite.png';
+import street from './img/street.png';
+import night from './img/night.png';
+import white from './img/white.png';
+import black from './img/black.png';
 
 const buttonIcons = {
   satellite,
+  street,
+  night,
   white,
+  black,
 };
 class Map extends Component {
   constructor() {

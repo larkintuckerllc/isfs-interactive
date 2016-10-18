@@ -52,7 +52,17 @@ export const TILES = {
   byId: {
     satellite: {
       id: 'satellite',
-      url: 'http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+      url: 'http://192.168.1.2:8080/satellite/{z}/{y}/{x}',
+      bg: 'rgb(0,0,0)',
+    },
+    street: {
+      id: 'street',
+      url: 'http://192.168.1.2:8081/street/{z}/{x}/{y}.png',
+      bg: 'rgb(255,255,255)',
+    },
+    night: {
+      id: 'night',
+      url: 'http://192.168.1.2:8082/night/{z}/{x}/{y}.png',
       bg: 'rgb(0,0,0)',
     },
     white: {
@@ -60,8 +70,17 @@ export const TILES = {
       url: null,
       bg: 'rgb(255,255,255)',
     },
+    black: {
+      id: 'black',
+      url: null,
+      bg: 'rgb(0,0,0)',
+    },
   },
   ids: [
-    'satellite', 'white',
+    'satellite',
+    'street',
+    'night',
+    'white',
+    'black',
   ],
 };

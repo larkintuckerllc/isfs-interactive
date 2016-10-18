@@ -6,11 +6,12 @@ import thr0wMiddleware from './util/thr0wMiddleware';
 import { CHANNELS } from './config';
 import reducers from './reducers';
 import { SET_MAP_VIEW } from './ducks/mapView';
+import { SET_TILE } from './ducks/tile';
 
 export default () => {
   const middlewares = [
     thunk,
-    thr0wMiddleware([SET_MAP_VIEW], CHANNELS),
+    thr0wMiddleware([SET_MAP_VIEW, SET_TILE], CHANNELS),
     routerMiddleware(hashHistory),
   ];
   return createStore(

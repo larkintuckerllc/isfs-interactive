@@ -252,20 +252,16 @@ class Map extends Component {
     return (
       <div>
         <div id={styles.root}>
-          <div
-            className={styles.rootButton}
-            onClick={() => setTile(TILES.byId.satellite)}
-          >
-            <img src={satellite} width="100" height="100" alt="satellite" />
-            {tile.id === 'satellite' && (<div className={styles.rootButtonSelected} />)}
-          </div>
-          <div
-            className={styles.rootButton}
-            onClick={() => setTile(TILES.byId.white)}
-          >
-            <img src={white} width="100" height="100" alt="white" />
-            {tile.id === 'white' && (<div className={styles.rootButtonSelected} />)}
-          </div>
+          {TILES.ids.map(id => (
+            <div
+              key={id}
+              className={styles.rootButton}
+              onClick={() => setTile(TILES.byId[id])}
+            >
+              <img src={buttonIcons[id]} width="100" height="100" alt={id} />
+              {tile.id === id && (<div className={styles.rootButtonSelected} />)}
+            </div>
+          ))}
         </div>
         {children !== null ? React.cloneElement(children, { map: this.map }) : null}
       </div>

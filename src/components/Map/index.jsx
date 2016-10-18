@@ -15,7 +15,13 @@ import {
 import { HAND_WIDTH, MAX_LAT, MIN_LAT, TILES,
   ZOOM_MIN, ZOOM_MAX } from '../../config';
 import styles from './index.scss';
+import satellite from './satellite.png';
+import white from './white.png';
 
+const buttonIcons = {
+  satellite,
+  white,
+};
 class Map extends Component {
   constructor() {
     super();
@@ -242,20 +248,24 @@ class Map extends Component {
       .style.backgroundColor = tile.bg;
   }
   render() {
-    const { children, setTile } = this.props;
+    const { children, setTile, tile } = this.props;
     return (
       <div>
         <div id={styles.root}>
           <div
             className={styles.rootButton}
-            style={{ backgroundColor: 'red' }}
-            onClick={() => setTile(TILES[0])}
-          />
+            onClick={() => setTile(TILES.byId.satellite)}
+          >
+            <img src={satellite} width="100" height="100" alt="satellite" />
+            {tile.id === 'satellite' && (<div className={styles.rootButtonSelected} />)}
+          </div>
           <div
             className={styles.rootButton}
-            style={{ backgroundColor: 'green' }}
-            onClick={() => setTile(TILES[1])}
-          />
+            onClick={() => setTile(TILES.byId.white)}
+          >
+            <img src={white} width="100" height="100" alt="white" />
+            {tile.id === 'white' && (<div className={styles.rootButtonSelected} />)}
+          </div>
         </div>
         {children !== null ? React.cloneElement(children, { map: this.map }) : null}
       </div>

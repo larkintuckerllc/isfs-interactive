@@ -48,11 +48,20 @@ export const ZOOM_MAX = 7;
 export const MAX_LAT = 85;
 export const MIN_LAT = -85;
 export const HAND_WIDTH = 400;
-export const TILES = [{
-  url: 'http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
-  bg: 'rgb(0,0,0)',
-}, {
-  url: null,
-  bg: 'rgb(255,255,255)',
-},
-];
+export const TILES = {
+  byId: {
+    satellite: {
+      id: 'satellite',
+      url: 'http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+      bg: 'rgb(0,0,0)',
+    },
+    white: {
+      id: 'white',
+      url: null,
+      bg: 'rgb(255,255,255)',
+    },
+  },
+  ids: [
+    'satellite', 'white',
+  ],
+};

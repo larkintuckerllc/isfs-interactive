@@ -48,8 +48,8 @@ class Frame extends Component {
     const prevVideo = prevProps.video;
     const { channel, video } = this.props;
     if (prevVideo !== null || video === null) return;
-    if (channel !== getMasterChannel()) return;
     this.rootBlockingVideoEl = document.getElementById(styles.rootBlockingVideo);
+    if (channel !== getMasterChannel()) return;
     this.interval = window.setInterval(this.handleInterval, 1000);
   }
   handleInterval() {

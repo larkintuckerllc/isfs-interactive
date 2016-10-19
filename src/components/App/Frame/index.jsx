@@ -2,17 +2,56 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { getChannel } from '../../../ducks/channel';
 import * as fromVideo from '../../../ducks/video';
+import * as fromVideoCurrentTime from '../../../ducks/videoCurrentTime';
 import { grid } from '../../../util/grid';
-import { getMatrix, getDimensions, valid } from '../../../util/mode';
+import { getMatrix, getDimensions, getMasterChannel, valid } from '../../../util/mode';
 import styles from './index.scss';
 
 class Frame extends Component {
+  constructor() {
+    super();
+    this.handleInterval = this.handleInterval.bind(this);
+  }
   componentWillMount() {
     const { channel } = this.props;
     if (!valid(channel)) return;
     const frameEl = document.getElementById('frame');
     const frameContentEl = document.getElementById('frame__content');
     grid(channel, frameEl, frameContentEl, getMatrix(), getDimensions());
+  }
+  componentWillReceiveProps({ videoCurrentTime }) {
+    const { video, channel } = this.props;
+    if (video === null) return;
+    // TODO: REVERSE
+    if (channel !== getMasterChannel()) return;
+    // TODO: THINK ABOUT CATCHING UP
+    window.console.log(videoCurrentTime);
+    window.console.log(this.rootBlockingVideoEl.currentTime);
+  }
+  shouldComponentUpdate(nextProps) {
+    const { channel, video } = this.props;
+    const nextChannel = nextProps.video;
+    const nextVideo = nextProps.video;
+    return (channel !== nextChannel || video !== nextVideo);
+  }
+  componentWillUpdate(nextProps) {
+    const { video } = this.props;
+    const nextVideo = nextProps.video;
+    if (video === null || nextVideo !== null) return;
+    window.clearInterval(this.interval);
+    this.rootBlockingVideoEl = null;
+  }
+  componentDidUpdate(prevProps) {
+    const prevVideo = prevProps.video;
+    const { channel, video } = this.props;
+    if (prevVideo !== null || video === null) return;
+    if (channel !== getMasterChannel()) return;
+    this.rootBlockingVideoEl = document.getElementById(styles.rootBlockingVideo);
+    this.interval = window.setInterval(this.handleInterval, 1000);
+  }
+  handleInterval() {
+    const { setVideoCurrentTime } = this.props;
+    setVideoCurrentTime(this.rootBlockingVideoEl.currentTime);
   }
   render() {
     const { channel, children, removeVideo, video } = this.props;
@@ -42,13 +81,17 @@ Frame.propTypes = {
   channel: PropTypes.number.isRequired,
   children: PropTypes.node,
   removeVideo: PropTypes.func.isRequired,
+  setVideoCurrentTime: PropTypes.func.isRequired,
   video: PropTypes.string,
+  videoCurrentTime: PropTypes.number.isRequired,
 };
 export default connect(
   state => ({
     channel: getChannel(state),
     video: fromVideo.getVideo(state),
+    videoCurrentTime: fromVideoCurrentTime.getVideoCurrentTime(state),
   }), {
     removeVideo: fromVideo.removeVideo,
+    setVideoCurrentTime: fromVideoCurrentTime.setVideoCurrentTime,
   }
 )(Frame);

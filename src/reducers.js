@@ -5,6 +5,7 @@ import authenticated from './ducks/authenticated';
 import channel from './ducks/channel';
 import connected from './ducks/connected';
 import video from './ducks/video';
+import videoCurrentTime from './ducks/videoCurrentTime';
 import tile from './ducks/tile';
 import mapView from './ducks/mapView';
 
@@ -15,6 +16,7 @@ export default combineReducers({
   channel,
   connected,
   video,
+  videoCurrentTime,
   mapView,
   tile,
 });

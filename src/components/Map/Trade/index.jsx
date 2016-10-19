@@ -31,7 +31,7 @@ class Trade extends Component {
   }
   handleClick() {
     const { setVideo } = this.props;
-    setVideo('/upload/larkintuckerllc-isfs-maps/ifas_research.mp4');
+    setVideo('/upload/larkintuckerllc-interactive/animation.mp4');
   }
   render() {
     return null;

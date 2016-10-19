@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { getChannel } from '../../../ducks/channel';
 import * as fromVideo from '../../../ducks/video';
 import * as fromVideoCurrentTime from '../../../ducks/videoCurrentTime';
+import { VIDEO_NETWORK_DELAY,
+  VIDEO_INITIAL_RESTART_DELAY } from '../../../config';
 import { grid } from '../../../util/grid';
 import { getMatrix, getDimensions, getMasterChannel, valid } from '../../../util/mode';
 import styles from './index.scss';
@@ -11,6 +13,7 @@ class Frame extends Component {
   constructor() {
     super();
     this.handleInterval = this.handleInterval.bind(this);
+    this.videoRestartDelay = VIDEO_INITIAL_RESTART_DELAY;
   }
   componentWillMount() {
     const { channel } = this.props;
@@ -22,11 +25,11 @@ class Frame extends Component {
   componentWillReceiveProps({ videoCurrentTime }) {
     const { video, channel } = this.props;
     if (video === null) return;
-    // TODO: REVERSE
-    if (channel !== getMasterChannel()) return;
+    if (channel === getMasterChannel()) return;
     // TODO: THINK ABOUT CATCHING UP
-    window.console.log(videoCurrentTime);
-    window.console.log(this.rootBlockingVideoEl.currentTime);
+    const drift = (this.rootBlockingVideoEl.currentTime - videoCurrentTime) +
+      VIDEO_NETWORK_DELAY;
+    window.console.log(drift);
   }
   shouldComponentUpdate(nextProps) {
     const { channel, video } = this.props;

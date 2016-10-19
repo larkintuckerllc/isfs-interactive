@@ -77,6 +77,11 @@ export const TILES = {
       url: 'http://192.168.1.2:8082/night/{z}/{x}/{y}.png',
       bg: 'rgb(0,0,0)',
     },
+    lights: {
+      id: 'lights',
+      url: 'http://192.168.1.2:8083/lights/{z}/{y}/{x}.jpeg',
+      bg: 'rgb(0,0,0)',
+    },
     white: {
       id: 'white',
       url: null,
@@ -87,18 +92,13 @@ export const TILES = {
       url: null,
       bg: 'rgb(0,0,0)',
     },
-    lights: {
-      id: 'lights',
-      url: 'http://map1.vis.earthdata.nasa.gov/wmts-webmerc/VIIRS_CityLights_2012/default//GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpg',
-      bg: 'rgb(0,0,0)',
-    },
   },
   ids: [
     'satellite',
     'street',
     'night',
+    'lights',
     'white',
     'black',
-    'lights',
   ],
 };

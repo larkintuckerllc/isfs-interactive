@@ -6,12 +6,14 @@ import thr0wMiddleware from './util/thr0wMiddleware';
 import reducers from './reducers';
 import { SET_MAP_VIEW } from './ducks/mapView';
 import { SET_TILE } from './ducks/tile';
+import { SET_VIDEO } from './ducks/video';
+import { SET_VIDEO_CURRENT_TIME } from './ducks/videoCurrentTime';
 import { getChannels } from './util/mode';
 
 export default () => {
   const middlewares = [
     thunk,
-    thr0wMiddleware([SET_MAP_VIEW, SET_TILE], getChannels()),
+    thr0wMiddleware([SET_MAP_VIEW, SET_TILE, SET_VIDEO, SET_VIDEO_CURRENT_TIME], getChannels()),
     routerMiddleware(hashHistory),
   ];
   return createStore(

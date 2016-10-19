@@ -31,7 +31,7 @@ class Trade extends Component {
   }
   handleClick() {
     const { setVideo } = this.props;
-    setVideo('http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4');
+    setVideo('/upload/larkintuckerllc-isfs-maps/ifas_research.mp4');
   }
   render() {
     return null;

@@ -2,10 +2,10 @@ export const ACTION_PREFIX = 'app/';
 const BASE = `${window.location.protocol}//${window.location.hostname}`;
 export const BASE_URL_HTTP = `${BASE}:3000`;
 export const BASE_URL_SOCKET = `${BASE}:3001`;
-export const VIDEO_MAX_DRIFT = 0.03;
+export const VIDEO_MAX_DRIFT = 0.01;
 export const VIDEO_NETWORK_DELAY = 0.015;
 export const VIDEO_INITIAL_RESTART_DELAY = 0.1;
-export const VIDEO_RESTART_DELAY_SHIFT = 0.01;
+export const VIDEO_RESTART_DELAY_SHIFT = 0.001;
 export const MODES = {
   single6: {
     masterChannel: 6,

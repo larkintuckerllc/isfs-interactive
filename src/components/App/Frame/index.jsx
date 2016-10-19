@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { getChannel } from '../../../ducks/channel';
 import * as fromVideo from '../../../ducks/video';
 import * as fromVideoCurrentTime from '../../../ducks/videoCurrentTime';
-import { VIDEO_NETWORK_DELAY, VIDEO_MAX_DRIFT,
+import { VIDEO_NETWORK_DELAY, VIDEO_MAX_DRIFT, VIDEO_RESTART_DELAY_SHIFT,
   VIDEO_INITIAL_RESTART_DELAY } from '../../../config';
 import { grid } from '../../../util/grid';
 import { getMatrix, getDimensions, getMasterChannel, valid } from '../../../util/mode';
@@ -31,7 +31,9 @@ class Frame extends Component {
     window.console.log(drift);
     if (Math.abs(drift) > VIDEO_MAX_DRIFT) {
       window.console.log('RESET');
-      // TODO RECALC DELAY
+      this.videoRestartDelay = drift > 0 ? this.videoRestartDelay - VIDEO_RESTART_DELAY_SHIFT :
+        this.videoRestartDelay + VIDEO_RESTART_DELAY_SHIFT;
+      window.console.log(this.videoRestartDelay);
       this.rootBlockingVideoEl.currentTime = videoCurrentTime + this.videoRestartDelay;
     }
   }

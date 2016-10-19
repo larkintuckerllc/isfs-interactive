@@ -8,6 +8,7 @@ export const VIDEO_INITIAL_RESTART_DELAY = 0.1;
 export const VIDEO_RESTART_DELAY_SHIFT = 0.001;
 export const MODES = {
   single6: {
+    zoomMin: 3,
     masterChannel: 6,
     channels: [6],
     matrix: [[6]],
@@ -22,6 +23,7 @@ export const MODES = {
     leftBottom: 0,
   },
   full: {
+    zoomMin: 4,
     masterChannel: 6,
     channels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
     matrix: [
@@ -58,9 +60,7 @@ export const CENTER = {
   lat: 0,
   lng: 0,
 };
-export const ZOOM = 5;
-export const ZOOM_MIN = 5;
-export const ZOOM_MAX = 7;
+export const ZOOM_MAX = 19;
 export const MAX_LAT = 85;
 export const MIN_LAT = -85;
 export const HAND_WIDTH = 400;
@@ -100,8 +100,8 @@ export const TILES = {
   ids: [
     'satellite',
     'street',
-    'night',
     'lights',
+    'night',
     'white',
     'black',
   ],

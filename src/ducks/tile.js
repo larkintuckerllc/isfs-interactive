@@ -10,7 +10,7 @@ const validTile = value =>
   !(value === undefined || typeof value !== 'object');
 // SCHEMA
 // REDUCERS
-export default (state = TILES.byId.lights, action) => {
+export default (state = TILES.byId.satellite, action) => {
   switch (action.type) {
     case SET_TILE:
       return action.value;

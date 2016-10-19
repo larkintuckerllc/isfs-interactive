@@ -1,4 +1,5 @@
-import { ACTION_PREFIX, CENTER, ZOOM } from '../config';
+import { ACTION_PREFIX, CENTER } from '../config';
+import { getZoomMin } from '../util/mode';
 
 // API
 // REDUCER MOUNT POINT
@@ -12,7 +13,7 @@ const validMapView = value =>
 // REDUCERS
 export default (state = {
   center: CENTER,
-  zoom: ZOOM,
+  zoom: getZoomMin(),
 }, action) => {
   switch (action.type) {
     case SET_MAP_VIEW:

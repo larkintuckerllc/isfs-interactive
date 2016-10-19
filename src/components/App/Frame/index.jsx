@@ -28,12 +28,9 @@ class Frame extends Component {
     if (channel === getMasterChannel()) return;
     const drift = (this.rootBlockingVideoEl.currentTime - videoCurrentTime) +
       VIDEO_NETWORK_DELAY;
-    window.console.log(drift);
     if (Math.abs(drift) > VIDEO_MAX_DRIFT) {
-      window.console.log('RESET');
       this.videoRestartDelay = drift > 0 ? this.videoRestartDelay - VIDEO_RESTART_DELAY_SHIFT :
         this.videoRestartDelay + VIDEO_RESTART_DELAY_SHIFT;
-      window.console.log(this.videoRestartDelay);
       this.rootBlockingVideoEl.currentTime = videoCurrentTime + this.videoRestartDelay;
     }
   }

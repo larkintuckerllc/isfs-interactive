@@ -12,15 +12,16 @@ import {
   getFrameWidth,
   getScale,
 } from '../../util/grid';
-import { getLeftBottom } from '../../util/mode';
+import { getLeftBottom, getZoomMin } from '../../util/mode';
 import { HAND_WIDTH, MAX_LAT, MIN_LAT, TILES,
-  ZOOM_MIN, ZOOM_MAX } from '../../config';
+  ZOOM_MAX } from '../../config';
 import styles from './index.scss';
 import satellite from './img/satellite.png';
 import street from './img/street.png';
 import night from './img/night.png';
 import white from './img/white.png';
 import black from './img/black.png';
+import lights from './img/lights.png';
 
 const buttonIcons = {
   satellite,
@@ -28,7 +29,7 @@ const buttonIcons = {
   night,
   white,
   black,
-  lights: night,
+  lights,
 };
 class Map extends Component {
   constructor() {
@@ -197,7 +198,7 @@ class Map extends Component {
       };
       zoom = mapView.zoom + 1;
     }
-    if (radius <= this.startRadius && mapView.zoom > ZOOM_MIN) {
+    if (radius <= this.startRadius && mapView.zoom > getZoomMin()) {
       const topLeftLatLng = this.position.containerPointToLatLng(
         L.point(0, 0)
       );

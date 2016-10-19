@@ -22,7 +22,7 @@ export const MODES = {
     leftBottom: 0,
   },
   full: {
-    masterChannel: 0,
+    masterChannel: 6,
     channels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
     matrix: [
       [0, 1, 2],

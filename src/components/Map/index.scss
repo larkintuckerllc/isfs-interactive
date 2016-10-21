@@ -1,13 +1,27 @@
-#root {
+#rootTile {
   position: absolute;
+  z-index: 1001;
+  bottom: 0px;
+  height: 100px;
+}
+#rootTiles {
+  position: absolute;
+  display: flex;
   z-index: 1000;
   bottom: 0px;
-  width: 100px;
+  height: 100px;
+  transition: transform 1s;
 }
-.rootButton {
+.rootTilesClosed {
+  transform: translateX(-600px);
+}
+.rootTilesOpen {
+  transform: translateX(0px);
+}
+.button {
   position: relative;
 }
-.rootButtonSelected {
+.buttonSelected {
   position: absolute;
   top: 0px;
   left: 0px;

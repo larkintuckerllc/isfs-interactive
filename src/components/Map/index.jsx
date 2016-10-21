@@ -4,6 +4,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import * as fromMapView from '../../ducks/mapView';
 import * as fromTile from '../../ducks/tile';
+import * as fromTilesOpen from '../../ducks/tilesOpen';
 import {
   frameXYToContentXY,
   getContentHeight,
@@ -257,21 +258,35 @@ class Map extends Component {
       .style.backgroundColor = tile.bg;
   }
   render() {
-    const { children, setTile, tile } = this.props;
+    const { children, setTile, setTilesOpen, tile, tilesOpen } = this.props;
     return (
       <div>
         <div
-          id={styles.root}
+          id={styles.rootTile}
           style={{ left: getLeftBottom() }}
+          onClick={() => setTilesOpen(!tilesOpen)}
+        >
+          <img src={buttonIcons[tile.id]} width="100" height="100" alt={tile.id} />
+        </div>
+        <div
+          id={styles.rootTiles}
+          className={[
+            tilesOpen ? '' : styles.rootTilesClosed,
+            tilesOpen ? styles.rootTilesOpen : '',
+          ].join(' ')}
+          style={{ left: getLeftBottom() + 100 }}
         >
           {TILES.ids.map(id => (
             <div
               key={id}
-              className={styles.rootButton}
-              onClick={() => setTile(TILES.byId[id])}
+              className={styles.button}
+              onClick={() => {
+                setTile(TILES.byId[id]);
+                setTilesOpen(false);
+              }}
             >
               <img src={buttonIcons[id]} width="100" height="100" alt={id} />
-              {tile.id === id && (<div className={styles.rootButtonSelected} />)}
+              {tile.id === id && (<div className={styles.buttonSelected} />)}
             </div>
           ))}
         </div>
@@ -285,15 +300,19 @@ Map.propTypes = {
   mapView: PropTypes.object.isRequired,
   setMapView: PropTypes.func.isRequired,
   setTile: PropTypes.func.isRequired,
+  setTilesOpen: PropTypes.func.isRequired,
   tile: PropTypes.object.isRequired,
+  tilesOpen: PropTypes.bool.isRequired,
 };
 export default connect(
   state => ({
     mapView: fromMapView.getMapView(state),
     tile: fromTile.getTile(state),
+    tilesOpen: fromTilesOpen.getTilesOpen(state),
   }),
   {
     setMapView: fromMapView.setMapView,
     setTile: fromTile.setTile,
+    setTilesOpen: fromTilesOpen.setTilesOpen,
   }
 )(Map);

@@ -8,6 +8,7 @@ import video from './ducks/video';
 import videoCurrentTime from './ducks/videoCurrentTime';
 import tile from './ducks/tile';
 import mapView from './ducks/mapView';
+import tilesOpen from './ducks/tilesOpen';
 
 export default combineReducers({
   form: formReducer,
@@ -19,4 +20,5 @@ export default combineReducers({
   videoCurrentTime,
   mapView,
   tile,
+  tilesOpen,
 });

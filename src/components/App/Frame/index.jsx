@@ -46,10 +46,15 @@ class Frame extends Component {
     }
   }
   shouldComponentUpdate(nextProps) {
-    const { channel, video } = this.props;
-    const nextChannel = nextProps.video;
+    const { channel, modesOpen, video } = this.props;
+    const nextChannel = nextProps.channel;
     const nextVideo = nextProps.video;
-    return (channel !== nextChannel || video !== nextVideo);
+    const nextModesOpen = nextProps.modesOpen;
+    return (
+      channel !== nextChannel ||
+      video !== nextVideo ||
+      nextModesOpen !== modesOpen
+    );
   }
   componentWillUpdate(nextProps) {
     const { video } = this.props;
@@ -69,6 +74,9 @@ class Frame extends Component {
   handleInterval() {
     const { setVideoCurrentTime } = this.props;
     setVideoCurrentTime(this.rootBlockingVideoEl.currentTime);
+  }
+  handleModeClick(id) {
+    window.console.log(id);
   }
   render() {
     const { channel, children, modesOpen, removeVideo, setModesOpen, video } = this.props;
@@ -114,6 +122,7 @@ class Frame extends Component {
             <div
               key={id}
               className={styles.button}
+              onClick={() => this.handleModeClick(id)}
             >
               <img src={buttonIcons[id]} width="100" height="100" alt={id} />
               {(SINGLE_REGEX.test(modeId) ? 'single' : modeId) === id

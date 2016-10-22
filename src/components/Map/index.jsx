@@ -2,9 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import * as fromReactRouterRedux from 'react-router-redux';
 import * as fromMapView from '../../ducks/mapView';
 import * as fromTile from '../../ducks/tile';
 import * as fromTilesOpen from '../../ducks/tilesOpen';
+import * as fromLayersOpen from '../../ducks/layersOpen';
 import {
   frameXYToContentXY,
   getContentHeight,
@@ -14,7 +16,7 @@ import {
   getScale,
 } from '../../util/grid';
 import { getLeftBottom, getZoomMin } from '../../util/mode';
-import { HAND_WIDTH, MAX_LAT, MIN_LAT, TILES,
+import { HAND_WIDTH, LAYERS, MAX_LAT, MIN_LAT, TILES,
   ZOOM_MAX } from '../../config';
 import styles from './index.scss';
 import satellite from './img/satellite.png';
@@ -23,6 +25,9 @@ import night from './img/night.png';
 import white from './img/white.png';
 import black from './img/black.png';
 import lights from './img/lights.png';
+import none from './img/none.png';
+import disease from './img/disease.png';
+import trade from './img/trade.png';
 
 const buttonIcons = {
   satellite,
@@ -31,6 +36,9 @@ const buttonIcons = {
   white,
   black,
   lights,
+  none,
+  trade,
+  disease,
 };
 class Map extends Component {
   constructor() {
@@ -258,9 +266,42 @@ class Map extends Component {
       .style.backgroundColor = tile.bg;
   }
   render() {
-    const { children, setTile, setTilesOpen, tile, tilesOpen } = this.props;
+    const { children, location: { pathname }, layersOpen, push, setLayersOpen,
+      setTile, setTilesOpen, tile, tilesOpen } = this.props;
+    let layer = pathname.substring(5);
+    layer = layer === '' ? 'none' : layer;
     return (
       <div>
+        <div
+          id={styles.rootLayer}
+          style={{ left: getLeftBottom() }}
+          onClick={() => setLayersOpen(!layersOpen)}
+        >
+          <img src={buttonIcons[layer]} width="100" height="100" alt={layer} />
+        </div>
+        <div
+          id={styles.rootLayers}
+          className={[
+            layersOpen ? '' : styles.rootLayersClosed,
+            layersOpen ? styles.rootLayersOpen : '',
+          ].join(' ')}
+          style={{ left: getLeftBottom() + 100 }}
+        >
+          {LAYERS.map(id => (
+            <div
+              key={id}
+              className={styles.button}
+              onClick={() => {
+                const path = id === 'none' ? '' : id;
+                push(`/map/${path}`);
+                setLayersOpen(false);
+              }}
+            >
+              <img src={buttonIcons[id]} width="100" height="100" alt={id} />
+              {layer === id && (<div className={styles.buttonSelected} />)}
+            </div>
+          ))}
+        </div>
         <div
           id={styles.rootTile}
           style={{ left: getLeftBottom() }}
@@ -297,7 +338,11 @@ class Map extends Component {
 }
 Map.propTypes = {
   children: PropTypes.node,
+  layersOpen: PropTypes.bool.isRequired,
+  location: PropTypes.object.isRequired,
   mapView: PropTypes.object.isRequired,
+  push: PropTypes.func.isRequired,
+  setLayersOpen: PropTypes.func.isRequired,
   setMapView: PropTypes.func.isRequired,
   setTile: PropTypes.func.isRequired,
   setTilesOpen: PropTypes.func.isRequired,
@@ -306,11 +351,14 @@ Map.propTypes = {
 };
 export default connect(
   state => ({
+    layersOpen: fromLayersOpen.getLayersOpen(state),
     mapView: fromMapView.getMapView(state),
     tile: fromTile.getTile(state),
     tilesOpen: fromTilesOpen.getTilesOpen(state),
   }),
   {
+    push: fromReactRouterRedux.push,
+    setLayersOpen: fromLayersOpen.setLayersOpen,
     setMapView: fromMapView.setMapView,
     setTile: fromTile.setTile,
     setTilesOpen: fromTilesOpen.setTilesOpen,

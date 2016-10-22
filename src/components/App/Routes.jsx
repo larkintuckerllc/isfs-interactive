@@ -4,12 +4,14 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import Frame from './Frame';
 import Map from '../Map';
 import Trade from '../Map/Trade';
+import Disease from '../Map/Disease';
 
 const Routes = (props, { store }) => (
   <Router history={syncHistoryWithStore(hashHistory, store)}>
     <Route path="/" component={Frame}>
       <Route path="map" component={Map}>
         <Route path="trade" component={Trade} />
+        <Route path="disease" component={Disease} />
       </Route>
     </Route>
   </Router>

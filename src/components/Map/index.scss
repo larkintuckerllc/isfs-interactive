@@ -18,6 +18,26 @@
 .rootTilesOpen {
   transform: translateX(0px);
 }
+#rootLayer {
+  position: absolute;
+  z-index: 1001;
+  bottom: 100px;
+  height: 100px;
+}
+#rootLayers {
+  position: absolute;
+  display: flex;
+  z-index: 1000;
+  bottom: 100px;
+  height: 100px;
+  transition: transform 1s;
+}
+.rootLayersClosed {
+  transform: translateX(-600px);
+}
+.rootLayersOpen {
+  transform: translateX(0px);
+}
 .button {
   position: relative;
 }

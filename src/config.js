@@ -64,6 +64,11 @@ export const ZOOM_MAX = 19;
 export const MAX_LAT = 85;
 export const MIN_LAT = -85;
 export const HAND_WIDTH = 400;
+export const LAYERS = [
+  'none',
+  'disease',
+  'trade',
+];
 export const TILES = {
   byId: {
     satellite: {

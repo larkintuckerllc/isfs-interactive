@@ -3,12 +3,23 @@ import { connect } from 'react-redux';
 import { getChannel } from '../../../ducks/channel';
 import * as fromVideo from '../../../ducks/video';
 import * as fromVideoCurrentTime from '../../../ducks/videoCurrentTime';
-import { VIDEO_NETWORK_DELAY, VIDEO_MAX_DRIFT, VIDEO_RESTART_DELAY_SHIFT,
+import * as fromModesOpen from '../../../ducks/modesOpen';
+import { MODES, VIDEO_NETWORK_DELAY, VIDEO_MAX_DRIFT, VIDEO_RESTART_DELAY_SHIFT,
   VIDEO_INITIAL_RESTART_DELAY } from '../../../config';
 import { grid } from '../../../util/grid';
-import { getMatrix, getDimensions, getMasterChannel, valid } from '../../../util/mode';
+import { getMatrix, getDimensions, getId,
+  getLeftBottom, getMasterChannel, valid } from '../../../util/mode';
 import styles from './index.scss';
+import single from './img/single.png';
+import quad from './img/quad.png';
+import full from './img/full.png';
 
+const buttonIcons = {
+  single,
+  quad,
+  full,
+};
+const SINGLE_REGEX = /^single/;
 class Frame extends Component {
   constructor() {
     super();
@@ -60,8 +71,9 @@ class Frame extends Component {
     setVideoCurrentTime(this.rootBlockingVideoEl.currentTime);
   }
   render() {
-    const { channel, children, removeVideo, video } = this.props;
+    const { channel, children, modesOpen, removeVideo, setModesOpen, video } = this.props;
     if (!valid(channel)) return null;
+    const modeId = getId();
     return (
       <div>
         { video !== null && (
@@ -78,6 +90,36 @@ class Frame extends Component {
             </video>
           </div>
         )}
+        <div
+          id={styles.rootMode}
+          style={{ left: getLeftBottom() }}
+          onClick={() => setModesOpen(!modesOpen)}
+        >
+          <img
+            src={buttonIcons[
+              SINGLE_REGEX.test(modeId) ? 'single' : modeId
+            ]}
+            width="100" height="100" alt="test"
+          />
+        </div>
+        <div
+          id={styles.rootModes}
+          className={[
+            modesOpen ? '' : styles.rootModesClosed,
+            modesOpen ? styles.rootModesOpen : '',
+          ].join(' ')}
+          style={{ left: getLeftBottom() + 100 }}
+        >
+          {MODES.map(id => (
+            <div
+              key={id}
+              className={styles.button}
+            >
+              <img src={buttonIcons[id]} width="100" height="100" alt={id} />
+              {(SINGLE_REGEX.test(modeId) ? 'single' : modeId) === id
+                && (<div className={styles.buttonSelected} />)} </div>
+          ))}
+        </div>
         {children}
       </div>
     );
@@ -86,7 +128,9 @@ class Frame extends Component {
 Frame.propTypes = {
   channel: PropTypes.number.isRequired,
   children: PropTypes.node,
+  modesOpen: PropTypes.bool.isRequired,
   removeVideo: PropTypes.func.isRequired,
+  setModesOpen: PropTypes.func.isRequired,
   setVideoCurrentTime: PropTypes.func.isRequired,
   video: PropTypes.string,
   videoCurrentTime: PropTypes.number.isRequired,
@@ -94,10 +138,12 @@ Frame.propTypes = {
 export default connect(
   state => ({
     channel: getChannel(state),
+    modesOpen: fromModesOpen.getModesOpen(state),
     video: fromVideo.getVideo(state),
     videoCurrentTime: fromVideoCurrentTime.getVideoCurrentTime(state),
   }), {
     removeVideo: fromVideo.removeVideo,
+    setModesOpen: fromModesOpen.setModesOpen,
     setVideoCurrentTime: fromVideoCurrentTime.setVideoCurrentTime,
   }
 )(Frame);

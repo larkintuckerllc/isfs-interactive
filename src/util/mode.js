@@ -1,4 +1,4 @@
-import { MODES } from '../config';
+import { MODE_BY_ID } from '../config';
 
 const parseQueryString = () => {
   const parsed = {};
@@ -20,8 +20,8 @@ const parseQueryString = () => {
 };
 const modeId = parseQueryString().mode;
 let mode = null;
-if (modeId !== undefined && MODES[modeId] !== undefined) {
-  mode = MODES[modeId];
+if (modeId !== undefined && MODE_BY_ID[modeId] !== undefined) {
+  mode = MODE_BY_ID[modeId];
 }
 export const valid = (channel) => (mode !== null && mode.channels.indexOf(channel) !== -1);
 export const getMasterChannel = () => (mode != null ? mode.masterChannel : 0);
@@ -30,3 +30,4 @@ export const getMatrix = () => (mode !== null ? mode.matrix : [[]]);
 export const getDimensions = () => (mode !== null ? mode.dimensions : []);
 export const getLeftBottom = () => (mode !== null ? mode.leftBottom : 0);
 export const getZoomMin = () => (mode !== null ? mode.zoomMin : 0);
+export const getId = () => (mode !== null ? modeId : null);

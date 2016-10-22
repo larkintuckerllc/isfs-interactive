@@ -10,6 +10,7 @@ import tile from './ducks/tile';
 import mapView from './ducks/mapView';
 import tilesOpen from './ducks/tilesOpen';
 import layersOpen from './ducks/layersOpen';
+import modesOpen from './ducks/modesOpen';
 
 export default combineReducers({
   form: formReducer,
@@ -23,4 +24,5 @@ export default combineReducers({
   tile,
   tilesOpen,
   layersOpen,
+  modesOpen,
 });

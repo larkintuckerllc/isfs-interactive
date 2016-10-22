@@ -1,14 +1,14 @@
 #rootTile {
   position: absolute;
   z-index: 1001;
-  bottom: 0px;
+  bottom: 100px;
   height: 100px;
 }
 #rootTiles {
   position: absolute;
   display: flex;
   z-index: 1000;
-  bottom: 0px;
+  bottom: 100px;
   height: 100px;
   transition: transform 1s;
 }
@@ -21,19 +21,19 @@
 #rootLayer {
   position: absolute;
   z-index: 1001;
-  bottom: 100px;
+  bottom: 200px;
   height: 100px;
 }
 #rootLayers {
   position: absolute;
   display: flex;
   z-index: 1000;
-  bottom: 100px;
+  bottom: 200px;
   height: 100px;
   transition: transform 1s;
 }
 .rootLayersClosed {
-  transform: translateX(-600px);
+  transform: translateX(-300px);
 }
 .rootLayersOpen {
   transform: translateX(0px);

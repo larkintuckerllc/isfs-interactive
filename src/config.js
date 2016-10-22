@@ -6,7 +6,12 @@ export const VIDEO_MAX_DRIFT = 0.02;
 export const VIDEO_NETWORK_DELAY = 0.015;
 export const VIDEO_INITIAL_RESTART_DELAY = 0.1;
 export const VIDEO_RESTART_DELAY_SHIFT = 0.001;
-export const MODES = {
+export const MODES = [
+  'single',
+  'quad',
+  'full',
+];
+export const MODE_BY_ID = {
   single6: {
     zoomMin: 3,
     masterChannel: 6,

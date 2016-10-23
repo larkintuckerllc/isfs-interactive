@@ -15,7 +15,7 @@ import {
   getFrameWidth,
   getScale,
 } from '../../util/grid';
-import { getLeftBottom, getZoomMin } from '../../util/mode';
+import { getLeftBottom, getZoomMin } from '../../util/parameters';
 import { HAND_WIDTH, LAYERS, MAX_LAT, MIN_LAT, TILES,
   ZOOM_MAX } from '../../config';
 import styles from './index.scss';

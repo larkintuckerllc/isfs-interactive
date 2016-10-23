@@ -12,11 +12,8 @@ export const MODES = [
   'full',
 ];
 export const MODE_BY_ID = {
-  single6: {
+  single: {
     zoomMin: 3,
-    masterChannel: 6,
-    channels: [6],
-    matrix: [[6]],
     dimensions: [{
       width: 1080,
       height: 1920,
@@ -28,7 +25,6 @@ export const MODE_BY_ID = {
     leftBottom: 0,
   },
   full: {
-    zoomMin: 4,
     masterChannel: 6,
     channels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
     matrix: [
@@ -36,6 +32,7 @@ export const MODE_BY_ID = {
       [3, 4, 5],
       [6, 7, 8, 9],
     ],
+    zoomMin: 4,
     dimensions: [{
       width: 1920,
       height: 1080,

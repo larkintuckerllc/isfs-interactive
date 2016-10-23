@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { thr0w } from '../../../api/thr0w';
 import { getChannel } from '../../../ducks/channel';
 import * as fromVideo from '../../../ducks/video';
 import * as fromVideoCurrentTime from '../../../ducks/videoCurrentTime';
@@ -7,8 +8,8 @@ import * as fromModesOpen from '../../../ducks/modesOpen';
 import { MODES, VIDEO_NETWORK_DELAY, VIDEO_MAX_DRIFT, VIDEO_RESTART_DELAY_SHIFT,
   VIDEO_INITIAL_RESTART_DELAY } from '../../../config';
 import { grid } from '../../../util/grid';
-import { getMatrix, getDimensions, getId,
-  getLeftBottom, getMasterChannel, valid } from '../../../util/mode';
+import { getMatrix, getDimensions, getModeId,
+  getLeftBottom, getMasterChannel } from '../../../util/parameters';
 import styles from './index.scss';
 import single from './img/single.png';
 import quad from './img/quad.png';
@@ -19,7 +20,6 @@ const buttonIcons = {
   quad,
   full,
 };
-const SINGLE_REGEX = /^single/;
 class Frame extends Component {
   constructor() {
     super();
@@ -28,7 +28,6 @@ class Frame extends Component {
   }
   componentWillMount() {
     const { channel } = this.props;
-    if (!valid(channel)) return;
     const frameEl = document.getElementById('frame');
     const frameContentEl = document.getElementById('frame__content');
     grid(channel, frameEl, frameContentEl, getMatrix(), getDimensions());
@@ -76,12 +75,22 @@ class Frame extends Component {
     setVideoCurrentTime(this.rootBlockingVideoEl.currentTime);
   }
   handleModeClick(id) {
-    window.console.log(id);
+    switch (id) {
+      case 'single':
+        window.console.log('SINGLE');
+        break;
+      case 'quad':
+        window.console.log('QUAD');
+        break;
+      case 'full':
+        window.console.log('FULL');
+        break;
+      default:
+    }
   }
   render() {
-    const { channel, children, modesOpen, removeVideo, setModesOpen, video } = this.props;
-    if (!valid(channel)) return null;
-    const modeId = getId();
+    const { children, modesOpen, removeVideo, setModesOpen, video } = this.props;
+    const modeId = getModeId();
     return (
       <div>
         { video !== null && (
@@ -104,9 +113,7 @@ class Frame extends Component {
           onClick={() => setModesOpen(!modesOpen)}
         >
           <img
-            src={buttonIcons[
-              SINGLE_REGEX.test(modeId) ? 'single' : modeId
-            ]}
+            src={buttonIcons[modeId]}
             width="100" height="100" alt="test"
           />
         </div>
@@ -125,7 +132,7 @@ class Frame extends Component {
               onClick={() => this.handleModeClick(id)}
             >
               <img src={buttonIcons[id]} width="100" height="100" alt={id} />
-              {(SINGLE_REGEX.test(modeId) ? 'single' : modeId) === id
+              {modeId === id
                 && (<div className={styles.buttonSelected} />)} </div>
           ))}
         </div>

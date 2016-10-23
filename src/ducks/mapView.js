@@ -1,5 +1,5 @@
 import { ACTION_PREFIX, CENTER } from '../config';
-import { getZoomMin } from '../util/mode';
+import { getZoomMin } from '../util/parameters';
 
 // API
 // REDUCER MOUNT POINT

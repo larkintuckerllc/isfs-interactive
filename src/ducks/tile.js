@@ -1,4 +1,5 @@
 import { ACTION_PREFIX, TILES } from '../config';
+import * as fromParameters from '../util/parameters';
 
 // API
 // REDUCER MOUNT POINT
@@ -10,7 +11,7 @@ const validTile = value =>
   !(value === undefined || typeof value !== 'object');
 // SCHEMA
 // REDUCERS
-export default (state = TILES.byId.black, action) => {
+export default (state = TILES.byId[fromParameters.getTile()], action) => {
   switch (action.type) {
     case SET_TILE:
       return action.value;

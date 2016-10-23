@@ -8,7 +8,7 @@ import { SET_MAP_VIEW } from './ducks/mapView';
 import { SET_TILE } from './ducks/tile';
 import { SET_VIDEO } from './ducks/video';
 import { SET_VIDEO_CURRENT_TIME } from './ducks/videoCurrentTime';
-import { getChannels } from './util/mode';
+import { getChannels } from './util/parameters';
 
 export default () => {
   const middlewares = [

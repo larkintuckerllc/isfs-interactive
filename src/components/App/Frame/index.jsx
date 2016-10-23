@@ -5,11 +5,12 @@ import { getChannel } from '../../../ducks/channel';
 import * as fromVideo from '../../../ducks/video';
 import * as fromVideoCurrentTime from '../../../ducks/videoCurrentTime';
 import * as fromModesOpen from '../../../ducks/modesOpen';
-import { MODES, VIDEO_NETWORK_DELAY, VIDEO_MAX_DRIFT, VIDEO_RESTART_DELAY_SHIFT,
+import { BASE_URL_APP, MODES, VIDEO_NETWORK_DELAY, VIDEO_MAX_DRIFT, VIDEO_RESTART_DELAY_SHIFT,
   VIDEO_INITIAL_RESTART_DELAY } from '../../../config';
 import { grid } from '../../../util/grid';
 import { getMatrix, getDimensions, getModeId,
   getLeftBottom, getMasterChannel } from '../../../util/parameters';
+import { getTile } from '../../../ducks/tile';
 import styles from './index.scss';
 import single from './img/single.png';
 import quad from './img/quad.png';
@@ -24,6 +25,7 @@ class Frame extends Component {
   constructor() {
     super();
     this.handleInterval = this.handleInterval.bind(this);
+    this.handleModeClick = this.handleModeClick.bind(this);
     this.videoRestartDelay = VIDEO_INITIAL_RESTART_DELAY;
   }
   componentWillMount() {
@@ -75,15 +77,24 @@ class Frame extends Component {
     setVideoCurrentTime(this.rootBlockingVideoEl.currentTime);
   }
   handleModeClick(id) {
+    const { location: { pathname }, tile } = this.props;
     switch (id) {
       case 'single':
-        window.console.log('SINGLE');
+        // TODO: FILL OUT WITH REST
+        thr0w([16], {
+          action: 'update',
+          url: `${BASE_URL_APP}?mode=single&tile=${tile.id}#${pathname}`,
+        });
         break;
+      // TODO: COMPLETE
       case 'quad':
-        window.console.log('QUAD');
         break;
       case 'full':
-        window.console.log('FULL');
+        // TODO: FILL OUT WITH REST
+        thr0w([16], {
+          action: 'update',
+          url: `${BASE_URL_APP}?mode=full&tile=${tile.id}#${pathname}`,
+        });
         break;
       default:
     }
@@ -144,10 +155,12 @@ class Frame extends Component {
 Frame.propTypes = {
   channel: PropTypes.number.isRequired,
   children: PropTypes.node,
+  location: PropTypes.object.isRequired,
   modesOpen: PropTypes.bool.isRequired,
   removeVideo: PropTypes.func.isRequired,
   setModesOpen: PropTypes.func.isRequired,
   setVideoCurrentTime: PropTypes.func.isRequired,
+  tile: PropTypes.object.isRequired,
   video: PropTypes.string,
   videoCurrentTime: PropTypes.number.isRequired,
 };
@@ -155,6 +168,7 @@ export default connect(
   state => ({
     channel: getChannel(state),
     modesOpen: fromModesOpen.getModesOpen(state),
+    tile: getTile(state),
     video: fromVideo.getVideo(state),
     videoCurrentTime: fromVideoCurrentTime.getVideoCurrentTime(state),
   }), {

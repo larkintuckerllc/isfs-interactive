@@ -80,6 +80,7 @@ class Frame extends Component {
     const { location: { pathname }, tile } = this.props;
     switch (id) {
       case 'single':
+        // TODO: NEED TO DEAL WITH CENTER AND ZOOM
         // TODO: FILL OUT WITH REST
         thr0w([16], {
           action: 'update',

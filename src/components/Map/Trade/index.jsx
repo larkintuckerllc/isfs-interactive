@@ -31,7 +31,8 @@ class Trade extends Component {
   }
   handleClick() {
     const { setVideo } = this.props;
-    setVideo('/upload/larkintuckerllc-isfs-interactive/animation.mp4');
+    // setVideo('/upload/larkintuckerllc-isfs-interactive/animation.mp4');
+    setVideo('http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4');
   }
   render() {
     return null;

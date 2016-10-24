@@ -105,10 +105,6 @@ export const MODE_BY_ID = {
     leftBottom: 0,
   },
 };
-export const CENTER = {
-  lat: 0,
-  lng: 0,
-};
 export const ZOOM_MAX = 19;
 export const MAX_LAT = 85;
 export const MIN_LAT = -85;

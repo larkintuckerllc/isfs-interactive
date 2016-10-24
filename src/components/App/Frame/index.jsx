@@ -8,6 +8,7 @@ import { grid } from '../../../util/grid';
 import { getMatrix, getDimensions, getModeId,
   getLeftBottom, getMenu } from '../../../util/parameters';
 import { getTile } from '../../../ducks/tile';
+import { getMapView } from '../../../ducks/mapView';
 import styles from './index.scss';
 import single from './img/single.png';
 import quad from './img/quad.png';
@@ -31,7 +32,8 @@ class Frame extends Component {
     grid(channel, frameEl, frameContentEl, getMatrix(), getDimensions());
   }
   handleModeClick(id) {
-    const { location: { pathname }, tile } = this.props;
+    const { location: { pathname }, tile, mapView } = this.props;
+    window.console.log(mapView);
     switch (id) {
       case 'single':
         thr0w([10, 11, 12, 13, 14, 15], {
@@ -40,7 +42,15 @@ class Frame extends Component {
         });
         thr0w([16, 17, 18, 19], {
           action: 'update',
-          url: `${BASE_URL_APP}?mode=single&tile=${tile.id}#${pathname}`,
+          url: [
+            BASE_URL_APP,
+            '?mode=quad',
+            `&lat=${mapView.center.lat}`,
+            `&lng=${mapView.center.lng}`,
+            `&zoom=${mapView.zoom}`,
+            `&tile=${tile.id}`,
+            `#${pathname}`,
+          ].join(''),
         });
         break;
       case 'quad':
@@ -50,13 +60,29 @@ class Frame extends Component {
         });
         thr0w([16, 17, 18, 19], {
           action: 'update',
-          url: `${BASE_URL_APP}?mode=quad&tile=${tile.id}#${pathname}`,
+          url: [
+            BASE_URL_APP,
+            '?mode=quad',
+            `&lat=${mapView.center.lat}`,
+            `&lng=${mapView.center.lng}`,
+            `&zoom=${mapView.zoom}`,
+            `&tile=${tile.id}`,
+            `#${pathname}`,
+          ].join(''),
         });
         break;
       case 'full':
         thr0w([10, 11, 12, 13, 14, 15, 16, 17, 18, 19], {
           action: 'update',
-          url: `${BASE_URL_APP}?mode=full&tile=${tile.id}#${pathname}`,
+          url: [
+            BASE_URL_APP,
+            '?mode=quad',
+            `&lat=${mapView.center.lat}`,
+            `&lng=${mapView.center.lng}`,
+            `&zoom=${mapView.zoom}`,
+            `&tile=${tile.id}`,
+            `#${pathname}`,
+          ].join(''),
         });
         break;
       default:
@@ -110,6 +136,7 @@ Frame.propTypes = {
   channel: PropTypes.number.isRequired,
   children: PropTypes.node,
   location: PropTypes.object.isRequired,
+  mapView: PropTypes.object.isRequired,
   modesOpen: PropTypes.bool.isRequired,
   setModesOpen: PropTypes.func.isRequired,
   tile: PropTypes.object.isRequired,
@@ -119,6 +146,7 @@ export default connect(
     channel: getChannel(state),
     modesOpen: fromModesOpen.getModesOpen(state),
     tile: getTile(state),
+    mapView: getMapView(state),
   }), {
     setModesOpen: fromModesOpen.setModesOpen,
   }

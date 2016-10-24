@@ -12,11 +12,23 @@ const COLORS = [
 ];
 // eslint-disable-next-line
 class Drawing extends Component {
+  componentWillUpdate(nextProps) {
+    const { drawingOpen } = this.props;
+    const nextDrawingOpen = nextProps.drawingOpen;
+    if (!(drawingOpen && !nextDrawingOpen)) return;
+    window.console.log('REMOVE LISTENERS');
+  }
+  componentDidUpdate(prevProps) {
+    const { drawingOpen } = this.props;
+    const prevDrawingOpen = prevProps.drawingOpen;
+    if (!(!prevDrawingOpen && drawingOpen)) return;
+    window.console.log('ATTACH LISTENERS');
+  }
   render() {
     const { drawingColor, drawingOpen, setDrawingColor, setDrawingOpen } = this.props;
     return (
       <div>
-        {drawingOpen && <div id={styles.rootDrawing} />}
+        {drawingOpen && <canvas id={styles.rootCanvas} />}
         { getMenu() && (
           <div>
             <div

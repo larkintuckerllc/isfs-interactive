@@ -34,8 +34,11 @@ class Frame extends Component {
     switch (id) {
       case 'single':
         // TODO: NEED TO DEAL WITH CENTER AND ZOOM
-        // TODO: FILL OUT WITH REST
-        thr0w([16], {
+        thr0w([10, 11, 12, 13, 14, 15], {
+          action: 'update',
+          url: `${BASE_URL_APP}?mode=single`,
+        });
+        thr0w([16, 17, 18, 19], {
           action: 'update',
           url: `${BASE_URL_APP}?mode=single&tile=${tile.id}#${pathname}`,
         });
@@ -44,8 +47,7 @@ class Frame extends Component {
       case 'quad':
         break;
       case 'full':
-        // TODO: FILL OUT WITH REST
-        thr0w([16], {
+        thr0w([10, 11, 12, 13, 14, 15, 16, 17, 18, 19], {
           action: 'update',
           url: `${BASE_URL_APP}?mode=full&tile=${tile.id}#${pathname}`,
         });

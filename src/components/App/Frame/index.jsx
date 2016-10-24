@@ -33,7 +33,6 @@ class Frame extends Component {
   }
   handleModeClick(id) {
     const { location: { pathname }, tile, mapView } = this.props;
-    window.console.log(mapView);
     switch (id) {
       case 'single':
         thr0w([10, 11, 12, 13, 14, 15], {
@@ -44,7 +43,7 @@ class Frame extends Component {
           action: 'update',
           url: [
             BASE_URL_APP,
-            '?mode=quad',
+            '?mode=single',
             `&lat=${mapView.center.lat}`,
             `&lng=${mapView.center.lng}`,
             `&zoom=${mapView.zoom}`,
@@ -76,7 +75,7 @@ class Frame extends Component {
           action: 'update',
           url: [
             BASE_URL_APP,
-            '?mode=quad',
+            '?mode=full',
             `&lat=${mapView.center.lat}`,
             `&lng=${mapView.center.lng}`,
             `&zoom=${mapView.zoom}`,

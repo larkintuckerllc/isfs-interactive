@@ -4,7 +4,7 @@ import { ACTION_PREFIX } from '../config';
 // REDUCER MOUNT POINT
 const reducerMountPoint = 'drawingOpen';
 // ACTIONS
-export const SET_DRAWINGS_OPEN = `${ACTION_PREFIX}SET_DRAWINGS_OPEN`;
+export const SET_DRAWING_OPEN = `${ACTION_PREFIX}SET_DRAWING_OPEN`;
 // ACTION CREATOR VALIDATORS
 const validDrawingOpen = value =>
   !(value === undefined || typeof value !== 'boolean');
@@ -12,7 +12,7 @@ const validDrawingOpen = value =>
 // REDUCERS
 export default (state = false, action) => {
   switch (action.type) {
-    case SET_DRAWINGS_OPEN:
+    case SET_DRAWING_OPEN:
       return action.value;
     default:
       return state;
@@ -24,7 +24,7 @@ export const getDrawingOpen = (state) => state[reducerMountPoint];
 export const setDrawingOpen = (value) => {
   if (!validDrawingOpen(value)) throw new Error();
   return ({
-    type: SET_DRAWINGS_OPEN,
+    type: SET_DRAWING_OPEN,
     value,
   });
 };

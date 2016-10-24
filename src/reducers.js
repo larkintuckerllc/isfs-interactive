@@ -12,6 +12,7 @@ import tilesOpen from './ducks/tilesOpen';
 import layersOpen from './ducks/layersOpen';
 import modesOpen from './ducks/modesOpen';
 import drawingOpen from './ducks/drawingOpen';
+import drawingColor from './ducks/drawingColor';
 
 export default combineReducers({
   form: formReducer,
@@ -27,4 +28,5 @@ export default combineReducers({
   layersOpen,
   modesOpen,
   drawingOpen,
+  drawingColor,
 });

@@ -16,6 +16,7 @@ class Drawing extends Component {
     const { drawingColor, drawingOpen, setDrawingColor, setDrawingOpen } = this.props;
     return (
       <div>
+        {drawingOpen && <div id={styles.rootDrawing} />}
         { getMenu() && (
           <div>
             <div

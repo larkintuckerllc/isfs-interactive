@@ -30,4 +30,5 @@ export const getDimensions = () => mode.dimensions;
 export const getLeftBottom = () => mode.leftBottom;
 export const getZoomMin = () => mode.zoomMin;
 export const getModeId = () => modeId;
+export const getMenu = () => mode.menu;
 export const getTile = () => (tile !== undefined ? tile : 'black');

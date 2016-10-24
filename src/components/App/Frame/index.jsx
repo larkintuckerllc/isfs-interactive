@@ -5,7 +5,8 @@ import { getChannel } from '../../../ducks/channel';
 import * as fromModesOpen from '../../../ducks/modesOpen';
 import { BASE_URL_APP, MODES } from '../../../config';
 import { grid } from '../../../util/grid';
-import { getMatrix, getDimensions, getModeId, getLeftBottom } from '../../../util/parameters';
+import { getMatrix, getDimensions, getModeId,
+  getLeftBottom, getMenu } from '../../../util/parameters';
 import { getTile } from '../../../ducks/tile';
 import styles from './index.scss';
 import single from './img/single.png';
@@ -33,18 +34,24 @@ class Frame extends Component {
     const { location: { pathname }, tile } = this.props;
     switch (id) {
       case 'single':
-        // TODO: NEED TO DEAL WITH CENTER AND ZOOM
         thr0w([10, 11, 12, 13, 14, 15], {
           action: 'update',
-          url: `${BASE_URL_APP}?mode=single`,
+          url: `${BASE_URL_APP}?mode=top#/image`,
         });
         thr0w([16, 17, 18, 19], {
           action: 'update',
           url: `${BASE_URL_APP}?mode=single&tile=${tile.id}#${pathname}`,
         });
         break;
-      // TODO: COMPLETE
       case 'quad':
+        thr0w([10, 11, 12, 13, 14, 15], {
+          action: 'update',
+          url: `${BASE_URL_APP}?mode=top#/image`,
+        });
+        thr0w([16, 17, 18, 19], {
+          action: 'update',
+          url: `${BASE_URL_APP}?mode=quad&tile=${tile.id}#${pathname}`,
+        });
         break;
       case 'full':
         thr0w([10, 11, 12, 13, 14, 15, 16, 17, 18, 19], {
@@ -61,35 +68,39 @@ class Frame extends Component {
     return (
       <div>
         <Video />
-        <div
-          id={styles.rootMode}
-          style={{ left: getLeftBottom() }}
-          onClick={() => setModesOpen(!modesOpen)}
-        >
-          <img
-            src={buttonIcons[modeId]}
-            width="100" height="100" alt="test"
-          />
-        </div>
-        <div
-          id={styles.rootModes}
-          className={[
-            modesOpen ? '' : styles.rootModesClosed,
-            modesOpen ? styles.rootModesOpen : '',
-          ].join(' ')}
-          style={{ left: getLeftBottom() + 100 }}
-        >
-          {MODES.map(id => (
+        { getMenu() && (
+          <div>
             <div
-              key={id}
-              className={styles.button}
-              onClick={() => this.handleModeClick(id)}
+              id={styles.rootMode}
+              style={{ left: getLeftBottom() }}
+              onClick={() => setModesOpen(!modesOpen)}
             >
-              <img src={buttonIcons[id]} width="100" height="100" alt={id} />
-              {modeId === id
-                && (<div className={styles.buttonSelected} />)} </div>
-          ))}
-        </div>
+              <img
+                src={buttonIcons[modeId]}
+                width="100" height="100" alt="test"
+              />
+            </div>
+            <div
+              id={styles.rootModes}
+              className={[
+                modesOpen ? '' : styles.rootModesClosed,
+                modesOpen ? styles.rootModesOpen : '',
+              ].join(' ')}
+              style={{ left: getLeftBottom() + 100 }}
+            >
+              {MODES.map(id => (
+                <div
+                  key={id}
+                  className={styles.button}
+                  onClick={() => this.handleModeClick(id)}
+                >
+                  <img src={buttonIcons[id]} width="100" height="100" alt={id} />
+                  {modeId === id
+                    && (<div className={styles.buttonSelected} />)} </div>
+              ))}
+            </div>
+          </div>
+        )}
         {children}
       </div>
     );

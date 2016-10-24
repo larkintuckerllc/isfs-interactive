@@ -14,6 +14,7 @@ export const MODES = [
 ];
 export const MODE_BY_ID = {
   single: {
+    menu: true,
     zoomMin: 3,
     dimensions: [{
       width: 1080,
@@ -25,7 +26,26 @@ export const MODE_BY_ID = {
     }],
     leftBottom: 0,
   },
+  quad: {
+    menu: true,
+    masterChannel: 6,
+    channels: [6, 7, 8, 9],
+    matrix: [
+      [6, 7, 8, 9],
+    ],
+    zoomMin: 4,
+    dimensions: [{
+      width: 1080,
+      height: 1920,
+      scale: 1,
+      padding: 0,
+      spacing: 112,
+      margin: 0,
+    }],
+    leftBottom: 0,
+  },
   full: {
+    menu: true,
     masterChannel: 6,
     channels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
     matrix: [
@@ -57,6 +77,32 @@ export const MODE_BY_ID = {
       margin: 0,
     }],
     leftBottom: 111,
+  },
+  top: {
+    menu: false,
+    masterChannel: 0,
+    channels: [0, 1, 2, 3, 4, 5],
+    matrix: [
+      [0, 1, 2],
+      [3, 4, 5],
+    ],
+    zoomMin: 4,
+    dimensions: [{
+      width: 1920,
+      height: 1080,
+      scale: 0.84,
+      padding: 0,
+      spacing: 28,
+      margin: 20,
+    }, {
+      width: 1920,
+      height: 1080,
+      scale: 0.84,
+      padding: 0,
+      spacing: 28,
+      margin: 60,
+    }],
+    leftBottom: 0,
   },
 };
 export const CENTER = {

@@ -1,14 +1,14 @@
 #rootTile {
   position: absolute;
   z-index: 1001;
-  bottom: 100px;
+  bottom: 200px;
   height: 100px;
 }
 #rootTiles {
   position: absolute;
   display: flex;
   z-index: 1000;
-  bottom: 100px;
+  bottom: 200px;
   height: 100px;
   transition: transform 1s;
 }
@@ -21,14 +21,14 @@
 #rootLayer {
   position: absolute;
   z-index: 1001;
-  bottom: 200px;
+  bottom: 300px;
   height: 100px;
 }
 #rootLayers {
   position: absolute;
   display: flex;
   z-index: 1000;
-  bottom: 200px;
+  bottom: 300px;
   height: 100px;
   transition: transform 1s;
 }

@@ -8,11 +8,13 @@ import { grid } from '../../../util/grid';
 import { getMatrix, getDimensions, getModeId,
   getLeftBottom, getMenu } from '../../../util/parameters';
 import { getTile } from '../../../ducks/tile';
+import { getDrawingOpen } from '../../../ducks/drawingOpen';
 import { getMapView } from '../../../ducks/mapView';
 import styles from './index.scss';
 import single from './img/single.png';
 import quad from './img/quad.png';
 import full from './img/full.png';
+import Drawing from './Drawing';
 import Video from './Video';
 
 const buttonIcons = {
@@ -88,12 +90,13 @@ class Frame extends Component {
     }
   }
   render() {
-    const { children, modesOpen, setModesOpen } = this.props;
+    const { children, drawingOpen, modesOpen, setModesOpen } = this.props;
     const modeId = getModeId();
     return (
       <div>
+        <Drawing />
         <Video />
-        { getMenu() && (
+        { getMenu() && !drawingOpen && (
           <div>
             <div
               id={styles.rootMode}
@@ -102,7 +105,7 @@ class Frame extends Component {
             >
               <img
                 src={buttonIcons[modeId]}
-                width="100" height="100" alt="test"
+                width="100" height="100" alt={modeId}
               />
             </div>
             <div
@@ -134,6 +137,7 @@ class Frame extends Component {
 Frame.propTypes = {
   channel: PropTypes.number.isRequired,
   children: PropTypes.node,
+  drawingOpen: PropTypes.bool.isRequired,
   location: PropTypes.object.isRequired,
   mapView: PropTypes.object.isRequired,
   modesOpen: PropTypes.bool.isRequired,
@@ -143,6 +147,7 @@ Frame.propTypes = {
 export default connect(
   state => ({
     channel: getChannel(state),
+    drawingOpen: getDrawingOpen(state),
     modesOpen: fromModesOpen.getModesOpen(state),
     tile: getTile(state),
     mapView: getMapView(state),

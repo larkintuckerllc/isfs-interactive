@@ -17,14 +17,14 @@
 #rootMode {
   position: absolute;
   z-index: 1001;
-  bottom: 0px;
+  bottom: 100px;
   height: 100px;
 }
 #rootModes {
   position: absolute;
   display: flex;
   z-index: 1000;
-  bottom: 0px;
+  bottom: 100px;
   height: 100px;
   transition: transform 1s;
 }

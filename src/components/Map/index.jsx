@@ -4,6 +4,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import * as fromReactRouterRedux from 'react-router-redux';
 import * as fromMapView from '../../ducks/mapView';
+import { getDrawingOpen } from '../../ducks/drawingOpen';
 import * as fromTile from '../../ducks/tile';
 import * as fromTilesOpen from '../../ducks/tilesOpen';
 import * as fromLayersOpen from '../../ducks/layersOpen';
@@ -15,7 +16,7 @@ import {
   getFrameWidth,
   getScale,
 } from '../../util/grid';
-import { getLeftBottom, getZoomMin } from '../../util/parameters';
+import { getLeftBottom, getMenu, getZoomMin } from '../../util/parameters';
 import { HAND_WIDTH, LAYERS, MAX_LAT, MIN_LAT, TILES,
   ZOOM_MAX } from '../../config';
 import styles from './index.scss';
@@ -266,71 +267,75 @@ class Map extends Component {
       .style.backgroundColor = tile.bg;
   }
   render() {
-    const { children, location: { pathname }, layersOpen, push, setLayersOpen,
+    const { children, drawingOpen, location: { pathname }, layersOpen, push, setLayersOpen,
       setTile, setTilesOpen, tile, tilesOpen } = this.props;
     let layer = pathname.substring(5);
     layer = layer === '' ? 'none' : layer;
     return (
       <div>
-        <div
-          id={styles.rootLayer}
-          style={{ left: getLeftBottom() }}
-          onClick={() => setLayersOpen(!layersOpen)}
-        >
-          <img src={buttonIcons[layer]} width="100" height="100" alt={layer} />
-        </div>
-        <div
-          id={styles.rootLayers}
-          className={[
-            layersOpen ? '' : styles.rootLayersClosed,
-            layersOpen ? styles.rootLayersOpen : '',
-          ].join(' ')}
-          style={{ left: getLeftBottom() + 100 }}
-        >
-          {LAYERS.map(id => (
+        { getMenu() && !drawingOpen && (
+          <div>
             <div
-              key={id}
-              className={styles.button}
-              onClick={() => {
-                const path = id === 'none' ? '' : id;
-                push(`/map/${path}`);
-                setLayersOpen(false);
-              }}
+              id={styles.rootLayer}
+              style={{ left: getLeftBottom() }}
+              onClick={() => setLayersOpen(!layersOpen)}
             >
-              <img src={buttonIcons[id]} width="100" height="100" alt={id} />
-              {layer === id && (<div className={styles.buttonSelected} />)}
+              <img src={buttonIcons[layer]} width="100" height="100" alt={layer} />
             </div>
-          ))}
-        </div>
-        <div
-          id={styles.rootTile}
-          style={{ left: getLeftBottom() }}
-          onClick={() => setTilesOpen(!tilesOpen)}
-        >
-          <img src={buttonIcons[tile.id]} width="100" height="100" alt={tile.id} />
-        </div>
-        <div
-          id={styles.rootTiles}
-          className={[
-            tilesOpen ? '' : styles.rootTilesClosed,
-            tilesOpen ? styles.rootTilesOpen : '',
-          ].join(' ')}
-          style={{ left: getLeftBottom() + 100 }}
-        >
-          {TILES.ids.map(id => (
             <div
-              key={id}
-              className={styles.button}
-              onClick={() => {
-                setTile(TILES.byId[id]);
-                setTilesOpen(false);
-              }}
+              id={styles.rootLayers}
+              className={[
+                layersOpen ? '' : styles.rootLayersClosed,
+                layersOpen ? styles.rootLayersOpen : '',
+              ].join(' ')}
+              style={{ left: getLeftBottom() + 100 }}
             >
-              <img src={buttonIcons[id]} width="100" height="100" alt={id} />
-              {tile.id === id && (<div className={styles.buttonSelected} />)}
+              {LAYERS.map(id => (
+                <div
+                  key={id}
+                  className={styles.button}
+                  onClick={() => {
+                    const path = id === 'none' ? '' : id;
+                    push(`/map/${path}`);
+                    setLayersOpen(false);
+                  }}
+                >
+                  <img src={buttonIcons[id]} width="100" height="100" alt={id} />
+                  {layer === id && (<div className={styles.buttonSelected} />)}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+            <div
+              id={styles.rootTile}
+              style={{ left: getLeftBottom() }}
+              onClick={() => setTilesOpen(!tilesOpen)}
+            >
+              <img src={buttonIcons[tile.id]} width="100" height="100" alt={tile.id} />
+            </div>
+            <div
+              id={styles.rootTiles}
+              className={[
+                tilesOpen ? '' : styles.rootTilesClosed,
+                tilesOpen ? styles.rootTilesOpen : '',
+              ].join(' ')}
+              style={{ left: getLeftBottom() + 100 }}
+            >
+              {TILES.ids.map(id => (
+                <div
+                  key={id}
+                  className={styles.button}
+                  onClick={() => {
+                    setTile(TILES.byId[id]);
+                    setTilesOpen(false);
+                  }}
+                >
+                  <img src={buttonIcons[id]} width="100" height="100" alt={id} />
+                  {tile.id === id && (<div className={styles.buttonSelected} />)}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
         {children !== null ? React.cloneElement(children, { map: this.map }) : null}
       </div>
     );
@@ -338,6 +343,7 @@ class Map extends Component {
 }
 Map.propTypes = {
   children: PropTypes.node,
+  drawingOpen: PropTypes.bool.isRequired,
   layersOpen: PropTypes.bool.isRequired,
   location: PropTypes.object.isRequired,
   mapView: PropTypes.object.isRequired,
@@ -351,6 +357,7 @@ Map.propTypes = {
 };
 export default connect(
   state => ({
+    drawingOpen: getDrawingOpen(state),
     layersOpen: fromLayersOpen.getLayersOpen(state),
     mapView: fromMapView.getMapView(state),
     tile: fromTile.getTile(state),

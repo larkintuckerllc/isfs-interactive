@@ -4,7 +4,11 @@ import { getLeftBottom, getMenu } from '../../../../util/parameters';
 import * as fromDrawingOpen from '../../../../ducks/drawingOpen';
 import styles from './index.scss';
 import drawing from './img/drawing.png';
+import close from './img/close.png';
 
+const COLORS = [
+  'black', 'white', 'red', 'orange', 'yellow', 'green', 'blue', 'purple',
+];
 // eslint-disable-next-line
 class Drawing extends Component {
   render() {
@@ -19,7 +23,7 @@ class Drawing extends Component {
               onClick={() => setDrawingOpen(!drawingOpen)}
             >
               <img
-                src={drawing}
+                src={!drawingOpen ? drawing : close}
                 width="100" height="100" alt="drawing"
               />
             </div>
@@ -31,14 +35,20 @@ class Drawing extends Component {
             drawingOpen ? '' : styles.rootControlsClosed,
             drawingOpen ? styles.rootControlsOpen : '',
           ].join(' ')}
-          style={{ left: getLeftBottom() }}
+          style={{ left: getLeftBottom() + 100 }}
         >
-          <div
-            className={styles.button}
-            onClick={() => setDrawingOpen(false)}
-          >
-            <img src={drawing} width="100" height="100" alt="close" />
-          </div>
+          {COLORS.map(color => (
+            <div
+              className={styles.button}
+            >
+              <div className={styles.buttonColor}>
+                <div
+                  className={styles.buttonColorCircle}
+                  style={{ backgroundColor: color }}
+                />
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     );

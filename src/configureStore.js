@@ -13,7 +13,8 @@ import { getChannels } from './util/parameters';
 export default () => {
   const middlewares = [
     thunk,
-    thr0wMiddleware([SET_MAP_VIEW, SET_TILE, SET_VIDEO, SET_VIDEO_CURRENT_TIME], getChannels()),
+    thr0wMiddleware(['@@router/LOCATION_CHANGE',
+      SET_MAP_VIEW, SET_TILE, SET_VIDEO, SET_VIDEO_CURRENT_TIME], getChannels()),
     routerMiddleware(hashHistory),
   ];
   return createStore(

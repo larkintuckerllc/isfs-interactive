@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { thr0w } from '../../../../api/thr0w';
 import { getLeftBottom, getMasterChannel, getMenu } from '../../../../util/parameters';
-import { frameXYToContentXY, getContentWidth,
-  getContentHeight, getScale } from '../../../../util/grid';
+import { frameXYToContentXY, getFrameWidth,
+  getFrameHeight, getScale } from '../../../../util/grid';
 import * as fromDrawingOpen from '../../../../ducks/drawingOpen';
 import * as fromCaptureOpen from '../../../../ducks/captureOpen';
 import * as fromDrawingColor from '../../../../ducks/drawingColor';
@@ -50,8 +50,12 @@ class Drawing extends Component {
     const prevDrawingOpen = prevProps.drawingOpen;
     if (!(!prevDrawingOpen && drawingOpen)) return;
     this.canvasEl = document.getElementById(styles.rootCanvas);
-    this.canvasEl.width = getContentWidth();
-    this.canvasEl.height = getContentHeight();
+    this.canvasEl.style.width = `${getFrameWidth()}px`;
+    this.canvasEl.style.height = `${getFrameHeight()}px`;
+    this.canvasEl.style.left = `${this.origin[0]}px`;
+    this.canvasEl.style.top = `${this.origin[1]}px`;
+    this.canvasEl.width = getFrameWidth();
+    this.canvasEl.height = getFrameHeight();
     this.context = this.canvasEl.getContext('2d');
     this.context.lineWidth = 16;
     this.context.strokeStyle = drawingColor;
@@ -63,12 +67,12 @@ class Drawing extends Component {
   }
   handleTouchStart(e) {
     if (e.touches.length !== 1) return;
-    this.lastX = (e.touches[0].pageX * this.scale) + this.origin[0];
-    this.lastY = (e.touches[0].pageY * this.scale) + this.origin[1];
+    this.lastX = e.touches[0].pageX * this.scale;
+    this.lastY = e.touches[0].pageY * this.scale;
   }
   handleTouchMove(e) {
-    const x = (e.touches[0].pageX * this.scale) + this.origin[0];
-    const y = (e.touches[0].pageY * this.scale) + this.origin[1];
+    const x = e.touches[0].pageX * this.scale;
+    const y = e.touches[0].pageY * this.scale;
     const lastX = this.lastX;
     const lastY = this.lastY;
     if (x === lastX && y === lastY) return;

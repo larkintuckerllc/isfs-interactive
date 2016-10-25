@@ -9,7 +9,15 @@ export default (actionTypes, channels) => {
   return (store) => {
     const handleMessage = (data) => {
       if (data.source !== getChannel()) {
-        store.dispatch(data.message);
+        if (data.message.thr0w !== undefined) {
+          store.dispatch({
+            type: 'THR0W_CAPTURE',
+            source: data.source,
+            dataUrl: data.message.thr0w.dataUrl,
+          });
+        } else {
+          store.dispatch(data.message);
+        }
       }
     };
     return next => (

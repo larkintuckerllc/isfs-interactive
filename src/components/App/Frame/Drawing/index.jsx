@@ -1,13 +1,17 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { getLeftBottom, getMenu } from '../../../../util/parameters';
+import { thr0w } from '../../../../api/thr0w';
+import { getLeftBottom, getMasterChannel, getMenu } from '../../../../util/parameters';
 import { frameXYToContentXY, getContentWidth,
   getContentHeight, getScale } from '../../../../util/grid';
 import * as fromDrawingOpen from '../../../../ducks/drawingOpen';
+import * as fromCaptureOpen from '../../../../ducks/captureOpen';
 import * as fromDrawingColor from '../../../../ducks/drawingColor';
+import { getChannel } from '../../../../ducks/channel';
 import styles from './index.scss';
 import drawing from './img/drawing.png';
 import close from './img/close.png';
+import camera from './img/camera.png';
 
 const COLORS = [
   'black', 'white', 'red', 'orange', 'yellow', 'green', 'blue', 'purple',
@@ -19,6 +23,7 @@ class Drawing extends Component {
     this.handleTouchMove = this.handleTouchMove.bind(this);
     this.handleTouchEnd = this.handleTouchEnd.bind(this);
     this.animation = this.animation.bind(this);
+    this.handleCameraClick = this.handleCameraClick.bind(this);
   }
   componentDidMount() {
     this.scale = getScale();
@@ -85,10 +90,25 @@ class Drawing extends Component {
     context.stroke();
     context.closePath();
   }
+  handleCameraClick() {
+    const { channel, setCaptureOpen } = this.props;
+    setCaptureOpen(true);
+    thr0w([channel + 10], {
+      action: 'capture',
+      target: getMasterChannel(),
+    });
+  }
   render() {
-    const { drawingColor, drawingOpen, setDrawingColor, setDrawingOpen } = this.props;
+    const { captureOpen, drawingColor,
+      drawingOpen, setCaptureOpen, setDrawingColor, setDrawingOpen } = this.props;
     return (
       <div>
+        {captureOpen && (
+          <div
+            id={styles.rootCapture}
+            onClick={() => setCaptureOpen(false)}
+          />
+        )}
         {drawingOpen && <canvas id={styles.rootCanvas} />}
         { getMenu() && (
           <div>
@@ -131,22 +151,37 @@ class Drawing extends Component {
                 && (<div className={styles.buttonSelected} />)}
             </div>
           ))}
+          <div
+            className={styles.button}
+            onClick={this.handleCameraClick}
+          >
+            <img
+              src={camera}
+              width="100" height="100" alt="camera"
+            />
+          </div>
         </div>
       </div>
     );
   }
 }
 Drawing.propTypes = {
+  captureOpen: PropTypes.bool.isRequired,
+  channel: PropTypes.number.isRequired,
   drawingColor: PropTypes.string.isRequired,
   drawingOpen: PropTypes.bool.isRequired,
+  setCaptureOpen: PropTypes.func.isRequired,
   setDrawingColor: PropTypes.func.isRequired,
   setDrawingOpen: PropTypes.func.isRequired,
 };
 export default connect(
   state => ({
+    captureOpen: fromCaptureOpen.getCaptureOpen(state),
+    channel: getChannel(state),
     drawingColor: fromDrawingColor.getDrawingColor(state),
     drawingOpen: fromDrawingOpen.getDrawingOpen(state),
   }), {
+    setCaptureOpen: fromCaptureOpen.setCaptureOpen,
     setDrawingColor: fromDrawingColor.setDrawingColor,
     setDrawingOpen: fromDrawingOpen.setDrawingOpen,
   }

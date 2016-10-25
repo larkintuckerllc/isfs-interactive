@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { getLeftBottom, getMenu } from '../../../../util/parameters';
+import { frameXYToContentXY, getContentWidth,
+  getContentHeight, getScale } from '../../../../util/grid';
 import * as fromDrawingOpen from '../../../../ducks/drawingOpen';
 import * as fromDrawingColor from '../../../../ducks/drawingColor';
 import styles from './index.scss';
@@ -10,19 +12,77 @@ import close from './img/close.png';
 const COLORS = [
   'black', 'white', 'red', 'orange', 'yellow', 'green', 'blue', 'purple',
 ];
-// eslint-disable-next-line
 class Drawing extends Component {
+  constructor() {
+    super();
+    this.handleTouchStart = this.handleTouchStart.bind(this);
+    this.handleTouchMove = this.handleTouchMove.bind(this);
+    this.handleTouchEnd = this.handleTouchEnd.bind(this);
+    this.animation = this.animation.bind(this);
+  }
+  componentDidMount() {
+    this.scale = getScale();
+    this.origin = frameXYToContentXY([0, 0]);
+  }
   componentWillUpdate(nextProps) {
     const { drawingOpen } = this.props;
     const nextDrawingOpen = nextProps.drawingOpen;
+    const nextDrawingColor = nextProps.drawingColor;
+    if (drawingOpen) {
+      this.context.strokeStyle = nextDrawingColor;
+      this.context.fillStyle = nextDrawingColor;
+    }
     if (!(drawingOpen && !nextDrawingOpen)) return;
-    window.console.log('REMOVE LISTENERS');
+    this.canvasEl.removeEventListener('touchstart', this.handleTouchStart);
+    this.canvasEl.removeEventListener('touchmove', this.handleTouchMove);
+    this.canvasEl.removeEventListener('touchend', this.handleTouchEnd);
+    this.canvasEl.removeEventListener('touchcancel', this.handleTouchEnd);
+    this.context = null;
+    this.canvas = null;
   }
   componentDidUpdate(prevProps) {
-    const { drawingOpen } = this.props;
+    const { drawingColor, drawingOpen } = this.props;
     const prevDrawingOpen = prevProps.drawingOpen;
     if (!(!prevDrawingOpen && drawingOpen)) return;
-    window.console.log('ATTACH LISTENERS');
+    this.canvasEl = document.getElementById(styles.rootCanvas);
+    this.canvasEl.width = getContentWidth();
+    this.canvasEl.height = getContentHeight();
+    this.context = this.canvasEl.getContext('2d');
+    this.context.lineWidth = 20;
+    this.context.strokeStyle = drawingColor;
+    this.context.fillStyle = drawingColor;
+    this.canvasEl.addEventListener('touchstart', this.handleTouchStart);
+    this.canvasEl.addEventListener('touchmove', this.handleTouchMove);
+    this.canvasEl.addEventListener('touchend', this.handleTouchEnd);
+    this.canvasEl.addEventListener('touchcancel', this.handleTouchCancel);
+  }
+  handleTouchStart(e) {
+    if (e.touches.length !== 1) return;
+    this.lastX = (e.touches[0].pageX * this.scale) + this.origin[0];
+    this.lastY = (e.touches[0].pageY * this.scale) + this.origin[1];
+  }
+  handleTouchMove(e) {
+    const x = (e.touches[0].pageX * this.scale) + this.origin[0];
+    const y = (e.touches[0].pageY * this.scale) + this.origin[1];
+    const lastX = this.lastX;
+    const lastY = this.lastY;
+    if (x === lastX && y === lastY) return;
+    window.requestAnimationFrame(() => this.animation(lastX, lastY, x, y));
+    this.lastX = x;
+    this.lastY = y;
+  }
+  handleTouchEnd() {
+  }
+  animation(startX, startY, endX, endY) {
+    this.context.beginPath();
+    this.context.arc(startX, startY, 10, 0, 2 * Math.PI);
+    this.context.closePath();
+    this.context.fill();
+    this.context.beginPath();
+    this.context.moveTo(startX, startY);
+    this.context.lineTo(endX, endY);
+    this.context.stroke();
+    this.context.closePath();
   }
   render() {
     const { drawingColor, drawingOpen, setDrawingColor, setDrawingOpen } = this.props;

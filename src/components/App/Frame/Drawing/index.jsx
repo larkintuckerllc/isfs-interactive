@@ -48,7 +48,7 @@ class Drawing extends Component {
     this.canvasEl.width = getContentWidth();
     this.canvasEl.height = getContentHeight();
     this.context = this.canvasEl.getContext('2d');
-    this.context.lineWidth = 20;
+    this.context.lineWidth = 16;
     this.context.strokeStyle = drawingColor;
     this.context.fillStyle = drawingColor;
     this.canvasEl.addEventListener('touchstart', this.handleTouchStart);
@@ -74,15 +74,16 @@ class Drawing extends Component {
   handleTouchEnd() {
   }
   animation(startX, startY, endX, endY) {
-    this.context.beginPath();
-    this.context.arc(startX, startY, 10, 0, 2 * Math.PI);
-    this.context.closePath();
-    this.context.fill();
-    this.context.beginPath();
-    this.context.moveTo(startX, startY);
-    this.context.lineTo(endX, endY);
-    this.context.stroke();
-    this.context.closePath();
+    const context = this.context;
+    context.beginPath();
+    context.arc(startX, startY, 8, 0, 2 * Math.PI);
+    context.closePath();
+    context.fill();
+    context.beginPath();
+    context.moveTo(startX, startY);
+    context.lineTo(endX, endY);
+    context.stroke();
+    context.closePath();
   }
   render() {
     const { drawingColor, drawingOpen, setDrawingColor, setDrawingOpen } = this.props;

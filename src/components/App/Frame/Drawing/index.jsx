@@ -98,10 +98,17 @@ class Drawing extends Component {
   }
   handleCameraClick() {
     const { channel } = this.props;
-    thr0w([channel + 10], {
-      action: 'capture',
-      target: getMasterChannel(),
-    });
+    if (getModeId === 'single') {
+      thr0w([channel + 10], {
+        action: 'capture',
+        target: getMasterChannel(),
+      });
+    } else {
+      thr0w([16, 17, 18, 19], {
+        action: 'capture',
+        target: getMasterChannel(),
+      });
+    }
   }
   render() {
     const { captureBlockOpen, drawingColor,
@@ -129,7 +136,7 @@ class Drawing extends Component {
                     className={styles.rootFormScreensScreen}
                     style={{
                       backgroundImage: thr0wCapture !== null ?
-                        `url(${thr0wCapture})` : null,
+                        `url(${thr0wCapture.left})` : null,
                     }}
                   />
                   {modeId !== 'single' && (
@@ -236,7 +243,7 @@ Drawing.propTypes = {
   removeThr0wCapture: PropTypes.func.isRequired,
   setDrawingColor: PropTypes.func.isRequired,
   setDrawingOpen: PropTypes.func.isRequired,
-  thr0wCapture: PropTypes.string,
+  thr0wCapture: PropTypes.object,
 };
 export default connect(
   state => ({

@@ -98,7 +98,7 @@ class Drawing extends Component {
   }
   handleCameraClick() {
     const { channel } = this.props;
-    if (getModeId === 'single') {
+    if (getModeId() === 'single') {
       thr0w([channel + 10], {
         action: 'capture',
         target: getMasterChannel(),
@@ -115,7 +115,6 @@ class Drawing extends Component {
       drawingOpen, removeThr0wCapture, setDrawingColor, setDrawingOpen,
       thr0wCapture } = this.props;
     const leftBottom = getLeftBottom();
-    const modeId = getModeId();
     return (
       <div>
         {captureBlockOpen && (
@@ -132,37 +131,35 @@ class Drawing extends Component {
                 }}
               >
                 <div id={styles.rootFormScreens}>
-                  <div
-                    className={styles.rootFormScreensScreen}
-                    style={{
-                      backgroundImage: thr0wCapture.left !== null ?
-                        `url(${thr0wCapture.left})` : null,
-                    }}
-                  />
-                  {modeId !== 'single' && (
+                  {thr0wCapture.left !== null && (
                     <div
                       className={styles.rootFormScreensScreen}
                       style={{
-                        backgroundImage: thr0wCapture.leftMiddle !== null ?
-                        `url(${thr0wCapture.leftMiddle})` : null,
+                        backgroundImage: `url(${thr0wCapture.left})`,
                       }}
                     />
                   )}
-                  {modeId !== 'single' && (
+                  {thr0wCapture.leftMiddle !== null && (
                     <div
                       className={styles.rootFormScreensScreen}
                       style={{
-                        backgroundImage: thr0wCapture.rightMiddle !== null ?
-                        `url(${thr0wCapture.rightMiddle})` : null,
+                        backgroundImage: `url(${thr0wCapture.leftMiddle})`,
                       }}
                     />
                   )}
-                  {modeId !== 'single' && (
+                  {thr0wCapture.rightMiddle !== null && (
                     <div
                       className={styles.rootFormScreensScreen}
                       style={{
-                        backgroundImage: thr0wCapture.right !== null ?
-                        `url(${thr0wCapture.right})` : null,
+                        backgroundImage: `url(${thr0wCapture.rightMiddle})`,
+                      }}
+                    />
+                  )}
+                  {thr0wCapture.right !== null && (
+                    <div
+                      className={styles.rootFormScreensScreen}
+                      style={{
+                        backgroundImage: `url(${thr0wCapture.right})`,
                       }}
                     />
                   )}

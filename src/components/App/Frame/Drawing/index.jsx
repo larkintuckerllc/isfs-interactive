@@ -135,7 +135,7 @@ class Drawing extends Component {
                   <div
                     className={styles.rootFormScreensScreen}
                     style={{
-                      backgroundImage: thr0wCapture !== null ?
+                      backgroundImage: thr0wCapture.left !== null ?
                         `url(${thr0wCapture.left})` : null,
                     }}
                   />
@@ -143,7 +143,8 @@ class Drawing extends Component {
                     <div
                       className={styles.rootFormScreensScreen}
                       style={{
-                        backgroundColor: 'red',
+                        backgroundImage: thr0wCapture.leftMiddle !== null ?
+                        `url(${thr0wCapture.leftMiddle})` : null,
                       }}
                     />
                   )}
@@ -151,7 +152,8 @@ class Drawing extends Component {
                     <div
                       className={styles.rootFormScreensScreen}
                       style={{
-                        backgroundColor: 'red',
+                        backgroundImage: thr0wCapture.rightMiddle !== null ?
+                        `url(${thr0wCapture.rightMiddle})` : null,
                       }}
                     />
                   )}
@@ -159,7 +161,8 @@ class Drawing extends Component {
                     <div
                       className={styles.rootFormScreensScreen}
                       style={{
-                        backgroundColor: 'red',
+                        backgroundImage: thr0wCapture.right !== null ?
+                        `url(${thr0wCapture.right})` : null,
                       }}
                     />
                   )}

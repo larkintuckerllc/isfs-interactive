@@ -1,3 +1,5 @@
+import { SET_CAPTURE_BLOCK_OPEN } from './captureBlockOpen';
+
 // API
 // REDUCER MOUNT POINT
 const reducerMountPoint = 'thr0wCapture';
@@ -17,3 +19,13 @@ export default (state = null, action) => {
 // ACCESSORS
 export const getThr0wCapture = (state) => state[reducerMountPoint];
 // ACTION CREATORS
+export const removeThr0wCapture = () => (dispatch) => {
+  dispatch({
+    type: THR0W_CAPTURE,
+    dataUrl: null,
+  });
+  dispatch({
+    type: SET_CAPTURE_BLOCK_OPEN,
+    value: false,
+  });
+};

@@ -6,10 +6,10 @@ import { getLeftBottom, getMasterChannel,
 import { frameXYToContentXY, getFrameWidth,
   getFrameHeight, getScale } from '../../../../util/grid';
 import * as fromDrawingOpen from '../../../../ducks/drawingOpen';
-import * as fromCaptureOpen from '../../../../ducks/captureOpen';
 import * as fromDrawingColor from '../../../../ducks/drawingColor';
-import { getThr0wCapture } from '../../../../ducks/thr0wCapture';
+import * as fromThr0wCapture from '../../../../ducks/thr0wCapture';
 import { getChannel } from '../../../../ducks/channel';
+import { getCaptureBlockOpen } from '../../../../ducks/captureBlockOpen';
 import styles from './index.scss';
 import drawing from './img/drawing.png';
 import close from './img/close.png';
@@ -97,79 +97,79 @@ class Drawing extends Component {
     context.closePath();
   }
   handleCameraClick() {
-    const { channel, setCaptureOpen } = this.props;
-    setCaptureOpen(true);
+    const { channel } = this.props;
     thr0w([channel + 10], {
       action: 'capture',
       target: getMasterChannel(),
     });
   }
   render() {
-    const { captureOpen, drawingColor,
-      drawingOpen, setCaptureOpen,
-      setDrawingColor, setDrawingOpen,
+    const { captureBlockOpen, drawingColor,
+      drawingOpen, removeThr0wCapture, setDrawingColor, setDrawingOpen,
       thr0wCapture } = this.props;
     const leftBottom = getLeftBottom();
     const modeId = getModeId();
     return (
       <div>
-        {captureOpen && (
+        {captureBlockOpen && (
           <div>
             <div
               id={styles.rootCapture}
-              onClick={() => setCaptureOpen(false)}
+              onClick={() => removeThr0wCapture()}
             />
-            <div
-              id={styles.rootForm}
-              style={{
-                left: leftBottom + 90,
-              }}
-            >
-              <div id={styles.rootFormScreens}>
-                <div
-                  className={styles.rootFormScreensScreen}
-                  style={{
-                    backgroundImage: thr0wCapture !== null ?
-                      `url(${thr0wCapture})` : null,
-                  }}
-                />
-                {modeId !== 'single' && (
+            {thr0wCapture !== null && (
+              <div
+                id={styles.rootForm}
+                style={{
+                  left: leftBottom + 90,
+                }}
+              >
+                <div id={styles.rootFormScreens}>
                   <div
                     className={styles.rootFormScreensScreen}
                     style={{
-                      backgroundColor: 'red',
+                      backgroundImage: thr0wCapture !== null ?
+                        `url(${thr0wCapture})` : null,
                     }}
                   />
-                )}
-                {modeId !== 'single' && (
-                  <div
-                    className={styles.rootFormScreensScreen}
-                    style={{
-                      backgroundColor: 'red',
-                    }}
-                  />
-                )}
-                {modeId !== 'single' && (
-                  <div
-                    className={styles.rootFormScreensScreen}
-                    style={{
-                      backgroundColor: 'red',
-                    }}
-                  />
-                )}
-              </div>
-              <form className="form-inline" id={styles.rootFormForm}>
-                <div className="form-group">
-                  <input
-                    type="email"
-                    className="form-control"
-                    id="email"
-                    placeholder="jane.doe@example.com"
-                  />
+                  {modeId !== 'single' && (
+                    <div
+                      className={styles.rootFormScreensScreen}
+                      style={{
+                        backgroundColor: 'red',
+                      }}
+                    />
+                  )}
+                  {modeId !== 'single' && (
+                    <div
+                      className={styles.rootFormScreensScreen}
+                      style={{
+                        backgroundColor: 'red',
+                      }}
+                    />
+                  )}
+                  {modeId !== 'single' && (
+                    <div
+                      className={styles.rootFormScreensScreen}
+                      style={{
+                        backgroundColor: 'red',
+                      }}
+                    />
+                  )}
                 </div>
-                <button type="submit" className="btn btn-default">Send</button>
-              </form>
-            </div>
+                <form className="form-inline" id={styles.rootFormForm}>
+                  <div className="form-group">
+                    <input
+                      type="email"
+                      className="form-control"
+                      id="email"
+                      placeholder="jane.doe@example.com"
+                    />
+                  </div>
+                  <button type="submit" className="btn btn-default">Send</button>
+                </form>
+              </div>
+            )}
           </div>
         )}
         {drawingOpen && <canvas id={styles.rootCanvas} />}
@@ -229,24 +229,24 @@ class Drawing extends Component {
   }
 }
 Drawing.propTypes = {
-  captureOpen: PropTypes.bool.isRequired,
+  captureBlockOpen: PropTypes.bool.isRequired,
   channel: PropTypes.number.isRequired,
   drawingColor: PropTypes.string.isRequired,
   drawingOpen: PropTypes.bool.isRequired,
-  setCaptureOpen: PropTypes.func.isRequired,
+  removeThr0wCapture: PropTypes.func.isRequired,
   setDrawingColor: PropTypes.func.isRequired,
   setDrawingOpen: PropTypes.func.isRequired,
   thr0wCapture: PropTypes.string,
 };
 export default connect(
   state => ({
-    captureOpen: fromCaptureOpen.getCaptureOpen(state),
+    captureBlockOpen: getCaptureBlockOpen(state),
     channel: getChannel(state),
     drawingColor: fromDrawingColor.getDrawingColor(state),
     drawingOpen: fromDrawingOpen.getDrawingOpen(state),
-    thr0wCapture: getThr0wCapture(state),
+    thr0wCapture: fromThr0wCapture.getThr0wCapture(state),
   }), {
-    setCaptureOpen: fromCaptureOpen.setCaptureOpen,
+    removeThr0wCapture: fromThr0wCapture.removeThr0wCapture,
     setDrawingColor: fromDrawingColor.setDrawingColor,
     setDrawingOpen: fromDrawingOpen.setDrawingOpen,
   }

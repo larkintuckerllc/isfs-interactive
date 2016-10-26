@@ -1,5 +1,6 @@
 import { getChannel, onMessage, offMessage, thr0w } from '../api/thr0w';
 import { SET_CONNECTED_SUCCESS, SET_CONNECTED_REQUEST, getConnected } from '../ducks/connected';
+import { SET_CAPTURE_BLOCK_OPEN } from '../ducks/captureBlockOpen';
 
 export default (actionTypes, channels) => {
   const actionTypesLookup = {};
@@ -14,6 +15,10 @@ export default (actionTypes, channels) => {
             type: 'THR0W_CAPTURE',
             source: data.source,
             dataUrl: data.message.thr0w.dataUrl,
+          });
+          store.dispatch({
+            type: SET_CAPTURE_BLOCK_OPEN,
+            value: true,
           });
         } else {
           store.dispatch(data.message);

@@ -1,11 +1,19 @@
 #rootCapture {
   position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   z-index: 1002;
   top: 0px;
   left: 0px;
   width: 100%;
   height: 100%;
   background-color: rgba(0,0,0,0.7);
+}
+#rootCaptureForm {
+  width: 300px;
+  height: 300px;
+  background-color: white;
 }
 #rootCanvas {
   position: absolute;

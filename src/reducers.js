@@ -14,6 +14,7 @@ import modesOpen from './ducks/modesOpen';
 import drawingOpen from './ducks/drawingOpen';
 import drawingColor from './ducks/drawingColor';
 import captureOpen from './ducks/captureOpen';
+import thr0wCapture from './ducks/thr0wCapture';
 
 export default combineReducers({
   form: formReducer,
@@ -31,4 +32,5 @@ export default combineReducers({
   drawingOpen,
   drawingColor,
   captureOpen,
+  thr0wCapture,
 });

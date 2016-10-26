@@ -7,6 +7,7 @@ import { frameXYToContentXY, getFrameWidth,
 import * as fromDrawingOpen from '../../../../ducks/drawingOpen';
 import * as fromCaptureOpen from '../../../../ducks/captureOpen';
 import * as fromDrawingColor from '../../../../ducks/drawingColor';
+import { getThr0wCapture } from '../../../../ducks/thr0wCapture';
 import { getChannel } from '../../../../ducks/channel';
 import styles from './index.scss';
 import drawing from './img/drawing.png';
@@ -104,14 +105,25 @@ class Drawing extends Component {
   }
   render() {
     const { captureOpen, drawingColor,
-      drawingOpen, setCaptureOpen, setDrawingColor, setDrawingOpen } = this.props;
+      drawingOpen, setCaptureOpen,
+      setDrawingColor, setDrawingOpen,
+      thr0wCapture } = this.props;
     return (
       <div>
         {captureOpen && (
           <div
             id={styles.rootCapture}
             onClick={() => setCaptureOpen(false)}
-          />
+          >
+            <div
+              id={styles.rootCaptureForm}
+              onClick={(e) => { e.stopPropagation(); }}
+              style={{
+                backgroundImage: thr0wCapture !== null ?
+                  `url(${thr0wCapture})` : null,
+              }}
+            />
+          </div>
         )}
         {drawingOpen && <canvas id={styles.rootCanvas} />}
         { getMenu() && (
@@ -177,6 +189,7 @@ Drawing.propTypes = {
   setCaptureOpen: PropTypes.func.isRequired,
   setDrawingColor: PropTypes.func.isRequired,
   setDrawingOpen: PropTypes.func.isRequired,
+  thr0wCapture: PropTypes.string,
 };
 export default connect(
   state => ({
@@ -184,6 +197,7 @@ export default connect(
     channel: getChannel(state),
     drawingColor: fromDrawingColor.getDrawingColor(state),
     drawingOpen: fromDrawingOpen.getDrawingOpen(state),
+    thr0wCapture: getThr0wCapture(state),
   }), {
     setCaptureOpen: fromCaptureOpen.setCaptureOpen,
     setDrawingColor: fromDrawingColor.setDrawingColor,

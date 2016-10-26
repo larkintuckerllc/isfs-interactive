@@ -1,8 +1,5 @@
 #rootCapture {
   position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   z-index: 1002;
   top: 0px;
   left: 0px;
@@ -10,10 +7,31 @@
   height: 100%;
   background-color: rgba(0,0,0,0.7);
 }
-#rootCaptureForm {
-  width: 300px;
-  height: 300px;
+#rootForm {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 1003;
+  bottom: 660px;
+  width: 900px;
+  height: 600px;
   background-color: white;
+}
+#rootFormScreens {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.rootFormScreensScreen {
+  width: 200px;
+  height: 356px;
+  background-position: center;
+  background-size: cover;
+}
+#rootFormForm {
+  margin-top: 40px;
 }
 #rootCanvas {
   position: absolute;

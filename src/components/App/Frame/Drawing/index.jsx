@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { thr0w } from '../../../../api/thr0w';
-import { getLeftBottom, getMasterChannel, getMenu } from '../../../../util/parameters';
+import { getLeftBottom, getMasterChannel,
+  getMenu, getModeId } from '../../../../util/parameters';
 import { frameXYToContentXY, getFrameWidth,
   getFrameHeight, getScale } from '../../../../util/grid';
 import * as fromDrawingOpen from '../../../../ducks/drawingOpen';
@@ -108,21 +109,67 @@ class Drawing extends Component {
       drawingOpen, setCaptureOpen,
       setDrawingColor, setDrawingOpen,
       thr0wCapture } = this.props;
+    const leftBottom = getLeftBottom();
+    const modeId = getModeId();
     return (
       <div>
         {captureOpen && (
-          <div
-            id={styles.rootCapture}
-            onClick={() => setCaptureOpen(false)}
-          >
+          <div>
             <div
-              id={styles.rootCaptureForm}
-              onClick={(e) => { e.stopPropagation(); }}
-              style={{
-                backgroundImage: thr0wCapture !== null ?
-                  `url(${thr0wCapture})` : null,
-              }}
+              id={styles.rootCapture}
+              onClick={() => setCaptureOpen(false)}
             />
+            <div
+              id={styles.rootForm}
+              style={{
+                left: leftBottom + 90,
+              }}
+            >
+              <div id={styles.rootFormScreens}>
+                <div
+                  className={styles.rootFormScreensScreen}
+                  style={{
+                    backgroundImage: thr0wCapture !== null ?
+                      `url(${thr0wCapture})` : null,
+                  }}
+                />
+                {modeId !== 'single' && (
+                  <div
+                    className={styles.rootFormScreensScreen}
+                    style={{
+                      backgroundColor: 'red',
+                    }}
+                  />
+                )}
+                {modeId !== 'single' && (
+                  <div
+                    className={styles.rootFormScreensScreen}
+                    style={{
+                      backgroundColor: 'red',
+                    }}
+                  />
+                )}
+                {modeId !== 'single' && (
+                  <div
+                    className={styles.rootFormScreensScreen}
+                    style={{
+                      backgroundColor: 'red',
+                    }}
+                  />
+                )}
+              </div>
+              <form className="form-inline" id={styles.rootFormForm}>
+                <div className="form-group">
+                  <input
+                    type="email"
+                    className="form-control"
+                    id="email"
+                    placeholder="jane.doe@example.com"
+                  />
+                </div>
+                <button type="submit" className="btn btn-default">Send</button>
+              </form>
+            </div>
           </div>
         )}
         {drawingOpen && <canvas id={styles.rootCanvas} />}
@@ -130,7 +177,7 @@ class Drawing extends Component {
           <div>
             <div
               id={styles.rootControl}
-              style={{ left: getLeftBottom() }}
+              style={{ left: leftBottom }}
               onClick={() => {
                 setDrawingOpen(!drawingOpen);
                 setDrawingColor('black');
@@ -149,7 +196,7 @@ class Drawing extends Component {
             drawingOpen ? '' : styles.rootControlsClosed,
             drawingOpen ? styles.rootControlsOpen : '',
           ].join(' ')}
-          style={{ left: getLeftBottom() + 100 }}
+          style={{ left: leftBottom + 100 }}
         >
           {COLORS.map(color => (
             <div

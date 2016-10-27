@@ -1,0 +1,38 @@
+#highlight {
+  position: relative;
+  height: 200px;
+}
+#highlightTitle {
+  position: absolute;
+  box-sizing: border-box;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+  padding: 15px;
+  background-color: rgba(0,0,0,0.5);
+  color: rgb(255,255,255);
+  text-align: center;
+  font-weight: bold;
+}
+.dataMetric, .dataScale {
+  margin-top: 10px;
+}
+.dataMetricTitle {
+  border: 1px solid black;
+  padding: 10px;
+  text-align: center;
+  background-color: rgb(220,220,220);
+}
+.dataMetricValue {
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  height: 30px;
+}
+.dataMetricValueBar {
+  border-right: 1px solid black;
+  height: 100%;
+}
+#dataScaleValueGood {
+  float: right;
+}

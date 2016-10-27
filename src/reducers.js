@@ -15,6 +15,7 @@ import drawingOpen from './ducks/drawingOpen';
 import drawingColor from './ducks/drawingColor';
 import thr0wCapture from './ducks/thr0wCapture';
 import captureBlockOpen from './ducks/captureBlockOpen';
+import fisheries from './ducks/fisheries';
 
 export default combineReducers({
   form: formReducer,
@@ -33,4 +34,5 @@ export default combineReducers({
   drawingColor,
   thr0wCapture,
   captureBlockOpen,
+  fisheries,
 });

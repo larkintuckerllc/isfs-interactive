@@ -34,7 +34,7 @@ export const getLeftBottom = () => mode.leftBottom;
 export const getZoomMin = () => mode.zoomMin;
 export const getModeId = () => modeId;
 export const getMenu = () => mode.menu;
-export const getTile = () => (tile !== undefined ? tile : 'satellite');
+export const getTile = () => (tile !== undefined ? tile : 'develop');
 export const getLat = () => (lat !== undefined ? lat : 0);
 export const getLng = () => (lng !== undefined ? lng : 0);
 export const getZoom = () => (zoom !== undefined ? Math.max(zoom, mode.zoomMin) : mode.zoomMin);

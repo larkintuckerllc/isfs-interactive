@@ -29,8 +29,10 @@ import lights from './img/lights.png';
 import none from './img/none.png';
 import disease from './img/disease.png';
 import trade from './img/trade.png';
+import fisheries from './img/fisheries.png';
 
 const buttonIcons = {
+  develop: satellite,
   satellite,
   street,
   night,
@@ -40,6 +42,7 @@ const buttonIcons = {
   none,
   trade,
   disease,
+  fisheries,
 };
 class Map extends Component {
   constructor() {

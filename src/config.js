@@ -113,9 +113,15 @@ export const LAYERS = [
   'none',
   'disease',
   'trade',
+  'fisheries',
 ];
 export const TILES = {
   byId: {
+    develop: {
+      id: 'develop',
+      url: 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
+      bg: 'rgb(255,255,255)',
+    },
     satellite: {
       id: 'satellite',
       url: 'http://192.168.1.2:8080/satellite/{z}/{y}/{x}',
@@ -148,6 +154,7 @@ export const TILES = {
     },
   },
   ids: [
+    'develop',
     'satellite',
     'street',
     'lights',

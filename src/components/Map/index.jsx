@@ -30,10 +30,11 @@ import none from './img/none.png';
 import disease from './img/disease.png';
 import trade from './img/trade.png';
 import fisheries from './img/fisheries.png';
+import topo from './img/topo.png';
 
 const buttonIcons = {
-  develop: satellite,
   satellite,
+  topo,
   street,
   night,
   white,

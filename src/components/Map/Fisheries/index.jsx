@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import L from 'leaflet';
 import * as fromFisheries from '../../../ducks/fisheries';
 import styles from './index.scss';
-import cat from './img/cat.png';
 
 class Fisheries extends Component {
   constructor() {
@@ -33,11 +32,11 @@ class Fisheries extends Component {
       for (let i = 0; i < nextFisheries.length; i++) {
         const fishery = nextFisheries[i];
         const catIcon = L.icon({
-          iconUrl: cat,
+          iconUrl: `/upload/larkintuckerllc-isfs-interactive/${fishery.id}.png`,
           iconSize: [64, 64],
         });
         const marker = L.marker(fishery.latlng, { icon: catIcon });
-        marker.bindPopup(this.renderPopup(fishery.title,
+        marker.bindPopup(this.renderPopup(fishery.id, fishery.title,
           fishery.ecology, fishery.economic, fishery.community));
         marker.addTo(map);
         this.markers.push(marker);
@@ -60,10 +59,10 @@ class Fisheries extends Component {
     }
     return ('rgb(200,90,90)');
   }
-  renderPopup(title, ecology, economic, community) {
+  renderPopup(id, title, ecology, economic, community) {
     return (`
       <div id="${styles.highlight}">
-        <img width=300 height=200 style="display: hidden;"/>
+        <img width=300 height=200 src="/upload/larkintuckerllc-isfs-interactive/${id}.jpg" />
         <div id="${styles.highlightTitle}">${title}</div>
       </div>
       <div id="data">

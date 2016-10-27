@@ -79,6 +79,8 @@ class Map extends Component {
       {
         zoomControl: false,
         attributionControl: false,
+        closePopupOnClick: false,
+        doubleClickZoom: false,
       }
     );
     // CREATE POSITION

@@ -3,6 +3,7 @@ const BASE = `${window.location.protocol}//${window.location.hostname}`;
 export const BASE_URL_APP = `${BASE}:${window.location.port}${window.location.pathname}`;
 export const BASE_URL_HTTP = `${BASE}:3000`;
 export const BASE_URL_SOCKET = `${BASE}:3001`;
+export const BASE_URL_UPLOAD = '/upload/larkintuckerllc-isfs-interactive/';
 export const VIDEO_MAX_DRIFT = 0.02;
 export const VIDEO_NETWORK_DELAY = 0.015;
 export const VIDEO_INITIAL_RESTART_DELAY = 0.1;

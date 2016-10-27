@@ -1,6 +1,7 @@
 import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import L from 'leaflet';
+import { BASE_URL_UPLOAD } from '../../../config';
 import * as fromFisheries from '../../../ducks/fisheries';
 import styles from './index.scss';
 
@@ -32,7 +33,7 @@ class Fisheries extends Component {
       for (let i = 0; i < nextFisheries.length; i++) {
         const fishery = nextFisheries[i];
         const catIcon = L.icon({
-          iconUrl: `/upload/larkintuckerllc-isfs-interactive/${fishery.id}.png`,
+          iconUrl: `${BASE_URL_UPLOAD}fisheries/markers/${fishery.id}.png`,
           iconSize: [64, 64],
         });
         const marker = L.marker(fishery.latlng, { icon: catIcon });
@@ -62,7 +63,7 @@ class Fisheries extends Component {
   renderPopup(id, title, ecology, economic, community) {
     return (`
       <div id="${styles.highlight}">
-        <img width=300 height=200 src="/upload/larkintuckerllc-isfs-interactive/${id}.jpg" />
+        <img width=300 height=200 src="${BASE_URL_UPLOAD}fisheries/banners/${id}.jpg" />
         <div id="${styles.highlightTitle}">${title}</div>
       </div>
       <div id="data">

@@ -6,6 +6,10 @@ import styles from './index.scss';
 import cat from './img/cat.png';
 
 class Fisheries extends Component {
+  constructor() {
+    super();
+    this.renderPopup = this.renderPopup.bind(this);
+  }
   componentDidMount() {
     const { fetchFisheries } = this.props;
     this.markers = [];
@@ -33,7 +37,8 @@ class Fisheries extends Component {
           iconSize: [64, 64],
         });
         const marker = L.marker(fishery.latlng, { icon: catIcon });
-        marker.bindPopup(this.renderPopup());
+        marker.bindPopup(this.renderPopup(fishery.title,
+          fishery.ecology, fishery.economic, fishery.community));
         marker.addTo(map);
         this.markers.push(marker);
       }
@@ -46,33 +51,63 @@ class Fisheries extends Component {
     }
     resetFisheries();
   }
-  renderPopup() {
+  valueToColor(value) {
+    if (value >= 4) {
+      return 'rgb(90,200,90)';
+    }
+    if (value >= 3) {
+      return 'rgb(200,200,90)';
+    }
+    return ('rgb(200,90,90)');
+  }
+  renderPopup(title, ecology, economic, community) {
     return (`
       <div id="${styles.highlight}">
         <img width=300 height=200 style="display: hidden;"/>
-        <div id="${styles.highlightTitle}">Title</div>
+        <div id="${styles.highlightTitle}">${title}</div>
       </div>
       <div id="data">
         <div class="${styles.dataMetric}">
           <div class="${styles.dataMetricTitle}">Ecological Performance</div>
           <div class="${styles.dataMetricValue}">
-            <div style="width: 50%;" class="${styles.dataMetricValueBar}" />
+            <div
+              class="${styles.dataMetricValueContainer}"
+              style="width: ${100 * ((ecology - 1) / 5)}%;"
+            >
+              <div class="${styles.dataMetricValueContainerBar}"
+                style="background-color: ${this.valueToColor(ecology)};"
+              />
+            </div>
           </div>
         </div>
         <div class="${styles.dataMetric}">
           <div class="${styles.dataMetricTitle}">Economic Performance</div>
           <div class="${styles.dataMetricValue}">
-            <div style="width: 50%;" class="${styles.dataMetricValueBar}" />
+            <div
+              class="${styles.dataMetricValueContainer}"
+              style="width: ${100 * ((economic - 1) / 5)}%;"
+            >
+              <div class="${styles.dataMetricValueContainerBar}"
+                style="background-color: ${this.valueToColor(economic)};"
+              />
+            </div>
           </div>
         </div>
         <div class="${styles.dataMetric}">
           <div class="${styles.dataMetricTitle}">Community Performance</div>
           <div class="${styles.dataMetricValue}">
-            <div style="width: 50%;" class="${styles.dataMetricValueBar}" />
+            <div
+              class="${styles.dataMetricValueContainer}"
+              style="width: ${100 * ((community - 1) / 5)}%;"
+            >
+              <div class="${styles.dataMetricValueContainerBar}"
+                style="background-color: ${this.valueToColor(community)};"
+              />
+            </div>
           </div>
         </div>
         <div class="${styles.dataScale}">
-          <div id="${styles.dataScaleValueGood}" class="data__scale__value">Good</div>
+          <div id="${styles.dataScaleValueGood}">Good</div>
           <div">Poor</div>
         </div>
       </div>

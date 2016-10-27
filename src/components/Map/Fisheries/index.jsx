@@ -3,12 +3,15 @@ import { connect } from 'react-redux';
 import L from 'leaflet';
 import { BASE_URL_UPLOAD } from '../../../config';
 import * as fromFisheries from '../../../ducks/fisheries';
+import * as fromPopup from '../../../ducks/popup';
 import styles from './index.scss';
 
 class Fisheries extends Component {
   constructor() {
     super();
     this.renderPopup = this.renderPopup.bind(this);
+    this.handlePopupOpen = this.handlePopupOpen.bind(this);
+    this.handlePopupClose = this.handlePopupClose.bind(this);
   }
   componentDidMount() {
     const { fetchFisheries } = this.props;
@@ -27,8 +30,25 @@ class Fisheries extends Component {
      );
   }
   componentWillUpdate(nextProps) {
-    const { fisheries, map } = this.props;
+    const { fisheries, map, popup } = this.props;
     const nextFisheries = nextProps.fisheries;
+    const nextPopup = nextProps.popup;
+    if (nextPopup !== null && popup === null) {
+      for (let i = 0; i < this.markers.length; i++) {
+        const marker = this.markers[i];
+        if (marker.id === nextPopup) {
+          marker.openPopup();
+        }
+      }
+    }
+    if (nextPopup === null && popup !== null) {
+      for (let i = 0; i < this.markers.length; i++) {
+        const marker = this.markers[i];
+        if (marker.id === popup) {
+          marker.closePopup();
+        }
+      }
+    }
     if (fisheries.length === 0 && nextFisheries.length !== 0) {
       for (let i = 0; i < nextFisheries.length; i++) {
         const fishery = nextFisheries[i];
@@ -37,8 +57,12 @@ class Fisheries extends Component {
           iconSize: [64, 64],
         });
         const marker = L.marker(fishery.latlng, { icon: catIcon });
+        marker.id = fishery.id;
         marker.bindPopup(this.renderPopup(fishery.id, fishery.title,
-          fishery.ecology, fishery.economic, fishery.community));
+          fishery.ecology, fishery.economic, fishery.community),
+          { autoPan: false });
+        marker.addEventListener('popupopen', this.handlePopupOpen);
+        marker.addEventListener('popupclose', this.handlePopupClose);
         marker.addTo(map);
         this.markers.push(marker);
       }
@@ -47,9 +71,20 @@ class Fisheries extends Component {
   componentWillUnmount() {
     const { map, resetFisheries } = this.props;
     for (let i = 0; i < this.markers.length; i++) {
-      this.markers[i].removeFrom(map);
+      const marker = this.markers[i];
+      marker.removeEventListener('popupopen', this.handlePopupOpen);
+      marker.removeEventListener('popupclose', this.handlePopupClose);
+      marker.removeFrom(map);
     }
     resetFisheries();
+  }
+  handlePopupOpen(e) {
+    const { setPopup } = this.props;
+    setPopup(e.target.id);
+  }
+  handlePopupClose() {
+    const { removePopup } = this.props;
+    removePopup();
   }
   valueToColor(value) {
     if (value >= 4) {
@@ -120,14 +155,20 @@ class Fisheries extends Component {
 Fisheries.propTypes = {
   fetchFisheries: PropTypes.func.isRequired,
   fisheries: PropTypes.array.isRequired,
+  popup: PropTypes.string,
+  removePopup: PropTypes.func.isRequired,
   map: PropTypes.object,
   resetFisheries: PropTypes.func.isRequired,
+  setPopup: PropTypes.func.isRequired,
 };
 export default connect(
   state => ({
     fisheries: fromFisheries.getFisheries(state),
+    popup: fromPopup.getPopup(state),
   }), {
     fetchFisheries: fromFisheries.fetchFisheries,
+    removePopup: fromPopup.removePopup,
     resetFisheries: fromFisheries.resetFisheries,
+    setPopup: fromPopup.setPopup,
   }
 )(Fisheries);

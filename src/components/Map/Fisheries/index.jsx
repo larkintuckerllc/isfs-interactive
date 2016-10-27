@@ -16,6 +16,7 @@ class Fisheries extends Component {
   componentDidMount() {
     const { fetchFisheries } = this.props;
     this.markers = [];
+    this.popupOpen = false;
     fetchFisheries()
      .then(
        () => {
@@ -33,18 +34,20 @@ class Fisheries extends Component {
     const { fisheries, map, popup } = this.props;
     const nextFisheries = nextProps.fisheries;
     const nextPopup = nextProps.popup;
-    if (nextPopup !== null && popup === null) {
+    if (!this.popupOpen && nextPopup !== null && popup === null) {
       for (let i = 0; i < this.markers.length; i++) {
         const marker = this.markers[i];
         if (marker.id === nextPopup) {
+          this.popupOpen = true;
           marker.openPopup();
         }
       }
     }
-    if (nextPopup === null && popup !== null) {
+    if (this.popupOpen && nextPopup === null && popup !== null) {
       for (let i = 0; i < this.markers.length; i++) {
         const marker = this.markers[i];
         if (marker.id === popup) {
+          this.popupOpen = false;
           marker.closePopup();
         }
       }
@@ -80,10 +83,14 @@ class Fisheries extends Component {
   }
   handlePopupOpen(e) {
     const { setPopup } = this.props;
+    if (this.popupOpen) return;
+    this.popupOpen = true;
     setPopup(e.target.id);
   }
   handlePopupClose() {
     const { removePopup } = this.props;
+    if (!this.popupOpen) return;
+    this.popupOpen = false;
     removePopup();
   }
   valueToColor(value) {

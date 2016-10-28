@@ -37,7 +37,7 @@ class Fisheries extends Component {
     if (!this.popupOpen && nextPopup !== null && popup === null) {
       for (let i = 0; i < this.markers.length; i++) {
         const marker = this.markers[i];
-        if (marker.id === nextPopup) {
+        if (marker.id === nextPopup.id) {
           this.popupOpen = true;
           marker.openPopup();
         }
@@ -46,7 +46,7 @@ class Fisheries extends Component {
     if (this.popupOpen && nextPopup === null && popup !== null) {
       for (let i = 0; i < this.markers.length; i++) {
         const marker = this.markers[i];
-        if (marker.id === popup) {
+        if (marker.id === popup.id) {
           this.popupOpen = false;
           marker.closePopup();
         }
@@ -85,7 +85,11 @@ class Fisheries extends Component {
     const { setPopup } = this.props;
     if (this.popupOpen) return;
     this.popupOpen = true;
-    setPopup(e.target.id);
+    setPopup({
+      id: e.target.id,
+      lat: null,
+      lng: null,
+    });
   }
   handlePopupClose() {
     const { removePopup } = this.props;
@@ -162,7 +166,7 @@ class Fisheries extends Component {
 Fisheries.propTypes = {
   fetchFisheries: PropTypes.func.isRequired,
   fisheries: PropTypes.array.isRequired,
-  popup: PropTypes.string,
+  popup: PropTypes.object,
   removePopup: PropTypes.func.isRequired,
   map: PropTypes.object,
   resetFisheries: PropTypes.func.isRequired,

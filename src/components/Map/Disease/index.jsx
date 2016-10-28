@@ -11,10 +11,13 @@ class Disease extends Component {
     this.renderPopup = this.renderPopup.bind(this);
     this.handlePopupOpen = this.handlePopupOpen.bind(this);
     this.handlePopupClose = this.handlePopupClose.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
   componentDidMount() {
     const { fetchDiseases } = this.props;
     this.layers = [];
+    this.popupOpen = false;
+    this.popupMoving = false;
     fetchDiseases()
      .then(
        () => {
@@ -32,19 +35,20 @@ class Disease extends Component {
     const { diseases, popup } = this.props;
     const nextDiseases = nextProps.diseases;
     const nextPopup = nextProps.popup;
+    if (this.popupMoving && nextPopup !== null) this.popupMoving = false;
     if (!this.popupOpen && nextPopup !== null && popup === null) {
       for (let i = 0; i < this.layers.length; i++) {
         const layer = this.layers[i];
-        if (layer.id === nextPopup) {
+        if (layer.id === nextPopup.id) {
           this.popupOpen = true;
-          layer.openPopup();
+          layer.openPopup(L.latLng(nextPopup.lat, nextPopup.lng));
         }
       }
     }
-    if (this.popupOpen && nextPopup === null && popup !== null) {
+    if (!this.popupMoving && this.popupOpen && nextPopup === null && popup !== null) {
       for (let i = 0; i < this.layers.length; i++) {
         const layer = this.layers[i];
-        if (layer.id === popup) {
+        if (layer.id === popup.id) {
           this.popupOpen = false;
           layer.closePopup();
         }
@@ -61,6 +65,9 @@ class Disease extends Component {
     const { map, resetDiseases } = this.props;
     for (let i = 0; i < this.layers.length; i++) {
       const layer = this.layers[i];
+      layer.removeEventListener('popupopen', this.handlePopupOpen);
+      layer.removeEventListener('popupclose', this.handlePopupClose);
+      layer.removeEventListener('click', this.handleClick);
       layer.removeFrom(map);
     }
     resetDiseases();
@@ -69,16 +76,31 @@ class Disease extends Component {
     const { setPopup } = this.props;
     if (this.popupOpen) return;
     this.popupOpen = true;
-    // TODO: NEED TO DEAL WITH WHERE POPUP SHOWS AND SUBSEQ CLICKS
-    window.console.log(e.popup.getLatLng().lat);
-    window.console.log(e.popup.getLatLng().lng);
-    setPopup(e.target.id);
+    const latLng = e.popup.getLatLng();
+    setPopup({
+      id: e.target.id,
+      lat: latLng.lat,
+      lng: latLng.lng,
+    });
   }
   handlePopupClose() {
     const { removePopup } = this.props;
     if (!this.popupOpen) return;
     this.popupOpen = false;
     removePopup();
+  }
+  handleClick(e) {
+    const { popup, setPopup } = this.props;
+    const lat = e.latlng.lat;
+    const lng = e.latlng.lng;
+    if (lat === popup.lat && lng === popup.lng) return;
+    this.popupMoving = true;
+    setPopup(null);
+    setPopup({
+      id: e.target.id,
+      lat,
+      lng,
+    });
   }
   renderPopup() {
     return (`
@@ -105,6 +127,7 @@ class Disease extends Component {
           { autoPan: false });
         layer.addEventListener('popupopen', this.handlePopupOpen);
         layer.addEventListener('popupclose', this.handlePopupClose);
+        layer.addEventListener('click', this.handleClick);
         this.layers.push(layer);
       }
     );
@@ -117,7 +140,7 @@ Disease.propTypes = {
   diseases: PropTypes.array.isRequired,
   fetchDiseases: PropTypes.func.isRequired,
   map: PropTypes.object.isRequired,
-  popup: PropTypes.string,
+  popup: PropTypes.object,
   removePopup: PropTypes.func.isRequired,
   resetDiseases: PropTypes.func.isRequired,
   setPopup: PropTypes.func.isRequired,

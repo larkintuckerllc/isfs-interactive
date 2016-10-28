@@ -7,7 +7,7 @@ const reducerMountPoint = 'popup';
 export const SET_POPUP = `${ACTION_PREFIX}SET_POPUP`;
 // ACTION CREATOR VALIDATORS
 const validPopup = value =>
-  !(value === undefined || typeof value !== 'string');
+  !(value === undefined || typeof value !== 'object');
 // SCHEMA
 // REDUCERS
 export default (state = null, action) => {

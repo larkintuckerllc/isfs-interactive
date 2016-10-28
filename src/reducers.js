@@ -16,6 +16,7 @@ import drawingColor from './ducks/drawingColor';
 import thr0wCapture from './ducks/thr0wCapture';
 import captureBlockOpen from './ducks/captureBlockOpen';
 import fisheries from './ducks/fisheries';
+import diseases from './ducks/diseases';
 import popup from './ducks/popup';
 
 export default combineReducers({
@@ -36,5 +37,6 @@ export default combineReducers({
   thr0wCapture,
   captureBlockOpen,
   fisheries,
+  diseases,
   popup,
 });

@@ -55,11 +55,11 @@ class Fisheries extends Component {
     if (fisheries.length === 0 && nextFisheries.length !== 0) {
       for (let i = 0; i < nextFisheries.length; i++) {
         const fishery = nextFisheries[i];
-        const catIcon = L.icon({
+        const icon = L.icon({
           iconUrl: `${BASE_URL_UPLOAD}fisheries/markers/${fishery.id}.png`,
           iconSize: [64, 64],
         });
-        const marker = L.marker(fishery.latlng, { icon: catIcon });
+        const marker = L.marker(fishery.latlng, { icon });
         marker.id = fishery.id;
         marker.bindPopup(this.renderPopup(fishery.id, fishery.title,
           fishery.ecology, fishery.economic, fishery.community),

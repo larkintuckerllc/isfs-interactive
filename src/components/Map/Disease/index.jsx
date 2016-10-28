@@ -69,6 +69,9 @@ class Disease extends Component {
     const { setPopup } = this.props;
     if (this.popupOpen) return;
     this.popupOpen = true;
+    // TODO: NEED TO DEAL WITH WHERE POPUP SHOWS AND SUBSEQ CLICKS
+    window.console.log(e.popup.getLatLng().lat);
+    window.console.log(e.popup.getLatLng().lng);
     setPopup(e.target.id);
   }
   handlePopupClose() {

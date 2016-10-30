@@ -4,6 +4,7 @@ import L from 'leaflet';
 import * as fromDiseases from '../../../ducks/diseases';
 import * as fromPopup from '../../../ducks/popup';
 import { getElement } from '../../../api/regions';
+import styles from './index.scss';
 
 class Disease extends Component {
   constructor() {
@@ -57,7 +58,7 @@ class Disease extends Component {
     if (diseases.length === 0 && nextDiseases.length !== 0) {
       for (let i = 0; i < nextDiseases.length; i++) {
         const disease = nextDiseases[i];
-        this.renderRegion(disease.id, disease.color);
+        this.renderRegion(disease);
       }
     }
   }
@@ -102,28 +103,84 @@ class Disease extends Component {
       lng,
     });
   }
-  renderPopup() {
+  renderPopup(disease) {
+    const allHazards = disease['All Hazards'];
     return (`
-      <div>Test</div>
+      <div class="${styles.title}">
+        ${disease.region} - Foodborne Per 100,000 DALYS:
+      </div>
+      <div class="data">
+        <div class="${styles.dataMetric}">
+          <div class="${styles.dataMetricTitle} ${styles.dataMetricTitleChemicals}">Chemicals
+            and Toxins</div>
+          <div class="${styles.dataMetricValue}">
+            <div
+              class="${styles.dataMetricValueContainer}"
+              style="width: ${100 * (disease['Chemicals and Toxins'] / allHazards)}%;"
+            >
+              <div class="${styles.dataMetricValueContainerBar}"/>
+            </div>
+          </div>
+        </div>
+        <div class="${styles.dataMetric}">
+          <div class="${styles.dataMetricTitle} ${styles.dataMetricTitleDiarrheal}">Diarrheal
+            Disease Agents</div>
+          <div class="${styles.dataMetricValue}">
+            <div
+              class="${styles.dataMetricValueContainer}"
+              style="width: ${100 * (disease['Diarrheal Disease Agents'] / allHazards)}%;"
+            >
+              <div class="${styles.dataMetricValueContainerBar}"/>
+            </div>
+          </div>
+        </div>
+        <div class="${styles.dataMetric}">
+          <div class="${styles.dataMetricTitle} ${styles.dataMetricTitleHelminths}">Helminths</div>
+          <div class="${styles.dataMetricValue}">
+            <div
+              class="${styles.dataMetricValueContainer}"
+              style="width: ${100 * (disease.Helminths / allHazards)}%;"
+            >
+              <div class="${styles.dataMetricValueContainerBar}"/>
+            </div>
+          </div>
+        </div>
+        <div class="${styles.dataMetric}">
+          <div class="${styles.dataMetricTitle} ${styles.dataMetricTitleInvasive}">Invasive
+            Infectious Disease Agents</div>
+          <div class="${styles.dataMetricValue}">
+            <div
+              class="${styles.dataMetricValueContainer}"
+              style="width: ${100 * (disease['Invasive Infectious Disease Agents'] / allHazards)}%;"
+            >
+              <div class="${styles.dataMetricValueContainerBar}"/>
+            </div>
+          </div>
+        </div>
+        <div class="${styles.dataScale}">
+          <div class="${styles.dataScaleValueRight}">${allHazards}</div>
+          <div">0</div>
+        </div>
+      </div>
     `);
   }
-  renderRegion(id, color) {
+  renderRegion(disease) {
     const { map } = this.props;
-    getElement(id)
+    getElement(disease.id)
       .then((region) => {
         const layer = L.geoJson(
           region,
           {
-            fillColor: color,
+            fillColor: disease.color,
             weight: 5,
             opacity: 1,
             color: 'rgb(255,255,255)',
             fillOpacity: 0.7,
           }
         );
-        layer.id = id;
+        layer.id = disease.id;
         layer.addTo(map);
-        layer.bindPopup(this.renderPopup(),
+        layer.bindPopup(this.renderPopup(disease),
           { autoPan: false });
         layer.addEventListener('popupopen', this.handlePopupOpen);
         layer.addEventListener('popupclose', this.handlePopupClose);

@@ -108,11 +108,11 @@ class Fisheries extends Component {
   }
   renderPopup(id, title, ecology, economic, community) {
     return (`
-      <div id="${styles.highlight}">
+      <div class="${styles.highlight}">
         <img width=300 height=200 src="${BASE_URL_UPLOAD}fisheries/banners/${id}.jpg" />
-        <div id="${styles.highlightTitle}">${title}</div>
+        <div class="${styles.highlightTitle}">${title}</div>
       </div>
-      <div id="data">
+      <div class="data">
         <div class="${styles.dataMetric}">
           <div class="${styles.dataMetricTitle}">Ecological Performance</div>
           <div class="${styles.dataMetricValue}">
@@ -153,7 +153,7 @@ class Fisheries extends Component {
           </div>
         </div>
         <div class="${styles.dataScale}">
-          <div id="${styles.dataScaleValueGood}">Good</div>
+          <div class="${styles.dataScaleValueRight}">Good</div>
           <div">Poor</div>
         </div>
       </div>

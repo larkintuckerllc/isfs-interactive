@@ -12,6 +12,7 @@ import { SET_DRAWING_OPEN } from './ducks/drawingOpen';
 import { SET_DRAWING_COLOR } from './ducks/drawingColor';
 import { SET_CAPTURE_BLOCK_OPEN } from './ducks/captureBlockOpen';
 import { SET_POPUP } from './ducks/popup';
+import { SET_WAYPOINT } from './ducks/waypoint';
 import { getChannels } from './util/parameters';
 
 export default () => {
@@ -19,7 +20,7 @@ export default () => {
     thunk,
     thr0wMiddleware(['@@router/LOCATION_CHANGE', SET_CAPTURE_BLOCK_OPEN,
       SET_DRAWING_COLOR, SET_DRAWING_OPEN, SET_MAP_VIEW, SET_POPUP, SET_TILE,
-      SET_VIDEO, SET_VIDEO_CURRENT_TIME], getChannels()),
+      SET_VIDEO, SET_VIDEO_CURRENT_TIME, SET_WAYPOINT], getChannels()),
     routerMiddleware(hashHistory),
   ];
   return createStore(

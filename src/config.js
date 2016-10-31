@@ -155,8 +155,8 @@ export const TILES = {
   byId: {
     satellite: {
       id: 'satellite',
-      url: 'http://192.168.1.2:8080/satellite/{z}/{y}/{x}',
-      // url: 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
+      // url: 'http://192.168.1.2:8080/satellite/{z}/{y}/{x}',
+      url: 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
       bg: 'rgb(0,0,0)',
     },
     topo: {
@@ -216,6 +216,6 @@ export const SAVER_WAYPOINTS = [{
   lat: -12,
   lng: -60,
 }];
-export const SAVER_DURATION = 120;
-export const SAVER_DELAY = 180;
+export const SAVER_DURATION = 240;
+export const SAVER_DELAY = 300;
 export const SAVER_ZOOM = 7;

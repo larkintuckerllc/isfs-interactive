@@ -6,6 +6,7 @@ import * as fromReactRouterRedux from 'react-router-redux';
 import * as fromMapView from '../../ducks/mapView';
 import { getDrawingOpen } from '../../ducks/drawingOpen';
 import * as fromTile from '../../ducks/tile';
+import * as fromIdle from '../../ducks/idle';
 import * as fromTilesOpen from '../../ducks/tilesOpen';
 import * as fromLayersOpen from '../../ducks/layersOpen';
 import {
@@ -113,6 +114,8 @@ class Map extends Component {
   handleTouchStart(e) {
     e.stopPropagation();
     if (e.touches.length !== 1) return;
+    const { setIdle } = this.props;
+    setIdle(false);
     this.moving = true;
     this.zooming = false;
     this.touchOneLastX = (e.touches[0].pageX * this.scale) + this.visibleContentLeft;
@@ -273,7 +276,7 @@ class Map extends Component {
       .style.backgroundColor = tile.bg;
   }
   render() {
-    const { children, drawingOpen, location: { pathname }, layersOpen, push, setLayersOpen,
+    const { children, drawingOpen, location: { pathname }, layersOpen, push, setIdle, setLayersOpen,
       setTile, setTilesOpen, tile, tilesOpen } = this.props;
     let layer = pathname.substring(5);
     layer = layer === '' ? 'none' : layer;
@@ -284,7 +287,10 @@ class Map extends Component {
             <div
               id={styles.rootLayer}
               style={{ left: getLeftBottom() }}
-              onClick={() => setLayersOpen(!layersOpen)}
+              onClick={() => {
+                setIdle(false);
+                setLayersOpen(!layersOpen);
+              }}
             >
               <img src={buttonIcons[layer]} width="100" height="100" alt={layer} />
             </div>
@@ -301,6 +307,7 @@ class Map extends Component {
                   key={id}
                   className={styles.button}
                   onClick={() => {
+                    setIdle(false);
                     const path = id === 'none' ? '' : id;
                     push(`/map/${path}`);
                     setLayersOpen(false);
@@ -314,7 +321,10 @@ class Map extends Component {
             <div
               id={styles.rootTile}
               style={{ left: getLeftBottom() }}
-              onClick={() => setTilesOpen(!tilesOpen)}
+              onClick={() => {
+                setIdle(false);
+                setTilesOpen(!tilesOpen);
+              }}
             >
               <img src={buttonIcons[tile.id]} width="100" height="100" alt={tile.id} />
             </div>
@@ -331,6 +341,7 @@ class Map extends Component {
                   key={id}
                   className={styles.button}
                   onClick={() => {
+                    setIdle(false);
                     setTile(TILES.byId[id]);
                     setTilesOpen(false);
                   }}
@@ -354,6 +365,7 @@ Map.propTypes = {
   location: PropTypes.object.isRequired,
   mapView: PropTypes.object.isRequired,
   push: PropTypes.func.isRequired,
+  setIdle: PropTypes.func.isRequired,
   setLayersOpen: PropTypes.func.isRequired,
   setMapView: PropTypes.func.isRequired,
   setTile: PropTypes.func.isRequired,
@@ -371,6 +383,7 @@ export default connect(
   }),
   {
     push: fromReactRouterRedux.push,
+    setIdle: fromIdle.setIdle,
     setLayersOpen: fromLayersOpen.setLayersOpen,
     setMapView: fromMapView.setMapView,
     setTile: fromTile.setTile,

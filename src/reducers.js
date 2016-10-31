@@ -18,6 +18,7 @@ import captureBlockOpen from './ducks/captureBlockOpen';
 import fisheries from './ducks/fisheries';
 import diseases from './ducks/diseases';
 import popup from './ducks/popup';
+import waypoint from './ducks/waypoint';
 
 export default combineReducers({
   form: formReducer,
@@ -39,4 +40,5 @@ export default combineReducers({
   fisheries,
   diseases,
   popup,
+  waypoint,
 });

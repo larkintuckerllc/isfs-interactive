@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import * as fromReactRouterRedux from 'react-router-redux';
-import * as fromMapView from '../../ducks/mapView';
+import * as fromWaypoint from '../../ducks/waypoint';
 import * as fromTile from '../../ducks/tile';
+import { SAVER_DURATION, SAVER_WAYPOINTS, SAVER_ZOOM } from '../../config';
 import {
   frameXYToContentXY,
   getContentHeight,
@@ -17,7 +18,7 @@ import styles from './index.scss';
 
 class Saver extends Component {
   componentWillMount() {
-    const { mapView, tile } = this.props;
+    const { waypoint, tile } = this.props;
     this.contentCenterX = getContentWidth() / 2;
     this.contentCenterY = getContentHeight() / 2;
     this.scale = getScale();
@@ -52,23 +53,24 @@ class Saver extends Component {
     frameContentContainPositionEl.id = styles.frameContentContainPosition;
     this.frameContentContainEl.appendChild(frameContentContainPositionEl);
     this.position = L.map(styles.frameContentContainPosition);
-    this.positionMap(mapView);
+    this.positionMap(waypoint, false);
     this.changeTile(tile);
   }
-  componentWillUpdate({ mapView, tile }) {
+  componentWillUpdate({ waypoint, tile }) {
     const oldTile = this.props.tile;
     if (tile !== oldTile) this.changeTile(tile);
-    this.positionMap(mapView);
+    this.positionMap(waypoint, true);
   }
   componentWillUnmount() {
     this.map.remove();
     this.position.remove();
     this.frameContentEl.removeChild(this.frameContentContainEl);
   }
-  positionMap(view) {
+  positionMap(waypoint, animate) {
+    const latLng = SAVER_WAYPOINTS[waypoint];
     this.position.setView(
-      L.latLng(view.center.lat, view.center.lng),
-      view.zoom,
+      L.latLng(latLng.lat, latLng.lng),
+      SAVER_ZOOM,
       { animate: false }
     );
     this.map.setView(
@@ -78,8 +80,11 @@ class Saver extends Component {
           this.visibleContentTop + (this.frameHeight / 2)
         )
       ),
-      view.zoom,
-      { animate: false }
+      SAVER_ZOOM,
+      {
+        animate,
+        duration: SAVER_DURATION,
+      }
     );
   }
   changeTile(tile) {
@@ -98,20 +103,20 @@ class Saver extends Component {
   }
 }
 Saver.propTypes = {
-  mapView: PropTypes.object.isRequired,
+  waypoint: PropTypes.number.isRequired,
   push: PropTypes.func.isRequired,
-  setMapView: PropTypes.func.isRequired,
+  setWaypoint: PropTypes.func.isRequired,
   setTile: PropTypes.func.isRequired,
   tile: PropTypes.object.isRequired,
 };
 export default connect(
   state => ({
-    mapView: fromMapView.getMapView(state),
+    waypoint: fromWaypoint.getWaypoint(state),
     tile: fromTile.getTile(state),
   }),
   {
     push: fromReactRouterRedux.push,
-    setMapView: fromMapView.setMapView,
+    setWaypoint: fromWaypoint.setWaypoint,
     setTile: fromTile.setTile,
   }
 )(Saver);

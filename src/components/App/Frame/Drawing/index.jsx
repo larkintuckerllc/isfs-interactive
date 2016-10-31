@@ -8,6 +8,7 @@ import { frameXYToContentXY, getFrameWidth,
 import * as fromDrawingOpen from '../../../../ducks/drawingOpen';
 import * as fromDrawingColor from '../../../../ducks/drawingColor';
 import * as fromThr0wCapture from '../../../../ducks/thr0wCapture';
+import * as fromIdle from '../../../../ducks/idle';
 import { getChannel } from '../../../../ducks/channel';
 import { getCaptureBlockOpen } from '../../../../ducks/captureBlockOpen';
 import styles from './index.scss';
@@ -69,6 +70,8 @@ class Drawing extends Component {
   }
   handleTouchStart(e) {
     if (e.touches.length !== 1) return;
+    const { setIdle } = this.props;
+    setIdle(false);
     this.lastX = e.touches[0].pageX * this.scale;
     this.lastY = e.touches[0].pageY * this.scale;
   }
@@ -243,6 +246,7 @@ Drawing.propTypes = {
   removeThr0wCapture: PropTypes.func.isRequired,
   setDrawingColor: PropTypes.func.isRequired,
   setDrawingOpen: PropTypes.func.isRequired,
+  setIdle: PropTypes.func.isRequired,
   thr0wCapture: PropTypes.object,
 };
 export default connect(
@@ -256,5 +260,6 @@ export default connect(
     removeThr0wCapture: fromThr0wCapture.removeThr0wCapture,
     setDrawingColor: fromDrawingColor.setDrawingColor,
     setDrawingOpen: fromDrawingOpen.setDrawingOpen,
+    setIdle: fromIdle.setIdle,
   }
 )(Drawing);

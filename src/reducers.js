@@ -19,6 +19,7 @@ import fisheries from './ducks/fisheries';
 import diseases from './ducks/diseases';
 import popup from './ducks/popup';
 import waypoint from './ducks/waypoint';
+import idle from './ducks/idle';
 
 export default combineReducers({
   form: formReducer,
@@ -41,4 +42,5 @@ export default combineReducers({
   diseases,
   popup,
   waypoint,
+  idle,
 });

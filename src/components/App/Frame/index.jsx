@@ -5,11 +5,12 @@ import { getChannel } from '../../../ducks/channel';
 import * as fromModesOpen from '../../../ducks/modesOpen';
 import { BASE_URL_APP, MODES } from '../../../config';
 import { grid } from '../../../util/grid';
-import { getMatrix, getDimensions, getModeId,
+import { getMasterChannel, getMatrix, getDimensions, getModeId,
   getLeftBottom, getMenu } from '../../../util/parameters';
 import { getTile } from '../../../ducks/tile';
 import { getDrawingOpen } from '../../../ducks/drawingOpen';
 import { getMapView } from '../../../ducks/mapView';
+import * as fromIdle from '../../../ducks/idle';
 import styles from './index.scss';
 import single from './img/single.png';
 import quad from './img/quad.png';
@@ -25,6 +26,7 @@ const buttonIcons = {
 class Frame extends Component {
   constructor() {
     super();
+    this.checkIdle = this.checkIdle.bind(this);
     this.handleModeClick = this.handleModeClick.bind(this);
   }
   componentWillMount() {
@@ -32,6 +34,21 @@ class Frame extends Component {
     const frameEl = document.getElementById('frame');
     const frameContentEl = document.getElementById('frame__content');
     grid(channel, frameEl, frameContentEl, getMatrix(), getDimensions());
+    if (channel === getMasterChannel()) {
+      window.setInterval(this.checkIdle, 5000);
+    }
+  }
+  checkIdle() {
+    const { idle, location: { pathname }, setIdle } = this.props;
+    if (pathname === '/' || pathname === '/image') return;
+    if (!idle) {
+      setIdle(true);
+    } else {
+      thr0w([10, 11, 12, 13, 14, 15, 16, 17, 18, 19], {
+        action: 'update',
+        url: `${BASE_URL_APP}`,
+      });
+    }
   }
   handleModeClick(id) {
     const { location: { pathname }, tile, mapView } = this.props;
@@ -138,9 +155,11 @@ Frame.propTypes = {
   channel: PropTypes.number.isRequired,
   children: PropTypes.node,
   drawingOpen: PropTypes.bool.isRequired,
+  idle: PropTypes.bool.isRequired,
   location: PropTypes.object.isRequired,
   mapView: PropTypes.object.isRequired,
   modesOpen: PropTypes.bool.isRequired,
+  setIdle: PropTypes.func.isRequired,
   setModesOpen: PropTypes.func.isRequired,
   tile: PropTypes.object.isRequired,
 };
@@ -148,10 +167,12 @@ export default connect(
   state => ({
     channel: getChannel(state),
     drawingOpen: getDrawingOpen(state),
+    idle: fromIdle.getIdle(state),
     modesOpen: fromModesOpen.getModesOpen(state),
     tile: getTile(state),
     mapView: getMapView(state),
   }), {
+    setIdle: fromIdle.setIdle,
     setModesOpen: fromModesOpen.setModesOpen,
   }
 )(Frame);

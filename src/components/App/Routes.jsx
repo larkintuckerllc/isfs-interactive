@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { hashHistory, Route, Router } from 'react-router';
+import { hashHistory, IndexRoute, Route, Router } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import Frame from './Frame';
 import Image from '../Image';
@@ -12,6 +12,7 @@ import Saver from '../Saver';
 const Routes = (props, { store }) => (
   <Router history={syncHistoryWithStore(hashHistory, store)}>
     <Route path="/" component={Frame}>
+      <IndexRoute component={Saver} />
       <Route path="saver" component={Saver} />
       <Route path="image" component={Image} />
       <Route path="map" component={Map}>

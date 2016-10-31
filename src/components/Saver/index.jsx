@@ -2,26 +2,28 @@ import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import * as fromReactRouterRedux from 'react-router-redux';
+import { getMasterChannel } from '../../util/parameters';
+import { thr0w } from '../../api/thr0w';
+import { getChannel } from '../../ducks/channel';
 import * as fromWaypoint from '../../ducks/waypoint';
 import * as fromTile from '../../ducks/tile';
-import { SAVER_DURATION, SAVER_WAYPOINTS, SAVER_ZOOM } from '../../config';
+import { BASE_URL_APP, SAVER_DELAY,
+  SAVER_DURATION, SAVER_WAYPOINTS, SAVER_ZOOM } from '../../config';
 import {
   frameXYToContentXY,
-  getContentHeight,
-  getContentWidth,
   getFrameHeight,
   getFrameWidth,
-  getScale,
 } from '../../util/grid';
 import styles from './index.scss';
 
 class Saver extends Component {
+  constructor() {
+    super();
+    this.animate = this.animate.bind(this);
+    this.handleTouchStart = this.handleTouchStart.bind(this);
+  }
   componentWillMount() {
-    const { waypoint, tile } = this.props;
-    this.contentCenterX = getContentWidth() / 2;
-    this.contentCenterY = getContentHeight() / 2;
-    this.scale = getScale();
+    const { channel, tile, waypoint } = this.props;
     this.visibleContentLeft = frameXYToContentXY([0, 0])[0];
     this.visibleContentTop = frameXYToContentXY([0, 0])[1];
     this.frameWidth = getFrameWidth();
@@ -29,6 +31,7 @@ class Saver extends Component {
     const frameContentContainPositionEl = document.createElement('div');
     const frameContentContainMapEl = document.createElement('div');
     this.frameContentEl = document.getElementById('frame__content');
+    this.frameContentEl.addEventListener('touchstart', this.handleTouchStart);
     // CREATE CONTAINER
     this.frameContentContainEl = document.createElement('div');
     this.frameContentContainEl.id = styles.frameContentContain;
@@ -50,21 +53,43 @@ class Saver extends Component {
       }
     );
     // CREATE POSITION
+    // NEED TO HANDLE CLICK
+    this.map.addEventListener('touchstart', () => { window.console.log('click'); });
     frameContentContainPositionEl.id = styles.frameContentContainPosition;
     this.frameContentContainEl.appendChild(frameContentContainPositionEl);
     this.position = L.map(styles.frameContentContainPosition);
     this.positionMap(waypoint, false);
     this.changeTile(tile);
+    if (channel === getMasterChannel()) {
+      this.animateInterval = window.setInterval(this.animate, SAVER_DELAY * 1000);
+    }
   }
   componentWillUpdate({ waypoint, tile }) {
     const oldTile = this.props.tile;
     if (tile !== oldTile) this.changeTile(tile);
-    this.positionMap(waypoint, true);
+    this.positionMap(waypoint, false);
   }
   componentWillUnmount() {
+    window.clearInterval(this.animateInterval);
     this.map.remove();
     this.position.remove();
     this.frameContentEl.removeChild(this.frameContentContainEl);
+    this.frameContentEl.removeEventListener('touchstart', this.handleTouchStart);
+  }
+  handleTouchStart() {
+    thr0w([10, 11, 12, 13, 14, 15, 16, 17, 18, 19], {
+      action: 'update',
+      url: [
+        BASE_URL_APP,
+        '?mode=full',
+        '#map',
+      ].join(''),
+    });
+  }
+  animate() {
+    const { setWaypoint, waypoint } = this.props;
+    const nextWaypoint = waypoint < SAVER_WAYPOINTS.length - 1 ? waypoint + 1 : 0;
+    setWaypoint(nextWaypoint);
   }
   positionMap(waypoint, animate) {
     const latLng = SAVER_WAYPOINTS[waypoint];
@@ -103,19 +128,19 @@ class Saver extends Component {
   }
 }
 Saver.propTypes = {
+  channel: PropTypes.number.isRequired,
   waypoint: PropTypes.number.isRequired,
-  push: PropTypes.func.isRequired,
   setWaypoint: PropTypes.func.isRequired,
   setTile: PropTypes.func.isRequired,
   tile: PropTypes.object.isRequired,
 };
 export default connect(
   state => ({
+    channel: getChannel(state),
     waypoint: fromWaypoint.getWaypoint(state),
     tile: fromTile.getTile(state),
   }),
   {
-    push: fromReactRouterRedux.push,
     setWaypoint: fromWaypoint.setWaypoint,
     setTile: fromTile.setTile,
   }

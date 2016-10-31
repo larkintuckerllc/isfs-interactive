@@ -3,8 +3,8 @@ const BASE = `${window.location.protocol}//${window.location.hostname}`;
 export const BASE_URL_APP = `${BASE}:${window.location.port}${window.location.pathname}`;
 export const BASE_URL_HTTP = `${BASE}:3000`;
 export const BASE_URL_SOCKET = `${BASE}:3001`;
-// export const BASE_URL_UPLOAD = '/upload/larkintuckerllc-isfs-interactive/';
-export const BASE_URL_UPLOAD = 'http://localhost:8081/upload/larkintuckerllc-isfs-interactive/';
+export const BASE_URL_UPLOAD = '/upload/larkintuckerllc-isfs-interactive/';
+// export const BASE_URL_UPLOAD = 'http://localhost:8081/upload/larkintuckerllc-isfs-interactive/';
 export const VIDEO_MAX_DRIFT = 0.02;
 export const VIDEO_NETWORK_DELAY = 0.015;
 export const VIDEO_INITIAL_RESTART_DELAY = 0.1;
@@ -155,8 +155,8 @@ export const TILES = {
   byId: {
     satellite: {
       id: 'satellite',
-//      url: 'http://192.168.1.2:8080/satellite/{z}/{y}/{x}',
-      url: 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
+      url: 'http://192.168.1.2:8080/satellite/{z}/{y}/{x}',
+      // url: 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
       bg: 'rgb(0,0,0)',
     },
     topo: {
@@ -217,5 +217,5 @@ export const SAVER_WAYPOINTS = [{
   lng: -60,
 }];
 export const SAVER_DURATION = 30;
-export const SAVER_DELAY = 40;
+export const SAVER_DELAY = 5;
 export const SAVER_ZOOM = 7;

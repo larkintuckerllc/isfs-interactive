@@ -7,10 +7,12 @@ import Map from '../Map';
 import Trade from '../Map/Trade';
 import Disease from '../Map/Disease';
 import Fisheries from '../Map/Fisheries';
+import Saver from '../Saver';
 
 const Routes = (props, { store }) => (
   <Router history={syncHistoryWithStore(hashHistory, store)}>
     <Route path="/" component={Frame}>
+      <Route path="saver" component={Saver} />
       <Route path="image" component={Image} />
       <Route path="map" component={Map}>
         <Route path="trade" component={Trade} />

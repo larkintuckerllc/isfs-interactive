@@ -20,7 +20,7 @@ const parseQueryString = () => {
   return parsed;
 };
 let modeId = parseQueryString().mode;
-modeId = modeId !== undefined ? modeId : 'single';
+modeId = modeId !== undefined ? modeId : 'fullNoMenu';
 const mode = MODE_BY_ID[modeId];
 const tile = parseQueryString().tile;
 const lat = parseQueryString().lat;

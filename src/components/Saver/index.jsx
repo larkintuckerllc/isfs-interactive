@@ -53,7 +53,6 @@ class Saver extends Component {
       }
     );
     // CREATE POSITION
-    // NEED TO HANDLE CLICK
     this.map.addEventListener('touchstart', () => { window.console.log('click'); });
     frameContentContainPositionEl.id = styles.frameContentContainPosition;
     this.frameContentContainEl.appendChild(frameContentContainPositionEl);
@@ -67,7 +66,7 @@ class Saver extends Component {
   componentWillUpdate({ waypoint, tile }) {
     const oldTile = this.props.tile;
     if (tile !== oldTile) this.changeTile(tile);
-    this.positionMap(waypoint, false);
+    this.positionMap(waypoint, true);
   }
   componentWillUnmount() {
     window.clearInterval(this.animateInterval);

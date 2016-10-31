@@ -216,6 +216,6 @@ export const SAVER_WAYPOINTS = [{
   lat: -12,
   lng: -60,
 }];
-export const SAVER_DURATION = 30;
-export const SAVER_DELAY = 5;
+export const SAVER_DURATION = 120;
+export const SAVER_DELAY = 180;
 export const SAVER_ZOOM = 7;

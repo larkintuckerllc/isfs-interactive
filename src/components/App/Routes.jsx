@@ -8,6 +8,7 @@ import Trade from '../Map/Trade';
 import Disease from '../Map/Disease';
 import Fisheries from '../Map/Fisheries';
 import Saver from '../Saver';
+import Obesity from '../Map/Obesity';
 
 const Routes = (props, { store }) => (
   <Router history={syncHistoryWithStore(hashHistory, store)}>
@@ -18,6 +19,7 @@ const Routes = (props, { store }) => (
         <Route path="trade" component={Trade} />
         <Route path="disease" component={Disease} />
         <Route path="fisheries" component={Fisheries} />
+        <Route path="obesity" component={Obesity} />
       </Route>
     </Route>
   </Router>

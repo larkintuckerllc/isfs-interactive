@@ -147,9 +147,9 @@ export const MIN_LAT = -85;
 export const HAND_WIDTH = 400;
 export const LAYERS = [
   'none',
-  'disease',
-  'trade',
   'fisheries',
+  'disease',
+  'obesity',
 ];
 export const TILES = {
   byId: {
@@ -222,3 +222,4 @@ export const SAVER_CHECK = 60;
 export const SAVER_START = 8;
 export const SAVER_END = 17;
 export const SAVER_ZOOM = 7;
+export const SAVER_TIMEOUT = 60 * 60;

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { thr0w } from '../../../api/thr0w';
 import { getChannel } from '../../../ducks/channel';
 import * as fromModesOpen from '../../../ducks/modesOpen';
-import { BASE_URL_APP, MODES } from '../../../config';
+import { BASE_URL_APP, MODES, SAVER_TIMEOUT } from '../../../config';
 import { grid } from '../../../util/grid';
 import { getMasterChannel, getMatrix, getDimensions, getModeId,
   getLeftBottom, getMenu } from '../../../util/parameters';
@@ -35,7 +35,7 @@ class Frame extends Component {
     const frameContentEl = document.getElementById('frame__content');
     grid(channel, frameEl, frameContentEl, getMatrix(), getDimensions());
     if (channel === getMasterChannel()) {
-      window.setInterval(this.checkIdle, 5000);
+      window.setInterval(this.checkIdle, SAVER_TIMEOUT * 1000);
     }
   }
   checkIdle() {

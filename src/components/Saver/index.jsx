@@ -7,8 +7,8 @@ import { thr0w } from '../../api/thr0w';
 import { getChannel } from '../../ducks/channel';
 import * as fromWaypoint from '../../ducks/waypoint';
 import * as fromTile from '../../ducks/tile';
-import { BASE_URL_APP, SAVER_DELAY,
-  SAVER_DURATION, SAVER_WAYPOINTS, SAVER_ZOOM } from '../../config';
+import { BASE_URL_APP, SAVER_CHECK, SAVER_DELAY,
+  SAVER_DURATION, SAVER_WAYPOINTS, SAVER_ZOOM, SAVER_START, SAVER_END, TILES } from '../../config';
 import {
   frameXYToContentXY,
   getFrameHeight,
@@ -20,6 +20,7 @@ class Saver extends Component {
   constructor() {
     super();
     this.animate = this.animate.bind(this);
+    this.checkTime = this.checkTime.bind(this);
     this.handleTouchStart = this.handleTouchStart.bind(this);
   }
   componentWillMount() {
@@ -61,15 +62,20 @@ class Saver extends Component {
     this.changeTile(tile);
     if (channel === getMasterChannel()) {
       this.animateInterval = window.setInterval(this.animate, SAVER_DELAY * 1000);
+      this.checkTimeInterval = window.setInterval(this.checkTime, SAVER_CHECK * 1000);
     }
   }
   componentWillUpdate({ waypoint, tile }) {
     const oldTile = this.props.tile;
-    if (tile !== oldTile) this.changeTile(tile);
+    if (tile.id !== oldTile.id) this.changeTile(tile);
     this.positionMap(waypoint, true);
   }
   componentWillUnmount() {
-    window.clearInterval(this.animateInterval);
+    const { channel } = this.props;
+    if (channel === getMasterChannel()) {
+      window.clearInterval(this.checkTimeInterval);
+      window.clearInterval(this.animateInterval);
+    }
     this.map.remove();
     this.position.remove();
     this.frameContentEl.removeChild(this.frameContentContainEl);
@@ -89,6 +95,15 @@ class Saver extends Component {
     const { setWaypoint, waypoint } = this.props;
     const nextWaypoint = waypoint < SAVER_WAYPOINTS.length - 1 ? waypoint + 1 : 0;
     setWaypoint(nextWaypoint);
+  }
+  checkTime() {
+    const { setTile, tile } = this.props;
+    const hour = (new Date()).getHours();
+    const newTileId = hour >= SAVER_START && hour <= SAVER_END ?
+      'satellite' : 'lights';
+    if (newTileId !== tile.id) {
+      setTile(TILES.byId[newTileId]);
+    }
   }
   positionMap(waypoint, animate) {
     const latLng = SAVER_WAYPOINTS[waypoint];

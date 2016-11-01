@@ -218,4 +218,7 @@ export const SAVER_WAYPOINTS = [{
 }];
 export const SAVER_DURATION = 240;
 export const SAVER_DELAY = 300;
+export const SAVER_CHECK = 60;
+export const SAVER_START = 8;
+export const SAVER_END = 17;
 export const SAVER_ZOOM = 7;

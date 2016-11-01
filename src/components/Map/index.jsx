@@ -99,7 +99,7 @@ class Map extends Component {
   }
   componentWillUpdate({ mapView, tile }) {
     const oldTile = this.props.tile;
-    if (tile !== oldTile) this.changeTile(tile);
+    if (tile.id !== oldTile.id) this.changeTile(tile);
     this.positionMap(mapView);
   }
   componentWillUnmount() {

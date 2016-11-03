@@ -14,8 +14,8 @@ export const FETCH_OBESITY_ERROR = `${ACTION_PREFIX}FETCH_OBESITY_ERROR`;
 export const RESET_FETCH_OBESITY_ERROR = `${ACTION_PREFIX}RESET_FETCH_OBESITY_ERROR`;
 export const RESET_OBESITY = `${ACTION_PREFIX}RESET_OBESITY`;
 // SCHEMA
-const diseaseSchema = new Schema('obesity');
-const obesitySchema = arrayOf(diseaseSchema);
+const elementSchema = new Schema('obesity');
+const obesitySchema = arrayOf(elementSchema);
 // REDUCERS
 const byId = (state = {}, action) => {
   switch (action.type) {

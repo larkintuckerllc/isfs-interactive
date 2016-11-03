@@ -33,6 +33,9 @@ import trade from './img/trade.png';
 import fisheries from './img/fisheries.png';
 import topo from './img/topo.png';
 import obesity from './img/obesity.png';
+import inadequate from './img/inadequate.png';
+import under from './img/under.png';
+import overweight from './img/overweight.png';
 
 const buttonIcons = {
   satellite,
@@ -47,6 +50,9 @@ const buttonIcons = {
   disease,
   fisheries,
   obesity,
+  inadequate,
+  under,
+  overweight,
 };
 class Map extends Component {
   constructor() {

@@ -155,6 +155,9 @@ export const LAYERS = [
   'fisheries',
   'disease',
   'obesity',
+  'overweight',
+  'inadequate',
+  'under',
 ];
 export const TILES = {
   byId: {

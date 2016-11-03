@@ -9,6 +9,9 @@ import Disease from '../Map/Disease';
 import Fisheries from '../Map/Fisheries';
 import Saver from '../Saver';
 import Obesity from '../Map/Obesity';
+import Overweight from '../Map/Overweight';
+import Under from '../Map/Under';
+import Inadequate from '../Map/Inadequate';
 
 const Routes = (props, { store }) => (
   <Router history={syncHistoryWithStore(hashHistory, store)}>
@@ -20,6 +23,9 @@ const Routes = (props, { store }) => (
         <Route path="disease" component={Disease} />
         <Route path="fisheries" component={Fisheries} />
         <Route path="obesity" component={Obesity} />
+        <Route path="overweight" component={Overweight} />
+        <Route path="under" component={Under} />
+        <Route path="inadequate" component={Inadequate} />
       </Route>
     </Route>
   </Router>

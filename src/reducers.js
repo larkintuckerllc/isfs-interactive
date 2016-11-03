@@ -21,6 +21,9 @@ import popup from './ducks/popup';
 import waypoint from './ducks/waypoint';
 import idle from './ducks/idle';
 import obesity from './ducks/obesity';
+import overweight from './ducks/overweight';
+import under from './ducks/under';
+import inadequate from './ducks/inadequate';
 
 export default combineReducers({
   form: formReducer,
@@ -45,4 +48,7 @@ export default combineReducers({
   waypoint,
   idle,
   obesity,
+  overweight,
+  inadequate,
+  under,
 });

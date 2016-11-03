@@ -7,7 +7,7 @@ const reducerMountPoint = 'video';
 export const SET_VIDEO = `${ACTION_PREFIX}SET_VIDEO`;
 // ACTION CREATOR VALIDATORS
 const validVideo = value =>
-  !(value === undefined || typeof value !== 'string');
+  !(value === undefined || typeof value !== 'object');
 // SCHEMA
 // REDUCERS
 export default (state = null, action) => {

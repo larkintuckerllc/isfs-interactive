@@ -12,6 +12,7 @@ class Video extends Component {
   constructor() {
     super();
     this.handleInterval = this.handleInterval.bind(this);
+    this.handleEnded = this.handleEnded.bind(this);
     this.videoRestartDelay = VIDEO_INITIAL_RESTART_DELAY;
   }
   componentWillReceiveProps({ videoCurrentTime }) {
@@ -30,7 +31,8 @@ class Video extends Component {
     const { video } = this.props;
     const nextVideo = nextProps.video;
     return (
-      video !== nextVideo
+      (video === null && nextVideo !== null) ||
+        (video !== null && nextVideo === null)
     );
   }
   componentWillUpdate(nextProps) {
@@ -45,12 +47,20 @@ class Video extends Component {
     const { channel, video } = this.props;
     if (prevVideo !== null || video === null) return;
     this.rootBlockingVideoEl = document.getElementById(styles.rootBlockingVideo);
+    if (video.close) {
+      this.rootBlockingVideoEl.addEventListener('ended', this.handleEnded);
+    }
     if (channel !== getMasterChannel()) return;
     this.interval = window.setInterval(this.handleInterval, 1000);
   }
   handleInterval() {
     const { setVideoCurrentTime } = this.props;
     setVideoCurrentTime(this.rootBlockingVideoEl.currentTime);
+  }
+  handleEnded() {
+    const { removeVideo } = this.props;
+    this.rootBlockingVideoEl.removeEventListener('ended', this.handleEnded);
+    removeVideo();
   }
   render() {
     const { removeVideo, video } = this.props;
@@ -66,7 +76,7 @@ class Video extends Component {
             onClick={(e) => { e.stopPropagation(); }}
             autoPlay
           >
-            <source src={video} type="video/mp4" />
+            <source src={video.src} type="video/mp4" />
           </video>
         </div>
       ) : null

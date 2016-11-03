@@ -30,7 +30,10 @@ class Fisheries extends Component {
           }
         }
       );
-    setVideo('/upload/larkintuckerllc-isfs-interactive/animation.mp4');
+    setVideo({
+      src: '/upload/larkintuckerllc-isfs-interactive/fisheries.mp4',
+      close: true,
+    });
   }
   componentWillUpdate(nextProps) {
     const { fisheries, map, popup } = this.props;

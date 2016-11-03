@@ -1,18 +1,3 @@
-#rootBlocking {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  z-index: 2000;
-  left: 0px;
-  top: 0px;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.7);
-}
-#rootBlockingVideo {
-  height: auto;
-}
 #rootMode {
   position: absolute;
   z-index: 1001;

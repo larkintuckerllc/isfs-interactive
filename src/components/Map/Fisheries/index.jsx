@@ -4,7 +4,6 @@ import L from 'leaflet';
 import { BASE_URL_UPLOAD } from '../../../config';
 import * as fromFisheries from '../../../ducks/fisheries';
 import * as fromPopup from '../../../ducks/popup';
-import * as fromVideo from '../../../ducks/video';
 import styles from './index.scss';
 
 class Fisheries extends Component {
@@ -15,7 +14,7 @@ class Fisheries extends Component {
     this.handlePopupClose = this.handlePopupClose.bind(this);
   }
   componentDidMount() {
-    const { fetchFisheries, setVideo } = this.props;
+    const { fetchFisheries } = this.props;
     this.markers = [];
     this.popupOpen = false;
     fetchFisheries()
@@ -30,10 +29,6 @@ class Fisheries extends Component {
           }
         }
       );
-    setVideo({
-      src: '/upload/larkintuckerllc-isfs-interactive/fisheries.mp4',
-      close: true,
-    });
   }
   componentWillUpdate(nextProps) {
     const { fisheries, map, popup } = this.props;
@@ -176,7 +171,6 @@ Fisheries.propTypes = {
   map: PropTypes.object,
   resetFisheries: PropTypes.func.isRequired,
   setPopup: PropTypes.func.isRequired,
-  setVideo: PropTypes.func.isRequired,
 };
 export default connect(
   state => ({
@@ -187,6 +181,5 @@ export default connect(
     removePopup: fromPopup.removePopup,
     resetFisheries: fromFisheries.resetFisheries,
     setPopup: fromPopup.setPopup,
-    setVideo: fromVideo.setVideo,
   }
 )(Fisheries);

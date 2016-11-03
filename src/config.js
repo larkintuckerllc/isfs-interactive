@@ -231,3 +231,10 @@ export const SAVER_START = 8;
 export const SAVER_END = 17;
 export const SAVER_ZOOM = 7;
 export const SAVER_TIMEOUT = 60 * 60;
+export const VIDEOS = [{
+  id: 'ifas',
+  src: '/upload/larkintuckerllc-isfs-interactive/videos/ifas.mp4',
+}, {
+  id: 'salmon',
+  src: '/upload/larkintuckerllc-isfs-interactive/videos/salmon.mp4',
+}];

@@ -24,6 +24,7 @@ import obesity from './ducks/obesity';
 import overweight from './ducks/overweight';
 import under from './ducks/under';
 import inadequate from './ducks/inadequate';
+import videosOpen from './ducks/videosOpen';
 
 export default combineReducers({
   form: formReducer,
@@ -51,4 +52,5 @@ export default combineReducers({
   overweight,
   inadequate,
   under,
+  videosOpen,
 });

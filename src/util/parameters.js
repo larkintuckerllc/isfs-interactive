@@ -1,4 +1,4 @@
-import { MODE_BY_ID } from '../config';
+import { MODE_BY_ID, SAVER_END, SAVER_START } from '../config';
 import { getChannel } from '../api/thr0w';
 
 const parseQueryString = () => {
@@ -19,6 +19,9 @@ const parseQueryString = () => {
   }
   return parsed;
 };
+const hour = (new Date()).getHours();
+const newTileId = hour >= SAVER_START && hour <= SAVER_END ?
+  'satellite' : 'lights';
 let modeId = parseQueryString().mode;
 modeId = modeId !== undefined ? modeId : 'fullNoMenu';
 const mode = MODE_BY_ID[modeId];
@@ -34,7 +37,8 @@ export const getLeftBottom = () => mode.leftBottom;
 export const getZoomMin = () => mode.zoomMin;
 export const getModeId = () => modeId;
 export const getMenu = () => mode.menu;
-export const getTile = () => (tile !== undefined ? tile : 'satellite');
+export const getTile = () => (tile !== undefined ? tile : newTileId);
 export const getLat = () => (lat !== undefined ? lat : 0);
 export const getLng = () => (lng !== undefined ? lng : 0);
 export const getZoom = () => (zoom !== undefined ? Math.max(zoom, mode.zoomMin) : mode.zoomMin);
+export const getBlockingWidth = () => mode.blockingWidth;

@@ -17,6 +17,7 @@ export const MODES = [
 export const MODE_BY_ID = {
   single: {
     menu: true,
+    blockingWidth: 80,
     zoomMin: 3,
     dimensions: [{
       width: 1080,
@@ -30,6 +31,7 @@ export const MODE_BY_ID = {
   },
   quad: {
     menu: true,
+    blockingWidth: 50,
     masterChannel: 6,
     channels: [6, 7, 8, 9],
     matrix: [
@@ -48,6 +50,7 @@ export const MODE_BY_ID = {
   },
   full: {
     menu: true,
+    blockingWidth: 80,
     masterChannel: 6,
     channels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
     matrix: [
@@ -82,6 +85,7 @@ export const MODE_BY_ID = {
   },
   top: {
     menu: false,
+    blockingWidth: 80,
     masterChannel: 0,
     channels: [0, 1, 2, 3, 4, 5],
     matrix: [
@@ -108,6 +112,7 @@ export const MODE_BY_ID = {
   },
   fullNoMenu: {
     menu: false,
+    blockingWidth: 80,
     masterChannel: 6,
     channels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
     matrix: [
@@ -219,7 +224,7 @@ export const SAVER_WAYPOINTS = [{
 export const SAVER_DURATION = 240;
 export const SAVER_DELAY = 300;
 export const SAVER_CHECK = 60;
-export const SAVER_START = 8;
+export const SAVER_START = 10;
 export const SAVER_END = 17;
 export const SAVER_ZOOM = 7;
 export const SAVER_TIMEOUT = 60 * 60;

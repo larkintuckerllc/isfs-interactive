@@ -5,7 +5,7 @@ import * as fromVideo from '../../../ducks/video';
 import * as fromVideoCurrentTime from '../../../ducks/videoCurrentTime';
 import { VIDEO_NETWORK_DELAY, VIDEO_MAX_DRIFT, VIDEO_RESTART_DELAY_SHIFT,
   VIDEO_INITIAL_RESTART_DELAY } from '../../../config';
-import { getMasterChannel } from '../../../util/parameters';
+import { getMasterChannel, getBlockingWidth } from '../../../util/parameters';
 import styles from './index.scss';
 
 class Video extends Component {
@@ -62,6 +62,7 @@ class Video extends Component {
         >
           <video
             id={styles.rootBlockingVideo}
+            style={{ width: `${getBlockingWidth()}%` }}
             onClick={(e) => { e.stopPropagation(); }}
             autoPlay
           >

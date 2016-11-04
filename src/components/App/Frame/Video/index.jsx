@@ -81,6 +81,7 @@ class Video extends Component {
     setVideosOpen(false);
     setVideo({
       src: v.src,
+      caption: v.caption,
       close: true,
     });
   }
@@ -131,6 +132,15 @@ class Video extends Component {
               autoPlay
             >
               <source src={video.src} type="video/mp4" />
+              { video.caption !== null && (
+                <track
+                  src="{video.caption}"
+                  label="English"
+                  kind="captions"
+                  srcLang="en-us"
+                  default
+                />
+              )}
             </video>
           </div>
         ) : null }

@@ -238,9 +238,11 @@ export const SAVER_ZOOM = 7;
 export const SAVER_TIMEOUT = 60 * 60;
 export const VIDEOS = [{
   id: 'ifas',
+  caption: null,
   src: '/upload/larkintuckerllc-isfs-interactive/videos/ifas.mp4',
 }, {
   id: 'salmon',
+  caption: '/upload/larkintuckerllc-isfs-interactive/videos/salmon.en.vtt',
   src: '/upload/larkintuckerllc-isfs-interactive/videos/salmon.mp4',
 }];
 export const MARQUEE_TEXT = [

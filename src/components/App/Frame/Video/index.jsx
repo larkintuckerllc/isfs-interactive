@@ -134,7 +134,7 @@ class Video extends Component {
               <source src={video.src} type="video/mp4" />
               { video.caption !== null && (
                 <track
-                  src="{video.caption}"
+                  src={video.caption}
                   label="English"
                   kind="captions"
                   srcLang="en-us"

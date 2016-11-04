@@ -17,6 +17,7 @@ export const MODES = [
 export const MODE_BY_ID = {
   single: {
     menu: true,
+    marquee: false,
     blockingWidth: 80,
     zoomMin: 3,
     dimensions: [{
@@ -31,6 +32,7 @@ export const MODE_BY_ID = {
   },
   quad: {
     menu: true,
+    marquee: false,
     blockingWidth: 50,
     masterChannel: 6,
     channels: [6, 7, 8, 9],
@@ -50,6 +52,7 @@ export const MODE_BY_ID = {
   },
   full: {
     menu: true,
+    marquee: true,
     blockingWidth: 80,
     masterChannel: 6,
     channels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -85,6 +88,7 @@ export const MODE_BY_ID = {
   },
   top: {
     menu: false,
+    marquee: true,
     blockingWidth: 80,
     masterChannel: 0,
     channels: [0, 1, 2, 3, 4, 5],
@@ -112,6 +116,7 @@ export const MODE_BY_ID = {
   },
   fullNoMenu: {
     menu: false,
+    marquee: true,
     blockingWidth: 80,
     masterChannel: 6,
     channels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -238,3 +243,10 @@ export const VIDEOS = [{
   id: 'salmon',
   src: '/upload/larkintuckerllc-isfs-interactive/videos/salmon.mp4',
 }];
+export const MARQUEE_TEXT = [
+  'Welcome to the Institute for Sustainable Food Systems. ',
+  'Interested in supplying content for this wall? ',
+  'Contact Jim Anderson.',
+].join('');
+export const MARQUEE_INTERVAL = 120;
+export const MARQUEE_RUN = 60;

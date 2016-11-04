@@ -6,7 +6,7 @@ import * as fromModesOpen from '../../../ducks/modesOpen';
 import { BASE_URL_APP, MODES, SAVER_TIMEOUT } from '../../../config';
 import { grid } from '../../../util/grid';
 import { getMasterChannel, getMatrix, getDimensions, getModeId,
-  getLeftBottom, getMenu } from '../../../util/parameters';
+  getLeftBottom, getMenu, getMarquee } from '../../../util/parameters';
 import { getTile } from '../../../ducks/tile';
 import { getDrawingOpen } from '../../../ducks/drawingOpen';
 import { getMapView } from '../../../ducks/mapView';
@@ -17,6 +17,7 @@ import quad from './img/quad.png';
 import full from './img/full.png';
 import Drawing from './Drawing';
 import Video from './Video';
+import Marquee from './Marquee';
 
 const buttonIcons = {
   single,
@@ -111,6 +112,9 @@ class Frame extends Component {
     const modeId = getModeId();
     return (
       <div>
+        { getMarquee() && (
+          <Marquee />
+        )}
         <Drawing />
         <Video />
         { getMenu() && !drawingOpen && (

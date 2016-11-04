@@ -42,3 +42,4 @@ export const getLat = () => (lat !== undefined ? lat : 0);
 export const getLng = () => (lng !== undefined ? lng : 0);
 export const getZoom = () => (zoom !== undefined ? Math.max(zoom, mode.zoomMin) : mode.zoomMin);
 export const getBlockingWidth = () => mode.blockingWidth;
+export const getMarquee = () => mode.marquee;

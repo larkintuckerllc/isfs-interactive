@@ -46,3 +46,18 @@
   from {width: 0%;}
   to {width: 100%;}
 }
+.contact {
+  margin-top: 20px;
+}
+.contactTitle {
+  font-weight: bold;
+}
+.contactOptions {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+.contactOptionsRead {
+  text-align: center;
+}

@@ -5,6 +5,8 @@ import * as fromDiseases from '../../../ducks/diseases';
 import * as fromPopup from '../../../ducks/popup';
 import { getElement } from '../../../api/regions';
 import styles from './index.scss';
+import arieHavelaarHead from './img/arie_havelaar_head.jpg';
+import arieHavelaarQr from './img/arie_havelaar_qr.jpg';
 
 class Disease extends Component {
   constructor() {
@@ -160,6 +162,22 @@ class Disease extends Component {
         <div class="${styles.dataScale}">
           <div class="${styles.dataScaleValueRight}">${allHazards}</div>
           <div">0</div>
+        </div>
+      </div>
+      <div class="${styles.contact}">
+        <div class="${styles.contactTitle}">
+          For more information contact:
+        </div>
+        <div class="${styles.contactOptions}">
+          <div class="${styles.contactOptionsRead}">
+            <img src="${arieHavelaarHead}" width="100" height="auto" /><br />
+            <br />
+            <b>Arie Havelaar</b></br>
+            ariehavelaar@ufl.edu
+          </div>
+          <div class="${styles.contactOptionsQr}">
+            <img src="${arieHavelaarQr}" width="150" height="150" />
+          </div>
         </div>
       </div>
     `);

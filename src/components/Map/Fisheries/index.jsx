@@ -5,6 +5,8 @@ import { BASE_URL_UPLOAD } from '../../../config';
 import * as fromFisheries from '../../../ducks/fisheries';
 import * as fromPopup from '../../../ducks/popup';
 import styles from './index.scss';
+import jamesAndersonHead from './img/james_anderson_head.jpg';
+import jamesAndersonQr from './img/james_anderson_qr.jpg';
 
 class Fisheries extends Component {
   constructor() {
@@ -155,6 +157,22 @@ class Fisheries extends Component {
         <div class="${styles.dataScale}">
           <div class="${styles.dataScaleValueRight}">Good</div>
           <div">Poor</div>
+        </div>
+      </div>
+      <div class="${styles.contact}">
+        <div class="${styles.contactTitle}">
+          For more information contact:
+        </div>
+        <div class="${styles.contactOptions}">
+          <div class="${styles.contactOptionsRead}">
+            <img src="${jamesAndersonHead}" width="100" height="auto" /><br />
+            <br />
+            <b>James Anderson</b></br>
+            james.anderson@ufl.edu
+          </div>
+          <div class="${styles.contactOptionsQr}">
+            <img src="${jamesAndersonQr}" width="150" height="150" />
+          </div>
         </div>
       </div>
     `);

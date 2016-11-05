@@ -40,13 +40,15 @@ class Video extends Component {
     }
   }
   shouldComponentUpdate(nextProps) {
-    const { video, videosOpen } = this.props;
+    const { drawingOpen, video, videosOpen } = this.props;
     const nextVideo = nextProps.video;
     const nextVideosOpen = nextProps.videosOpen;
+    const nextDrawingOpen = nextProps.drawingOpen;
     return (
       (video === null && nextVideo !== null) ||
         (video !== null && nextVideo === null) ||
-        (videosOpen !== nextVideosOpen)
+        (videosOpen !== nextVideosOpen) ||
+        (drawingOpen !== nextDrawingOpen)
     );
   }
   componentWillUpdate(nextProps) {

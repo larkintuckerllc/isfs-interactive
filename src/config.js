@@ -3,8 +3,8 @@ const BASE = `${window.location.protocol}//${window.location.hostname}`;
 export const BASE_URL_APP = `${BASE}:${window.location.port}${window.location.pathname}`;
 export const BASE_URL_HTTP = `${BASE}:3000`;
 export const BASE_URL_SOCKET = `${BASE}:3001`;
-// export const BASE_URL_UPLOAD = '/upload/larkintuckerllc-isfs-interactive/';
-export const BASE_URL_UPLOAD = 'http://localhost:8081/upload/larkintuckerllc-isfs-interactive/';
+export const BASE_URL_UPLOAD = '/upload/larkintuckerllc-isfs-interactive/';
+// export const BASE_URL_UPLOAD = 'http://localhost:8081/upload/larkintuckerllc-isfs-interactive/';
 export const VIDEO_MAX_DRIFT = 0.02;
 export const VIDEO_NETWORK_DELAY = 0.015;
 export const VIDEO_INITIAL_RESTART_DELAY = 0.1;
@@ -239,11 +239,11 @@ export const SAVER_TIMEOUT = 60 * 60;
 export const VIDEOS = [{
   id: 'ifas',
   caption: null,
-  src: '/upload/larkintuckerllc-isfs-interactive/videos/ifas.mp4',
+  src: `${BASE_URL_UPLOAD}videos/ifas.mp4`,
 }, {
   id: 'salmon',
-  caption: '/upload/larkintuckerllc-isfs-interactive/videos/salmon.en.vtt',
-  src: '/upload/larkintuckerllc-isfs-interactive/videos/salmon.mp4',
+  caption: `${BASE_URL_UPLOAD}videos/salmon.en.vtt`,
+  src: `${BASE_URL_UPLOAD}videos/salmon.mp4`,
 }];
 export const MARQUEE_TEXT = [
   'Welcome to the Institute for Sustainable Food Systems. ',

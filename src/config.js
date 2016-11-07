@@ -169,8 +169,8 @@ export const TILES = {
   byId: {
     satellite: {
       id: 'satellite',
-      // url: 'http://192.168.1.2:8080/satellite/{z}/{y}/{x}',
-      url: 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
+      url: 'http://192.168.1.2:8080/satellite/{z}/{y}/{x}',
+      // url: 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
       bg: 'rgb(0,0,0)',
     },
     topo: {

@@ -137,7 +137,10 @@ class Disease extends Component {
           </div>
         </div>
         <div class="${styles.dataMetric}">
-          <div class="${styles.dataMetricTitle} ${styles.dataMetricTitleHelminths}">Helminths</div>
+          <div
+            class="${styles.dataMetricTitle}
+            ${styles.dataMetricTitleHelminths}"
+          >Helminths (Parasitic Worms)</div>
           <div class="${styles.dataMetricValue}">
             <div
               class="${styles.dataMetricValueContainer}"

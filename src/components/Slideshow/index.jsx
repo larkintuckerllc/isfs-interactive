@@ -1,22 +1,27 @@
 import React, { PropTypes, Component } from 'react';
 import pdfjsLib from 'pdfjs-dist';
 import { connect } from 'react-redux';
+import { BASE_URL_UPLOAD } from '../../config';
 import * as fromSlideshowOpen from '../../ducks/slideshowOpen';
 import { getChannel } from '../../ducks/channel';
 import { getContentWidth, getContentHeight } from '../../util/grid';
 import { getMasterChannel } from '../../util/parameters';
 import styles from './index.scss';
-import sample from './img/sample.pdf';
 
 class Slideshow extends Component {
   componentDidMount() {
+    // TODO: PULL PDF FROM URL
+    // TODO: PULL PAGE NUMBER FROM URL
+    // TODO: RESIZE TO FIT TOP
+    const pdfFile = 'sample.pdf';
+    const pdfUrl = `${BASE_URL_UPLOAD}slideshow/${pdfFile}`;
     const { channel, setSlideshowOpen } = this.props;
     const canvasEl = document.getElementById(styles.rootCanvas);
     this.coverEl = document.getElementById(styles.rootCover);
     const contentWidth = getContentWidth();
     const contentHeight = getContentHeight();
     pdfjsLib.PDFJS.workerSrc = './pdf.worker.bundle.js';
-    const loadingTask = pdfjsLib.getDocument(sample);
+    const loadingTask = pdfjsLib.getDocument(pdfUrl);
     loadingTask.promise.then(pdfDocument => {
       this.renderPage = pageNumber => {
         pdfDocument.getPage(pageNumber).then(pdfPage => {

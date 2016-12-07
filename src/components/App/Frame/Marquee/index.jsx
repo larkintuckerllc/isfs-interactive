@@ -39,7 +39,7 @@ class Marquee extends Component {
     return false;
   }
   componentWillUnmount() {
-    this.canel = true;
+    this.cancel = true;
     window.clearInterval(this.interval);
   }
   startAnimation() {

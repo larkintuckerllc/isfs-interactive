@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import pdfjsLib from 'pdfjs-dist';
 import { connect } from 'react-redux';
-import { BASE_URL_UPLOAD } from '../../config';
+import { BASE_URL_UPLOAD, SLIDESHOW_INTERVAL } from '../../config';
 import * as fromSlideshowOpen from '../../ducks/slideshowOpen';
 import { getChannel } from '../../ducks/channel';
 import { getContentWidth, getContentHeight } from '../../util/grid';
@@ -48,10 +48,13 @@ class Slideshow extends Component {
       this.coverEl.style.opacity = 0;
       this.renderPage(currentPage);
       if (slideCycle && channel === getMasterChannel()) {
+        window.setTimeout(() => {
+          this.coverEl.style.opacity = 1;
+        }, (SLIDESHOW_INTERVAL - 1) * 1000);
         this.interval = window.setInterval(() => {
           currentPage = currentPage < numPages ? currentPage + 1 : 1;
           setSlideshowOpen(currentPage);
-        }, 3000);
+        }, SLIDESHOW_INTERVAL * 1000);
       }
     });
   }
@@ -63,7 +66,7 @@ class Slideshow extends Component {
       this.renderPage(nextSlideshowOpen);
       window.setTimeout(() => {
         this.coverEl.style.opacity = 1;
-      }, 2000);
+      }, (SLIDESHOW_INTERVAL - 1) * 1000);
     }
   }
   componentWillUnmount() {

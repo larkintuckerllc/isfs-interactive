@@ -9,6 +9,7 @@ export const VIDEO_MAX_DRIFT = 0.02;
 export const VIDEO_NETWORK_DELAY = 0.015;
 export const VIDEO_INITIAL_RESTART_DELAY = 0.1;
 export const VIDEO_RESTART_DELAY_SHIFT = 0.001;
+export const SLIDESHOW_INTERVAL = 5;
 export const MODES = [
   'single',
   'quad',

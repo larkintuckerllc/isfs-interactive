@@ -31,6 +31,8 @@ const lat = parsed.lat;
 const lng = parsed.lng;
 const zoom = parsed.zoom;
 const slideFile = parsed.slideFile;
+const slideCycle = parsed.slideCycle !== 'false';
+const slidePage = parsed.slidePage !== undefined ? parseInt(parsed.slidePage, 10) : 1;
 export const getChannels = () => (modeId === 'single' ? [] : mode.channels);
 export const getMasterChannel = () => (modeId === 'single' ? getChannel() : mode.masterChannel);
 export const getMatrix = () => (modeId === 'single' ? [[getChannel()]] : mode.matrix);
@@ -46,3 +48,5 @@ export const getZoom = () => (zoom !== undefined ? Math.max(zoom, mode.zoomMin) 
 export const getBlockingWidth = () => mode.blockingWidth;
 export const getMarquee = () => mode.marquee;
 export const getSlideFile = () => (slideFile !== undefined ? slideFile : 'sample.pdf');
+export const getSlideCycle = () => slideCycle;
+export const getSlidePage = () => slidePage;

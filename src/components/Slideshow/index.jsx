@@ -5,20 +5,24 @@ import { BASE_URL_UPLOAD } from '../../config';
 import * as fromSlideshowOpen from '../../ducks/slideshowOpen';
 import { getChannel } from '../../ducks/channel';
 import { getContentWidth, getContentHeight } from '../../util/grid';
-import { getMasterChannel, getSlideFile } from '../../util/parameters';
+import {
+  getMasterChannel,
+  getSlideCycle,
+  getSlideFile,
+} from '../../util/parameters';
 import styles from './index.scss';
 
 class Slideshow extends Component {
   componentDidMount() {
-    // TODO: PULL PAGE NUMBER FROM URL
-    // TODO: PULL CYCLE FROM URL
+    const { channel, setSlideshowOpen, slideshowOpen } = this.props;
     const pdfFile = getSlideFile();
+    const slideCycle = getSlideCycle();
     const pdfUrl = `${BASE_URL_UPLOAD}slideshow/${pdfFile}`;
-    const { channel, setSlideshowOpen } = this.props;
     const canvasEl = document.getElementById(styles.rootCanvas);
     this.coverEl = document.getElementById(styles.rootCover);
     const contentWidth = getContentWidth();
     const contentHeight = getContentHeight();
+    let currentPage = slideshowOpen;
     pdfjsLib.PDFJS.workerSrc = './pdf.worker.bundle.js';
     const loadingTask = pdfjsLib.getDocument(pdfUrl);
     loadingTask.promise.then(pdfDocument => {
@@ -41,9 +45,8 @@ class Slideshow extends Component {
         });
       };
       const numPages = pdfDocument.numPages;
-      let currentPage = 1;
       this.renderPage(currentPage);
-      if (channel === getMasterChannel()) {
+      if (slideCycle && channel === getMasterChannel()) {
         this.interval = window.setInterval(() => {
           currentPage = currentPage < numPages ? currentPage + 1 : 1;
           setSlideshowOpen(currentPage);

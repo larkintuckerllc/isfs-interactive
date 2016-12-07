@@ -1,4 +1,5 @@
 import { ACTION_PREFIX } from '../config';
+import { getSlidePage } from '../util/parameters';
 
 // API
 // REDUCER MOUNT POINT
@@ -10,7 +11,7 @@ const validSlideshowOpen = value =>
   !(value === undefined || typeof value !== 'number');
 // SCHEMA
 // REDUCERS
-export default (state = 1, action) => {
+export default (state = getSlidePage(), action) => {
   switch (action.type) {
     case SET_SLIDESHOW_OPEN:
       return action.value;

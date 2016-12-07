@@ -47,10 +47,12 @@ class Slideshow extends Component {
       const numPages = pdfDocument.numPages;
       this.coverEl.style.opacity = 0;
       this.renderPage(currentPage);
-      if (slideCycle && channel === getMasterChannel()) {
+      if (slideCycle) {
         window.setTimeout(() => {
           this.coverEl.style.opacity = 1;
         }, (SLIDESHOW_INTERVAL - 1) * 1000);
+      }
+      if (slideCycle && channel === getMasterChannel()) {
         this.interval = window.setInterval(() => {
           currentPage = currentPage < numPages ? currentPage + 1 : 1;
           setSlideshowOpen(currentPage);

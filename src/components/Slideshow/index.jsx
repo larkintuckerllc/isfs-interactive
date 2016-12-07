@@ -5,15 +5,14 @@ import { BASE_URL_UPLOAD } from '../../config';
 import * as fromSlideshowOpen from '../../ducks/slideshowOpen';
 import { getChannel } from '../../ducks/channel';
 import { getContentWidth, getContentHeight } from '../../util/grid';
-import { getMasterChannel } from '../../util/parameters';
+import { getMasterChannel, getSlideFile } from '../../util/parameters';
 import styles from './index.scss';
 
 class Slideshow extends Component {
   componentDidMount() {
-    // TODO: PULL PDF FROM URL
     // TODO: PULL PAGE NUMBER FROM URL
-    // TODO: RESIZE TO FIT TOP
-    const pdfFile = 'sample.pdf';
+    // TODO: PULL CYCLE FROM URL
+    const pdfFile = getSlideFile();
     const pdfUrl = `${BASE_URL_UPLOAD}slideshow/${pdfFile}`;
     const { channel, setSlideshowOpen } = this.props;
     const canvasEl = document.getElementById(styles.rootCanvas);

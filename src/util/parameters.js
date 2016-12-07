@@ -19,16 +19,18 @@ const parseQueryString = () => {
   }
   return parsed;
 };
+const parsed = parseQueryString();
 const hour = (new Date()).getHours();
 const newTileId = hour >= SAVER_START && hour <= SAVER_END ?
   'satellite' : 'lights';
 let modeId = parseQueryString().mode;
 modeId = modeId !== undefined ? modeId : 'fullNoMenu';
 const mode = MODE_BY_ID[modeId];
-const tile = parseQueryString().tile;
-const lat = parseQueryString().lat;
-const lng = parseQueryString().lng;
-const zoom = parseQueryString().zoom;
+const tile = parsed.tile;
+const lat = parsed.lat;
+const lng = parsed.lng;
+const zoom = parsed.zoom;
+const slideFile = parsed.slideFile;
 export const getChannels = () => (modeId === 'single' ? [] : mode.channels);
 export const getMasterChannel = () => (modeId === 'single' ? getChannel() : mode.masterChannel);
 export const getMatrix = () => (modeId === 'single' ? [[getChannel()]] : mode.matrix);
@@ -43,3 +45,4 @@ export const getLng = () => (lng !== undefined ? lng : 0);
 export const getZoom = () => (zoom !== undefined ? Math.max(zoom, mode.zoomMin) : mode.zoomMin);
 export const getBlockingWidth = () => mode.blockingWidth;
 export const getMarquee = () => mode.marquee;
+export const getSlideFile = () => (slideFile !== undefined ? slideFile : 'sample.pdf');

@@ -40,7 +40,7 @@ class Marquee extends Component {
   }
   componentWillUnmount() {
     this.cancel = true;
-    window.clearInterval(this.interval);
+    if (this.interval !== undefined) window.clearInterval(this.interval);
   }
   startAnimation() {
     const { channel, setMarqueeOpen } = this.props;

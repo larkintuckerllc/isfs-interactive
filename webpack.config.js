@@ -7,16 +7,20 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   template: path.join(__dirname, 'index.html'),
   filename: 'index.html',
   inject: 'body',
+  chunks: ['main'],
 });
 module.exports = {
   resolve: {
     extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx'],
   },
   devtool: 'eval',
-  entry: path.join(__dirname, 'src', 'index.jsx'),
+  entry: {
+    'main': path.join(__dirname, 'src', 'index.jsx'),
+    'pdf.worker': 'pdfjs-dist/build/pdf.worker.entry',
+  },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: 'bundle.js',
+    filename: '[name].bundle.js',
   },
   module: {
     preLoaders: [{
@@ -35,7 +39,7 @@ module.exports = {
       test: /\.(png|jpg|jpeg|gif|svg|woff|woff2)$/,
       loader: 'url-loader?limit=10000',
     }, {
-      test: /\.(eot|ttf|wav|mp3|mp4)$/,
+      test: /\.(eot|ttf|wav|mp3|mp4|pdf)$/,
       loader: 'file-loader',
     }, {
       test: /node_modules\/.*\.css$/,

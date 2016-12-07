@@ -15,6 +15,7 @@ import { SET_POPUP } from './ducks/popup';
 import { SET_WAYPOINT } from './ducks/waypoint';
 import { SET_IDLE } from './ducks/idle';
 import { SET_MARQUEE_OPEN } from './ducks/marqueeOpen';
+import { SET_SLIDESHOW_OPEN } from './ducks/slideshowOpen';
 import { getChannels } from './util/parameters';
 
 export default () => {
@@ -22,7 +23,7 @@ export default () => {
     thunk,
     thr0wMiddleware(['@@router/LOCATION_CHANGE', SET_CAPTURE_BLOCK_OPEN,
       SET_DRAWING_COLOR, SET_DRAWING_OPEN, SET_IDLE, SET_MAP_VIEW,
-      SET_MARQUEE_OPEN, SET_POPUP, SET_TILE,
+      SET_MARQUEE_OPEN, SET_POPUP, SET_TILE, SET_SLIDESHOW_OPEN,
       SET_VIDEO, SET_VIDEO_CURRENT_TIME, SET_WAYPOINT], getChannels()),
     routerMiddleware(hashHistory),
   ];

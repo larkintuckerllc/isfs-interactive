@@ -1,6 +1,6 @@
 {
   "name": "isfs-interactive",
-  "version": "0.17.3",
+  "version": "0.18.0",
   "description": "Interactive",
   "scripts": {
     "build": "NODE_ENV=production webpack -p -d source-map",
@@ -38,6 +38,7 @@
     "bootstrap-sass": "^3.3.7",
     "leaflet": "^1.0.1",
     "normalizr": "^2.2.1",
+    "pdfjs-dist": "^1.6.370",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
     "react-redux": "^4.4.5",

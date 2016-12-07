@@ -12,12 +12,14 @@ import Obesity from '../Map/Obesity';
 import Overweight from '../Map/Overweight';
 import Under from '../Map/Under';
 import Inadequate from '../Map/Inadequate';
+import Slideshow from '../Slideshow';
 
 const Routes = (props, { store }) => (
   <Router history={syncHistoryWithStore(hashHistory, store)}>
     <Route path="/" component={Frame}>
       <IndexRoute component={Saver} />
       <Route path="image" component={Image} />
+      <Route path="slideshow" component={Slideshow} />
       <Route path="map" component={Map}>
         <Route path="trade" component={Trade} />
         <Route path="disease" component={Disease} />

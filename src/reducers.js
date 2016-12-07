@@ -27,6 +27,7 @@ import inadequate from './ducks/inadequate';
 import videosOpen from './ducks/videosOpen';
 import marqueeOpen from './ducks/marqueeOpen';
 import trade from './ducks/trade';
+import slideshowOpen from './ducks/slideshowOpen';
 
 export default combineReducers({
   form: formReducer,
@@ -57,4 +58,5 @@ export default combineReducers({
   videosOpen,
   marqueeOpen,
   trade,
+  slideshowOpen,
 });

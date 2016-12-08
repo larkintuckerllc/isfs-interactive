@@ -179,6 +179,42 @@ export const MODE_BY_ID = {
     }],
     leftBottom: 111,
   },
+  fullNoMenuNoMarquee: {
+    menu: false,
+    marquee: false,
+    blockingWidth: 80,
+    masterChannel: 6,
+    channels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    matrix: [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8, 9],
+    ],
+    zoomMin: 4,
+    dimensions: [{
+      width: 1920,
+      height: 1080,
+      scale: 0.84,
+      padding: 0,
+      spacing: 28,
+      margin: 20,
+    }, {
+      width: 1920,
+      height: 1080,
+      scale: 0.84,
+      padding: 0,
+      spacing: 28,
+      margin: 60,
+    }, {
+      width: 1080,
+      height: 1920,
+      scale: 1,
+      padding: 111,
+      spacing: 112,
+      margin: 0,
+    }],
+    leftBottom: 111,
+  },
 };
 export const ZOOM_MAX = 19;
 export const MAX_LAT = 85;

@@ -108,7 +108,7 @@ class Frame extends Component {
     }
   }
   render() {
-    const { children, drawingOpen, modesOpen, setModesOpen } = this.props;
+    const { channel, children, drawingOpen, modesOpen, setModesOpen } = this.props;
     const modeId = getModeId();
     return (
       <div>
@@ -117,7 +117,7 @@ class Frame extends Component {
         )}
         <Drawing />
         <Video />
-        { getMenu() && !drawingOpen && (
+        { getMenu() && channel === 6 && !drawingOpen && (
           <div>
             <div
               id={styles.rootMode}

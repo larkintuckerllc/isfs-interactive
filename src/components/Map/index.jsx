@@ -86,6 +86,7 @@ class Map extends Component {
     frameContentContainMapEl.style.width = `${this.frameWidth}px`;
     frameContentContainMapEl.style.height = `${this.frameHeight}px`;
     this.frameContentContainEl.appendChild(frameContentContainMapEl);
+    frameContentContainMapEl.addEventListener('touchstart', this.handleDebug);
     this.map = L.map(
       styles.frameContentContainMap,
       {
@@ -121,8 +122,16 @@ class Map extends Component {
     this.position.remove();
     this.frameContentEl.removeChild(this.frameContentContainEl);
   }
+  // TODO: REMOVE
+  handleDebug() {
+    // eslint-disable-next-line
+    window.alert('BAD');
+  }
   handleTouchStart(e) {
     e.stopPropagation();
+    // TODO: REMOVE DEBUG
+    // eslint-disable-next-line
+    window.alert('GOOD');
     if (e.touches.length !== 1) return;
     const { setIdle } = this.props;
     setIdle(false);

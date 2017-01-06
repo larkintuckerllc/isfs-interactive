@@ -38,6 +38,7 @@ export const getMasterChannel = () => (modeId === 'single' ? getChannel() : mode
 export const getMatrix = () => (modeId === 'single' ? [[getChannel()]] : mode.matrix);
 export const getDimensions = () => mode.dimensions;
 export const getLeftBottom = () => mode.leftBottom;
+export const getRightBottom = () => mode.rightBottom;
 export const getZoomMin = () => mode.zoomMin;
 export const getModeId = () => modeId;
 export const getMenu = () => mode.menu;

@@ -17,7 +17,7 @@ import {
   getFrameWidth,
   getScale,
 } from '../../util/grid';
-import { getLeftBottom, getMenu, getZoomMin } from '../../util/parameters';
+import { getLeftBottom, getRightBottom, getMenu, getZoomMin } from '../../util/parameters';
 import { HAND_WIDTH, LAYERS, MAX_LAT, MIN_LAT, TILES,
   ZOOM_MAX } from '../../config';
 import styles from './index.scss';
@@ -36,6 +36,8 @@ import obesity from './img/obesity.png';
 import inadequate from './img/inadequate.png';
 import under from './img/under.png';
 import overweight from './img/overweight.png';
+import zoomIn from './img/zoomIn.png';
+import zoomOut from './img/zoomOut.png';
 
 const buttonIcons = {
   satellite,
@@ -284,7 +286,8 @@ class Map extends Component {
       .style.backgroundColor = tile.bg;
   }
   render() {
-    const { children, drawingOpen, location: { pathname }, layersOpen, push, setIdle, setLayersOpen,
+    const { children, drawingOpen, location: { pathname }, layersOpen,
+      mapView, push, setIdle, setLayersOpen, setMapView,
       setTile, setTilesOpen, tile, tilesOpen } = this.props;
     let layer = pathname.substring(5);
     layer = layer === '' ? 'none' : layer;
@@ -292,6 +295,32 @@ class Map extends Component {
       <div>
         { getMenu() && !drawingOpen && (
           <div>
+            <div
+              id={styles.rootZoomIn}
+              style={{ right: getRightBottom() }}
+              onClick={() => {
+                if (mapView.zoom >= ZOOM_MAX) return;
+                setMapView({
+                  center: mapView.center,
+                  zoom: mapView.zoom + 1,
+                });
+              }}
+            >
+              <img src={zoomIn} width="100" height="100" alt={layer} />
+            </div>
+            <div
+              id={styles.rootZoomOut}
+              style={{ right: getRightBottom() }}
+              onClick={() => {
+                if (mapView.zoom <= getZoomMin()) return;
+                setMapView({
+                  center: mapView.center,
+                  zoom: mapView.zoom - 1,
+                });
+              }}
+            >
+              <img src={zoomOut} width="100" height="100" alt={layer} />
+            </div>
             <div
               id={styles.rootLayer}
               style={{ left: getLeftBottom() }}

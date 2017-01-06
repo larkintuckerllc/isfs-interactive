@@ -18,6 +18,22 @@
 .rootTilesOpen {
   transform: translateX(0px);
 }
+#rootZoomIn {
+  position: absolute;
+  z-index: 1001;
+  bottom: 100px;
+  width: 100px;
+  height: 100px;
+  background-color: red;
+}
+#rootZoomOut {
+  position: absolute;
+  z-index: 1001;
+  bottom: 0px;
+  width: 100px;
+  height: 100px;
+  background-color: red;
+}
 #rootLayer {
   position: absolute;
   z-index: 1001;

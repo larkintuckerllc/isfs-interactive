@@ -88,7 +88,7 @@ export const MODE_BY_ID = {
       margin: 0,
     }],
     leftBottom: 111,
-    rightBottom: 111,
+    rightBottom: 119,
   },
   top: {
     menu: false,
@@ -183,7 +183,7 @@ export const MODE_BY_ID = {
       margin: 0,
     }],
     leftBottom: 111,
-    rightBottom: 111,
+    rightBottom: 119,
   },
   fullNoMenuNoMarquee: {
     menu: false,
@@ -220,7 +220,7 @@ export const MODE_BY_ID = {
       margin: 0,
     }],
     leftBottom: 111,
-    rightBottom: 111,
+    rightBottom: 119,
   },
 };
 export const ZOOM_MAX = 19;

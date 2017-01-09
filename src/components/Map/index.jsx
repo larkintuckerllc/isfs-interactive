@@ -104,6 +104,10 @@ class Map extends Component {
     this.frameContentContainEl.addEventListener('touchmove', this.handleTouchMove, true);
     this.frameContentContainEl.addEventListener('touchend', this.handleTouchEnd, true);
     this.frameContentContainEl.addEventListener('touchcancel', this.handleTouchEnd, true);
+    this.frameContentContainEl.addEventListener('pointerdown', this.handlePointerEvent, true);
+    this.frameContentContainEl.addEventListener('pointermove', this.handlePointerEvent, true);
+    this.frameContentContainEl.addEventListener('pointerup', this.handlePointerEvent, true);
+    this.frameContentContainEl.addEventListener('pointercancel', this.handlePointerEvent, true);
     this.positionMap(mapView);
     this.changeTile(tile);
   }
@@ -117,9 +121,16 @@ class Map extends Component {
     this.frameContentContainEl.removeEventListener('touchmove', this.handleTouchMove);
     this.frameContentContainEl.removeEventListener('touchend', this.handleTouchEnd);
     this.frameContentContainEl.removeEventListener('touchcancel', this.handleTouchEnd);
+    this.frameContentContainEl.removeEventListener('pointerdown', this.handlePointerEvent);
+    this.frameContentContainEl.removeEventListener('pointermove', this.handlePointerEvent);
+    this.frameContentContainEl.removeEventListener('pointerup', this.handlePointerEvent);
+    this.frameContentContainEl.removeEventListener('pointercancel', this.handlePointerEvent);
     this.map.remove();
     this.position.remove();
     this.frameContentEl.removeChild(this.frameContentContainEl);
+  }
+  handlePointerEvent(e) {
+    e.stopImmediatePropagation();
   }
   handleTouchStart(e) {
     e.stopImmediatePropagation();

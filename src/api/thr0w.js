@@ -14,6 +14,7 @@ export const setBaseSocket = (b) => {
 };
 export const getChannel = () => channel;
 export const authenticated = () => token !== null;
+export const getToken = () => token;
 export const login = (username, password) => {
   if (baseHttp === undefined) throw new Error();
   if (username === undefined || typeof username !== 'string') throw new Error();

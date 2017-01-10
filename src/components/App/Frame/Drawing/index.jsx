@@ -115,7 +115,7 @@ class Drawing extends Component {
   }
   render() {
     const { captureBlockOpen, drawingColor,
-      drawingOpen, removeThr0wCapture, setDrawingColor, setDrawingOpen,
+      drawingOpen, emailThr0wCapture, removeThr0wCapture, setDrawingColor, setDrawingOpen,
       thr0wCapture } = this.props;
     const leftBottom = getLeftBottom();
     return (
@@ -167,7 +167,16 @@ class Drawing extends Component {
                     />
                   )}
                 </div>
-                <form className="form-inline" id={styles.rootFormForm}>
+                <form
+                  className="form-inline"
+                  id={styles.rootFormForm}
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    const emailEl = document.getElementById('email');
+                    emailThr0wCapture(emailEl.value);
+                    removeThr0wCapture();
+                  }}
+                >
                   <div className="form-group">
                     <input
                       type="email"
@@ -243,6 +252,7 @@ Drawing.propTypes = {
   channel: PropTypes.number.isRequired,
   drawingColor: PropTypes.string.isRequired,
   drawingOpen: PropTypes.bool.isRequired,
+  emailThr0wCapture: PropTypes.func.isRequired,
   removeThr0wCapture: PropTypes.func.isRequired,
   setDrawingColor: PropTypes.func.isRequired,
   setDrawingOpen: PropTypes.func.isRequired,
@@ -257,6 +267,7 @@ export default connect(
     drawingOpen: fromDrawingOpen.getDrawingOpen(state),
     thr0wCapture: fromThr0wCapture.getThr0wCapture(state),
   }), {
+    emailThr0wCapture: fromThr0wCapture.emailThr0wCapture,
     removeThr0wCapture: fromThr0wCapture.removeThr0wCapture,
     setDrawingColor: fromDrawingColor.setDrawingColor,
     setDrawingOpen: fromDrawingOpen.setDrawingOpen,

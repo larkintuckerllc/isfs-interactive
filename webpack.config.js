@@ -33,7 +33,7 @@ module.exports = {
       exclude: /node_modules/,
       loader: 'babel-loader',
     }, {
-      test: /\.ico$/,
+      test: /\.(ico|json)$/,
       loader: 'file-loader?name=[name].[ext]',
     }, {
       test: /\.(png|jpg|jpeg|gif|svg|woff|woff2)$/,

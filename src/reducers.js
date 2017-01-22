@@ -28,6 +28,8 @@ import videosOpen from './ducks/videosOpen';
 import marqueeOpen from './ducks/marqueeOpen';
 import trade from './ducks/trade';
 import slideshowOpen from './ducks/slideshowOpen';
+import rotation from './ducks/rotation';
+import scale from './ducks/scale';
 
 export default combineReducers({
   form: formReducer,
@@ -59,4 +61,6 @@ export default combineReducers({
   marqueeOpen,
   trade,
   slideshowOpen,
+  rotation,
+  scale,
 });

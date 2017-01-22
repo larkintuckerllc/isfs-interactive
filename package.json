@@ -1,6 +1,6 @@
 {
   "name": "isfs-interactive",
-  "version": "0.26.0",
+  "version": "0.26.1",
   "description": "Interactive",
   "scripts": {
     "build": "NODE_ENV=production webpack -p -d source-map",
@@ -36,6 +36,8 @@
     "babel-polyfill": "^6.13.0",
     "bootstrap-loader": "^2.0.0-beta.11",
     "bootstrap-sass": "^3.3.7",
+    "d3": "^4.4.3",
+    "d3-geo": "^1.4.0",
     "leaflet": "^1.0.1",
     "normalizr": "^2.2.1",
     "pdfjs-dist": "^1.6.370",

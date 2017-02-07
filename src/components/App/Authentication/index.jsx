@@ -12,7 +12,7 @@ const Authentication = ({
   submitFailed,
   submitting,
   valid,
- }) => (
+}) => (
   <div id={styles.root}>
     <form onSubmit={handleSubmit}>
       <Field

@@ -1,8 +1,12 @@
 import React, { PropTypes } from 'react';
+import { getRightBottom } from '../../../util/parameters';
 import styles from './index.scss';
 
 const GlobeControls = ({ scale, setScale }) => (
-  <div id={styles.root}>
+  <div
+    id={styles.root}
+    style={{ right: getRightBottom() }}
+  >
     <div
       onClick={() => setScale(
         scale < 3 ? scale + 0.25 : 3

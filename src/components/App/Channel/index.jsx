@@ -12,7 +12,7 @@ const Channel = ({
   logout,
   submitting,
   valid,
- }) => (
+}) => (
   <div id={styles.root}>
     <form onSubmit={handleSubmit}>
       <Field

@@ -1,11 +1,27 @@
 import React, { Component, PropTypes } from 'react';
 import * as d3Core from 'd3';
 import * as d3Geo from 'd3-geo';
-import './world-countries.json';
+import { BASE_URL_UPLOAD } from '../../../config';
 import './samples.json';
 import styles from './index.scss';
 
+const STROKE_COLORS = [
+  'rgba(255, 0, 0, 0.5)',
+  'rgba(0, 255, 0, 0.5)',
+  'rgba(0, 0, 255, 0.5)',
+  'rgba(128, 0, 0, 0.5)',
+  'rgba(0, 128, 0, 0.5)',
+  'rgba(0, 0, 128, 0.5)',
+  'rgba(128, 128, 0, 0.5)',
+  'rgba(128, 0, 128, 0.5)',
+  'rgba(0, 128, 128, 0.5)',
+  'rgba(255, 255, 0, 0.5)',
+  'rgba(255, 0, 255, 0.5)',
+  'rgba(0, 255, 255, 0.5)',
+];
 const RADIUS = 50;
+const MAP_RADIUS = 20;
+const LINE_SCALE = 1 / 800000000;
 const d3 = { ...d3Core, ...d3Geo };
 class GlobeView extends Component {
   constructor() {
@@ -19,7 +35,8 @@ class GlobeView extends Component {
     this.handleTouchEnd = this.handleTouchEnd.bind(this);
   }
   componentDidMount() {
-    const { rotation, scale } = this.props;
+    const { rotation } = this.props;
+    window.console.log(rotation);
     const toLineString = (startLat, startLng, endLat, endLng) => ({
       type: 'Feature',
       properties: {},
@@ -32,76 +49,80 @@ class GlobeView extends Component {
       },
     });
     this.rootEl = d3.select(`#${styles.root}`);
+    /*
     this.rootGlobeEl = this.rootEl.append('circle')
       .attr('cx', 0)
       .attr('cy', 0)
       .attr('r', RADIUS)
       .attr('id', styles.rootGlobe);
+    */
     this.projection = d3
-      .geoOrthographic()
+      // .geoOrthographic()
+      .geoMercator()
+      .rotate(rotation)
       .translate([0, 0])
-      .scale(RADIUS);
+      .scale(MAP_RADIUS);
     this.path = d3.geoPath().projection(this.projection);
     this.rootCountriesEl = this.rootEl.append('g');
     this.rootLinesEl = this.rootEl.append('g');
-    d3.json('world-countries.json', countries => {
+    d3.json(`${BASE_URL_UPLOAD}world-countries.json`, countries => {
       this.rootCountriesEl
         .selectAll(`.${styles.rootCountriesFeature}`)
         .data(countries.features)
         .enter()
         .append('path')
         .attr('class', styles.rootCountriesFeature)
+        .attr('stroke-width', '0.5px')
         .attr('d', d => this.path(d));
       this.rootCountriesElSelection =
         this.rootCountriesEl
         .selectAll(`.${styles.rootCountriesFeature}`)
         .data(countries.features);
-      const data = [{
-        width: 3,
-        startLat: 0,
-        startLng: 0,
-        endLat: 50,
-        endLng: 50,
-      }, {
-        width: 2,
-        startLat: 50,
-        startLng: -10,
-        endLat: 50,
-        endLng: 50,
-      }];
-      const dataWithGeoJson = data.map(o => ({
-        data: o,
-        geoJson: toLineString(
-          o.startLat,
-          o.startLng,
-          o.endLat,
-          o.endLng
-        ),
-      }));
-      this.rootLinesEl
-        .selectAll(`.${styles.rootLinesFeature}`)
-        .data(dataWithGeoJson)
-        .enter()
-        .append('path')
-        .attr('class', styles.rootLinesFeature)
-        .attr('style', d => `stroke-width: ${d.data.width}px;`)
-        .attr('d', d => this.path(d.geoJson))
-        .attr('stroke-dasharray', '100, 100')
-        .attr('stroke-dashoffset', 100)
-        .transition()
-        .duration(2000)
-        .attr('stroke-dashoffset', 0);
-      this.rootLinesElSelection =
-        this.rootLinesEl
-        .selectAll(`.${styles.rootLinesFeature}`)
-        .data(dataWithGeoJson);
-      this.d3Render(rotation, scale);
-      this.rootEl.node().addEventListener('mousedown', this.handleMouseDown);
-      this.rootEl.node().addEventListener('mousemove', this.handleMouseMove);
-      this.rootEl.node().addEventListener('mouseup', this.handleMouseUp);
-      this.rootEl.node().addEventListener('touchstart', this.handleTouchStart);
-      this.rootEl.node().addEventListener('touchmove', this.handleTouchMove);
-      this.rootEl.node().addEventListener('touchend', this.handleTouchEnd);
+      d3.json(`${BASE_URL_UPLOAD}/globe/trade.json`, trade => {
+        d3.json(`${BASE_URL_UPLOAD}/countries.json`, centers => {
+          const data = trade.map(o => ({
+            width: o.value * LINE_SCALE,
+            startLat: centers[o.src].lat,
+            startLng: centers[o.src].lng,
+            endLat: centers[o.dst].lat,
+            endLng: centers[o.dst].lng,
+          }));
+          const dataWithGeoJson = data.map(o => ({
+            data: o,
+            geoJson: toLineString(
+              o.startLat,
+              o.startLng,
+              o.endLat,
+              o.endLng
+            ),
+          }));
+          this.rootLinesEl
+            .selectAll(`.${styles.rootLinesFeature}`)
+            .data(dataWithGeoJson)
+            .enter()
+            .append('path')
+            .attr('class', styles.rootLinesFeature)
+            .attr('stroke', 'rgba(255, 0, 0, 0.5)')
+            .attr('stroke', (d, i) => STROKE_COLORS[i])
+            .attr('style', d => `stroke-width: ${d.data.width}px;`)
+            .attr('d', d => this.path(d.geoJson))
+            .attr('stroke-dasharray', '100, 100')
+            .attr('stroke-dashoffset', 100)
+            .transition()
+            .duration(2000)
+            .attr('stroke-dashoffset', 0);
+          this.rootLinesElSelection =
+            this.rootLinesEl
+            .selectAll(`.${styles.rootLinesFeature}`)
+            .data(dataWithGeoJson);
+          this.rootEl.node().addEventListener('mousedown', this.handleMouseDown);
+          this.rootEl.node().addEventListener('mousemove', this.handleMouseMove);
+          this.rootEl.node().addEventListener('mouseup', this.handleMouseUp);
+          this.rootEl.node().addEventListener('touchstart', this.handleTouchStart);
+          this.rootEl.node().addEventListener('touchmove', this.handleTouchMove);
+          this.rootEl.node().addEventListener('touchend', this.handleTouchEnd);
+        });
+      });
     });
   }
   componentWillReceiveProps({ rotation, scale }) {
@@ -118,11 +139,16 @@ class GlobeView extends Component {
   d3Render(rotation, scale) {
     if (this.rootCountriesElSelection === undefined) return;
     this.projection.rotate(rotation);
-    this.projection.scale(RADIUS * scale);
+    this.projection.scale(MAP_RADIUS * scale);
     window.requestAnimationFrame(() => {
-      this.rootGlobeEl.attr('r', this.projection.scale());
-      this.rootCountriesElSelection.attr('d', d => this.path(d));
-      this.rootLinesElSelection.attr('d', d => this.path(d.geoJson));
+      // this.rootGlobeEl.attr('r', this.projection.scale());
+      this.rootCountriesElSelection
+        .attr('stroke-width', `${scale * 0.5}px`)
+        .attr('d', d => this.path(d));
+      this.rootLinesElSelection
+        .attr('stroke-dasharray', null)
+        .attr('style', d => `stroke-width: ${scale * d.data.width}px;`)
+        .attr('d', d => this.path(d.geoJson));
     });
   }
   handleMouseDown(e) {
@@ -137,7 +163,8 @@ class GlobeView extends Component {
     const mouseY = e.pageY;
     setRotation([
       (rotation[0] + ((mouseX - this.mouseLastX) / 3)) % 360,
-      (rotation[1] - ((mouseY - this.mouseLastY) / 3)) % 360,
+      // (rotation[1] - ((mouseY - this.mouseLastY) / 3)) % 360,
+      0,
       0,
     ]);
     this.mouseLastX = mouseX;
@@ -157,7 +184,8 @@ class GlobeView extends Component {
     const touchOneY = e.touches[0].pageY;
     setRotation([
       (rotation[0] + ((touchOneX - this.touchOneLastX) / 3)) % 360,
-      (rotation[1] - ((touchOneY - this.touchOneLastY) / 3)) % 360,
+      // (rotation[1] - ((touchOneY - this.touchOneLastY) / 3)) % 360,
+      0,
       0,
     ]);
     this.touchOneLastX = touchOneX;

@@ -49,15 +49,7 @@ class GlobeView extends Component {
       },
     });
     this.rootEl = d3.select(`#${styles.root}`);
-    /*
-    this.rootGlobeEl = this.rootEl.append('circle')
-      .attr('cx', 0)
-      .attr('cy', 0)
-      .attr('r', RADIUS)
-      .attr('id', styles.rootGlobe);
-    */
     this.projection = d3
-      // .geoOrthographic()
       .geoMercator()
       .rotate(rotation)
       .translate([0, 0])
@@ -78,8 +70,8 @@ class GlobeView extends Component {
         this.rootCountriesEl
         .selectAll(`.${styles.rootCountriesFeature}`)
         .data(countries.features);
-      d3.json(`${BASE_URL_UPLOAD}/globe/trade.json`, trade => {
-        d3.json(`${BASE_URL_UPLOAD}/countries.json`, centers => {
+      d3.json(`${BASE_URL_UPLOAD}globe/trade.json`, trade => {
+        d3.json(`${BASE_URL_UPLOAD}countries.json`, centers => {
           const data = trade.map(o => ({
             width: o.value * LINE_SCALE,
             startLat: centers[o.src].lat,
@@ -163,7 +155,6 @@ class GlobeView extends Component {
     const mouseY = e.pageY;
     setRotation([
       (rotation[0] + ((mouseX - this.mouseLastX) / 3)) % 360,
-      // (rotation[1] - ((mouseY - this.mouseLastY) / 3)) % 360,
       0,
       0,
     ]);
@@ -184,7 +175,6 @@ class GlobeView extends Component {
     const touchOneY = e.touches[0].pageY;
     setRotation([
       (rotation[0] + ((touchOneX - this.touchOneLastX) / 3)) % 360,
-      // (rotation[1] - ((touchOneY - this.touchOneLastY) / 3)) % 360,
       0,
       0,
     ]);

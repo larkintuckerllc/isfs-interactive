@@ -18,13 +18,14 @@ import { SET_MARQUEE_OPEN } from './ducks/marqueeOpen';
 import { SET_SLIDESHOW_OPEN } from './ducks/slideshowOpen';
 import { SET_ROTATION } from './ducks/rotation';
 import { SET_SCALE } from './ducks/scale';
+import { SET_GLOBAL_TRADE_OPEN } from './ducks/globalTradeOpen';
 import { getChannels } from './util/parameters';
 
 export default () => {
   const middlewares = [
     thunk,
     thr0wMiddleware(['@@router/LOCATION_CHANGE', SET_CAPTURE_BLOCK_OPEN,
-      SET_DRAWING_COLOR, SET_DRAWING_OPEN, SET_IDLE, SET_MAP_VIEW,
+      SET_DRAWING_COLOR, SET_DRAWING_OPEN, SET_GLOBAL_TRADE_OPEN, SET_IDLE, SET_MAP_VIEW,
       SET_MARQUEE_OPEN, SET_POPUP, SET_TILE, SET_SLIDESHOW_OPEN,
       SET_VIDEO, SET_VIDEO_CURRENT_TIME, SET_WAYPOINT, SET_ROTATION, SET_SCALE], getChannels()),
     routerMiddleware(hashHistory),

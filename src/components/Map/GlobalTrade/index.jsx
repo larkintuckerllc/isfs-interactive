@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import L from 'leaflet';
 import { BASE_URL_UPLOAD } from '../../../config';
+import * as fromRotation from '../../../ducks/rotation';
 import * as fromGlobalTrade from '../../../ducks/globalTrade';
 import * as fromGlobalTradeDetail from '../../../ducks/globalTradeDetail';
 import * as fromGlobalTradeOpen from '../../../ducks/globalTradeOpen';
@@ -63,11 +64,18 @@ class GlobalTrade extends Component {
     resetGlobalTradeOpen();
   }
   handleClick(e) {
-    const { setGlobalTradeOpen } = this.props;
+    const { setGlobalTradeOpen, setRotation } = this.props;
+    setRotation([e.latlng.lng * -1, 0, 0]);
     setGlobalTradeOpen(e.target.id);
   }
   render() {
-    const { globalTradeDetail, globalTradeOpen, resetGlobalTradeOpen } = this.props;
+    const {
+      globalTradeDetail,
+      globalTradeOpen,
+      resetGlobalTradeOpen,
+      rotation,
+      setRotation,
+    } = this.props;
     if (globalTradeOpen === null) {
       return null;
     }
@@ -82,6 +90,8 @@ class GlobalTrade extends Component {
         resetGlobalTradeOpen={resetGlobalTradeOpen}
       >
         <GlobalTradeGlobe
+          rotation={rotation}
+          setRotation={setRotation}
           trade={trade}
         />
         <GlobalTradeLegend />
@@ -99,13 +109,16 @@ GlobalTrade.propTypes = {
   resetGlobalTrade: PropTypes.func.isRequired,
   resetGlobalTradeDetail: PropTypes.func.isRequired,
   resetGlobalTradeOpen: PropTypes.func.isRequired,
+  rotation: PropTypes.array.isRequired,
   setGlobalTradeOpen: PropTypes.func.isRequired,
+  setRotation: PropTypes.func.isRequired,
 };
 export default connect(
   state => ({
     globalTrade: fromGlobalTrade.getGlobalTrade(state),
     globalTradeDetail: fromGlobalTradeDetail.getGlobalTradeDetail(state),
     globalTradeOpen: fromGlobalTradeOpen.getGlobalTradeOpen(state),
+    rotation: fromRotation.getRotation(state),
   }), {
     fetchGlobalTrade: fromGlobalTrade.fetchGlobalTrade,
     fetchGlobalTradeDetail: fromGlobalTradeDetail.fetchGlobalTradeDetail,
@@ -113,5 +126,6 @@ export default connect(
     resetGlobalTradeDetail: fromGlobalTradeDetail.resetGlobalTradeDetail,
     resetGlobalTradeOpen: fromGlobalTradeOpen.resetGlobalTradeOpen,
     setGlobalTradeOpen: fromGlobalTradeOpen.setGlobalTradeOpen,
+    setRotation: fromRotation.setRotation,
   }
 )(GlobalTrade);

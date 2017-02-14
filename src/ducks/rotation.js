@@ -7,7 +7,7 @@ const reducerMountPoint = 'rotation';
 export const SET_ROTATION = `${ACTION_PREFIX}SET_ROTATION`;
 // SCHEMA
 // REDUCERS
-export default (state = [75, 0, 0], action) => {
+export default (state = [0, 0, 0], action) => {
   switch (action.type) {
     case SET_ROTATION:
       return action.value;

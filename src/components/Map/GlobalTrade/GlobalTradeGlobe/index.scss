@@ -1,3 +1,10 @@
 #root {
-  background-color: red;
+  display: block;
+  background-color: black;
+}
+.rootCountriesFeature {
+  display: inline;
+}
+.rootLinesFeature {
+    fill: rgba(0, 0, 0, 0.0);
 }

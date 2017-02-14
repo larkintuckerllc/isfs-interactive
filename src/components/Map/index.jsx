@@ -48,6 +48,7 @@ const buttonIcons = {
   black,
   lights,
   none,
+  global_trade: trade,
   trade,
   disease,
   fisheries,

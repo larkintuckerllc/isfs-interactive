@@ -14,6 +14,7 @@ import Under from '../Map/Under';
 import Inadequate from '../Map/Inadequate';
 import Slideshow from '../Slideshow';
 import Globe from '../Globe';
+import GlobalTrade from '../Map/GlobalTrade';
 
 const Routes = (props, { store }) => (
   <Router history={syncHistoryWithStore(hashHistory, store)}>
@@ -24,6 +25,7 @@ const Routes = (props, { store }) => (
       <Route path="globe" component={Globe} />
       <Route path="map" component={Map}>
         <Route path="trade" component={Trade} />
+        <Route path="global_trade" component={GlobalTrade} />
         <Route path="disease" component={Disease} />
         <Route path="fisheries" component={Fisheries} />
         <Route path="obesity" component={Obesity} />

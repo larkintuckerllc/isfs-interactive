@@ -5,23 +5,17 @@ import { BASE_URL_UPLOAD } from '../../../config';
 import './samples.json';
 import styles from './index.scss';
 
-const STROKE_COLORS = [
-  'rgba(255, 0, 0, 0.5)',
-  'rgba(0, 255, 0, 0.5)',
-  'rgba(0, 0, 255, 0.5)',
-  'rgba(128, 0, 0, 0.5)',
-  'rgba(0, 128, 0, 0.5)',
-  'rgba(0, 0, 128, 0.5)',
-  'rgba(128, 128, 0, 0.5)',
-  'rgba(128, 0, 128, 0.5)',
-  'rgba(0, 128, 128, 0.5)',
-  'rgba(255, 255, 0, 0.5)',
-  'rgba(255, 0, 255, 0.5)',
-  'rgba(0, 255, 255, 0.5)',
-];
+const pastelColors = () => {
+  const r = (Math.round(Math.random() * 127) + 127);
+  const g = (Math.round(Math.random() * 127) + 127);
+  const b = (Math.round(Math.random() * 127) + 127);
+  return { r, g, b };
+};
+const customColors = {};
 const RADIUS = 50;
-const MAP_RADIUS = 20;
-const LINE_SCALE = 1 / 800000000;
+const MAP_RADIUS = 15.94;
+const LINE_SCALE = 1 / 1200000000;
+const COUNTRY_STROKE_WIDTH = 0.2;
 const d3 = { ...d3Core, ...d3Geo };
 class GlobeView extends Component {
   constructor() {
@@ -36,7 +30,6 @@ class GlobeView extends Component {
   }
   componentDidMount() {
     const { rotation } = this.props;
-    window.console.log(rotation);
     const toLineString = (startLat, startLng, endLat, endLng) => ({
       type: 'Feature',
       properties: {},
@@ -50,29 +43,19 @@ class GlobeView extends Component {
     });
     this.rootEl = d3.select(`#${styles.root}`);
     this.projection = d3
-      .geoMercator()
+      .geoEquirectangular()
       .rotate(rotation)
       .translate([0, 0])
       .scale(MAP_RADIUS);
     this.path = d3.geoPath().projection(this.projection);
     this.rootCountriesEl = this.rootEl.append('g');
     this.rootLinesEl = this.rootEl.append('g');
-    d3.json(`${BASE_URL_UPLOAD}world-countries.json`, countries => {
-      this.rootCountriesEl
-        .selectAll(`.${styles.rootCountriesFeature}`)
-        .data(countries.features)
-        .enter()
-        .append('path')
-        .attr('class', styles.rootCountriesFeature)
-        .attr('stroke-width', '0.5px')
-        .attr('d', d => this.path(d));
-      this.rootCountriesElSelection =
-        this.rootCountriesEl
-        .selectAll(`.${styles.rootCountriesFeature}`)
-        .data(countries.features);
-      d3.json(`${BASE_URL_UPLOAD}globe/trade.json`, trade => {
-        d3.json(`${BASE_URL_UPLOAD}countries.json`, centers => {
+    d3.json(`${BASE_URL_UPLOAD}globe/trade.json`, trade => {
+      d3.json(`${BASE_URL_UPLOAD}countries.json`, centers => {
+        d3.json(`${BASE_URL_UPLOAD}world-countries.json`, countries => {
           const data = trade.map(o => ({
+            src: o.src,
+            dst: o.dst,
             width: o.value * LINE_SCALE,
             startLat: centers[o.src].lat,
             startLng: centers[o.src].lng,
@@ -88,15 +71,47 @@ class GlobeView extends Component {
               o.endLng
             ),
           }));
+          this.rootCountriesEl
+            .selectAll(`.${styles.rootCountriesFeature}`)
+            .data(countries.features)
+            .enter()
+            .append('path')
+            .attr('class', styles.rootCountriesFeature)
+            .attr('stroke', d => {
+              if (dataWithGeoJson.find(o => o.data.src === d.id) !== undefined) {
+                return 'rgb(0, 0, 0)';
+              }
+              if (dataWithGeoJson.find(o => o.data.dst === d.id) !== undefined) {
+                return 'rgb(255, 255, 255)';
+              }
+              return 'rgb(32, 32, 32)';
+            })
+            .attr('stroke-width', `${COUNTRY_STROKE_WIDTH.toString()}px`)
+            .attr('fill', (d) => {
+              if (dataWithGeoJson.find(o => o.data.src === d.id) === undefined) {
+                return 'rgba(0, 0, 0, 0)';
+              }
+              const color = pastelColors();
+              customColors[d.id] = color;
+              return `rgb(${color.r.toString()}, ${color.g.toString()}, ${color.b.toString()}`;
+            })
+            .attr('d', d => this.path(d));
+          this.rootCountriesElSelection =
+            this.rootCountriesEl
+            .selectAll(`.${styles.rootCountriesFeature}`)
+            .data(countries.features);
           this.rootLinesEl
             .selectAll(`.${styles.rootLinesFeature}`)
             .data(dataWithGeoJson)
             .enter()
             .append('path')
             .attr('class', styles.rootLinesFeature)
-            .attr('stroke', 'rgba(255, 0, 0, 0.5)')
-            .attr('stroke', (d, i) => STROKE_COLORS[i])
-            .attr('style', d => `stroke-width: ${d.data.width}px;`)
+            .attr('stroke', (d) => {
+              const color = customColors[d.data.src];
+              // eslint-disable-next-line
+              return `rgba(${color.r.toString()}, ${color.g.toString()}, ${color.b.toString()}, 0.7)`;
+            })
+            .attr('style', d => `stroke-width: ${d.data.width.toString()}px;`)
             .attr('d', d => this.path(d.geoJson))
             .attr('stroke-dasharray', '100, 100')
             .attr('stroke-dashoffset', 100)
@@ -117,8 +132,8 @@ class GlobeView extends Component {
       });
     });
   }
-  componentWillReceiveProps({ rotation, scale }) {
-    this.d3Render(rotation, scale);
+  componentWillReceiveProps({ rotation }) {
+    this.d3Render(rotation);
   }
   shouldComponentUpdate() {
     return false;
@@ -128,18 +143,14 @@ class GlobeView extends Component {
     this.rootEl.node().removeEventListener('mousemove', this.handleMouseMove);
     this.rootEl.node().removeEventListener('mouseup', this.hhandleTouchEnd);
   }
-  d3Render(rotation, scale) {
+  d3Render(rotation) {
     if (this.rootCountriesElSelection === undefined) return;
     this.projection.rotate(rotation);
-    this.projection.scale(MAP_RADIUS * scale);
     window.requestAnimationFrame(() => {
-      // this.rootGlobeEl.attr('r', this.projection.scale());
       this.rootCountriesElSelection
-        .attr('stroke-width', `${scale * 0.5}px`)
         .attr('d', d => this.path(d));
       this.rootLinesElSelection
         .attr('stroke-dasharray', null)
-        .attr('style', d => `stroke-width: ${scale * d.data.width}px;`)
         .attr('d', d => this.path(d.geoJson));
     });
   }

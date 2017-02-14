@@ -1,10 +1,13 @@
-import { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import L from 'leaflet';
 import { BASE_URL_UPLOAD } from '../../../config';
 import * as fromGlobalTrade from '../../../ducks/globalTrade';
 import * as fromGlobalTradeDetail from '../../../ducks/globalTradeDetail';
 import * as fromGlobalTradeOpen from '../../../ducks/globalTradeOpen';
+import GlobalTradeModal from './GlobalTradeModal';
+import GlobalTradeGlobe from './GlobalTradeGlobe';
+import GlobalTradeLegend from './GlobalTradeLegend';
 
 class GlobalTrade extends Component {
   constructor() {
@@ -64,13 +67,22 @@ class GlobalTrade extends Component {
     setGlobalTradeOpen(e.target.id);
   }
   render() {
-    return null;
+    const { globalTradeOpen, resetGlobalTradeOpen } = this.props;
+    return globalTradeOpen !== null ?
+      <GlobalTradeModal
+        resetGlobalTradeOpen={resetGlobalTradeOpen}
+      >
+        <GlobalTradeGlobe />
+        <GlobalTradeLegend />
+      </GlobalTradeModal> :
+      null;
   }
 }
 GlobalTrade.propTypes = {
   fetchGlobalTrade: PropTypes.func.isRequired,
   fetchGlobalTradeDetail: PropTypes.func.isRequired,
   globalTrade: PropTypes.array.isRequired,
+  globalTradeOpen: PropTypes.string,
   map: PropTypes.object,
   resetGlobalTrade: PropTypes.func.isRequired,
   resetGlobalTradeDetail: PropTypes.func.isRequired,
@@ -80,6 +92,7 @@ GlobalTrade.propTypes = {
 export default connect(
   state => ({
     globalTrade: fromGlobalTrade.getGlobalTrade(state),
+    globalTradeOpen: fromGlobalTradeOpen.getGlobalTradeOpen(state),
   }), {
     fetchGlobalTrade: fromGlobalTrade.fetchGlobalTrade,
     fetchGlobalTradeDetail: fromGlobalTradeDetail.fetchGlobalTradeDetail,

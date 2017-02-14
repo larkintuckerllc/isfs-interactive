@@ -231,6 +231,7 @@ export const HAND_WIDTH = 400;
 export const LAYERS = [
   'none',
   'trade',
+  'global_trade',
   'fisheries',
   'disease',
   'obesity',

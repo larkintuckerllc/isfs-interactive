@@ -4,17 +4,19 @@ import * as fromRotation from '../../../../ducks/rotation';
 import GlobeView from './GlobeView';
 import styles from './index.scss';
 
-const GlobalTradeGlobe = ({ rotation, setRotation }) => (
+const GlobalTradeGlobe = ({ rotation, setRotation, trade }) => (
   <div id={styles.root}>
     <GlobeView
       rotation={rotation}
       setRotation={setRotation}
+      trade={trade}
     />
   </div>
 );
 GlobalTradeGlobe.propTypes = {
   rotation: PropTypes.array.isRequired,
   setRotation: PropTypes.func.isRequired,
+  trade: PropTypes.array.isRequired,
 };
 export default connect(
   (state) => ({

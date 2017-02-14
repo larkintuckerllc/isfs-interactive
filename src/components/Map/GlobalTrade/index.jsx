@@ -67,21 +67,33 @@ class GlobalTrade extends Component {
     setGlobalTradeOpen(e.target.id);
   }
   render() {
-    const { globalTradeOpen, resetGlobalTradeOpen } = this.props;
-    return globalTradeOpen !== null ?
+    const { globalTradeDetail, globalTradeOpen, resetGlobalTradeOpen } = this.props;
+    if (globalTradeOpen === null) {
+      return null;
+    }
+    const values = globalTradeOpen.split('_');
+    const commodity = values[0];
+    const dst = values[1];
+    const trade = globalTradeDetail.filter(o => (
+      o.commodity === commodity && o.dst === dst
+    ));
+    return (
       <GlobalTradeModal
         resetGlobalTradeOpen={resetGlobalTradeOpen}
       >
-        <GlobalTradeGlobe />
+        <GlobalTradeGlobe
+          trade={trade}
+        />
         <GlobalTradeLegend />
-      </GlobalTradeModal> :
-      null;
+      </GlobalTradeModal>
+    );
   }
 }
 GlobalTrade.propTypes = {
   fetchGlobalTrade: PropTypes.func.isRequired,
   fetchGlobalTradeDetail: PropTypes.func.isRequired,
   globalTrade: PropTypes.array.isRequired,
+  globalTradeDetail: PropTypes.array.isRequired,
   globalTradeOpen: PropTypes.string,
   map: PropTypes.object,
   resetGlobalTrade: PropTypes.func.isRequired,
@@ -92,6 +104,7 @@ GlobalTrade.propTypes = {
 export default connect(
   state => ({
     globalTrade: fromGlobalTrade.getGlobalTrade(state),
+    globalTradeDetail: fromGlobalTradeDetail.getGlobalTradeDetail(state),
     globalTradeOpen: fromGlobalTradeOpen.getGlobalTradeOpen(state),
   }), {
     fetchGlobalTrade: fromGlobalTrade.fetchGlobalTrade,

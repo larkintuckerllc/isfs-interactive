@@ -32,6 +32,7 @@ import rotation from './ducks/rotation';
 import scale from './ducks/scale';
 import globalTrade from './ducks/globalTrade';
 import globalTradeDetail from './ducks/globalTradeDetail';
+import globalTradeOpen from './ducks/globalTradeOpen';
 
 export default combineReducers({
   form: formReducer,
@@ -67,4 +68,5 @@ export default combineReducers({
   scale,
   globalTrade,
   globalTradeDetail,
+  globalTradeOpen,
 });

@@ -4,6 +4,7 @@ import L from 'leaflet';
 import { BASE_URL_UPLOAD } from '../../../config';
 import * as fromGlobalTrade from '../../../ducks/globalTrade';
 import * as fromGlobalTradeDetail from '../../../ducks/globalTradeDetail';
+import * as fromGlobalTradeOpen from '../../../ducks/globalTradeOpen';
 
 class GlobalTrade extends Component {
   constructor() {
@@ -48,16 +49,19 @@ class GlobalTrade extends Component {
     }
   }
   componentWillUnmount() {
-    const { map, resetGlobalTrade } = this.props;
+    const { map, resetGlobalTrade, resetGlobalTradeDetail, resetGlobalTradeOpen } = this.props;
     for (let i = 0; i < this.markers.length; i++) {
       const marker = this.markers[i];
       marker.removeEventListener('click', this.handleClick);
       marker.removeFrom(map);
     }
     resetGlobalTrade();
+    resetGlobalTradeDetail();
+    resetGlobalTradeOpen();
   }
   handleClick(e) {
-    window.console.log(e);
+    const { setGlobalTradeOpen } = this.props;
+    setGlobalTradeOpen(e.target.id);
   }
   render() {
     return null;
@@ -66,10 +70,12 @@ class GlobalTrade extends Component {
 GlobalTrade.propTypes = {
   fetchGlobalTrade: PropTypes.func.isRequired,
   fetchGlobalTradeDetail: PropTypes.func.isRequired,
+  globalTrade: PropTypes.array.isRequired,
   map: PropTypes.object,
   resetGlobalTrade: PropTypes.func.isRequired,
   resetGlobalTradeDetail: PropTypes.func.isRequired,
-  globalTrade: PropTypes.array.isRequired,
+  resetGlobalTradeOpen: PropTypes.func.isRequired,
+  setGlobalTradeOpen: PropTypes.func.isRequired,
 };
 export default connect(
   state => ({
@@ -79,5 +85,7 @@ export default connect(
     fetchGlobalTradeDetail: fromGlobalTradeDetail.fetchGlobalTradeDetail,
     resetGlobalTrade: fromGlobalTrade.resetGlobalTrade,
     resetGlobalTradeDetail: fromGlobalTradeDetail.resetGlobalTradeDetail,
+    resetGlobalTradeOpen: fromGlobalTradeOpen.resetGlobalTradeOpen,
+    setGlobalTradeOpen: fromGlobalTradeOpen.setGlobalTradeOpen,
   }
 )(GlobalTrade);

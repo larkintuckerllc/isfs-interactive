@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import L from 'leaflet';
 import { BASE_URL_UPLOAD } from '../../../config';
+import { getCountries } from '../../../api/countries';
 import * as fromRotation from '../../../ducks/rotation';
 import * as fromGlobalTrade from '../../../ducks/globalTrade';
 import * as fromGlobalTradeDetail from '../../../ducks/globalTradeDetail';
@@ -20,6 +21,10 @@ class GlobalTrade extends Component {
     const { fetchGlobalTrade, fetchGlobalTradeDetail } = this.props;
     this.markers = [];
     Promise.all([
+      getCountries().then(countries => {
+        this.countries = countries;
+        return null;
+      }),
       fetchGlobalTrade(),
       fetchGlobalTradeDetail(),
     ])
@@ -92,15 +97,17 @@ class GlobalTrade extends Component {
       >
         <GlobalTradeTitle
           commodity={commodity}
-          dst={dst}
+          dst={this.countries[dst].name}
         />
         <GlobalTradeGlobe
           rotation={rotation}
           setRotation={setRotation}
           trade={trade}
+          countries={this.countries}
         />
         <GlobalTradeLegend
           trade={trade}
+          countries={this.countries}
         />
       </GlobalTradeModal>
     );

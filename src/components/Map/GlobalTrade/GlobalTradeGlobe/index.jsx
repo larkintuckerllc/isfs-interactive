@@ -24,7 +24,7 @@ class GlobeView extends Component {
     this.customColors = {};
   }
   componentDidMount() {
-    const { rotation, trade } = this.props;
+    const { countries, rotation, trade } = this.props;
     const toLineString = (startLat, startLng, endLat, endLng) => ({
       type: 'Feature',
       properties: {},
@@ -48,83 +48,81 @@ class GlobeView extends Component {
     this.path = d3.geoPath().projection(this.projection);
     this.rootCountriesEl = this.rootEl.append('g');
     this.rootLinesEl = this.rootEl.append('g');
-    d3.json(`${BASE_URL_UPLOAD}countries.json`, centers => {
-      d3.json(`${BASE_URL_UPLOAD}world-countries.json`, countries => {
-        const data = trade.map(o => ({
-          src: o.src,
-          dst: o.dst,
-          width: o.value * LINE_SCALE,
-          startLat: centers[o.src].lat,
-          startLng: centers[o.src].lng,
-          endLat: centers[o.dst].lat,
-          endLng: centers[o.dst].lng,
-        }));
-        const dataWithGeoJson = data.map(o => ({
-          data: o,
-          geoJson: toLineString(
-            o.startLat,
-            o.startLng,
-            o.endLat,
-            o.endLng
-          ),
-        }));
+    d3.json(`${BASE_URL_UPLOAD}world-countries.json`, boundaries => {
+      const data = trade.map(o => ({
+        src: o.src,
+        dst: o.dst,
+        width: o.value * LINE_SCALE,
+        startLat: countries[o.src].lat,
+        startLng: countries[o.src].lng,
+        endLat: countries[o.dst].lat,
+        endLng: countries[o.dst].lng,
+      }));
+      const dataWithGeoJson = data.map(o => ({
+        data: o,
+        geoJson: toLineString(
+          o.startLat,
+          o.startLng,
+          o.endLat,
+          o.endLng
+        ),
+      }));
+      this.rootCountriesEl
+        .selectAll(`.${styles.rootCountriesFeature}`)
+        .data(boundaries.features)
+        .enter()
+        .append('path')
+        .attr('class', styles.rootCountriesFeature)
+        .attr('stroke', d => {
+          if (dataWithGeoJson.find(o => o.data.src === d.id) !== undefined) {
+            return 'rgb(0, 0, 0)';
+          }
+          if (dataWithGeoJson.find(o => o.data.dst === d.id) !== undefined) {
+            return 'rgb(255, 255, 255)';
+          }
+          return 'rgb(32, 32, 32)';
+        })
+        .attr('stroke-width', `${COUNTRY_STROKE_WIDTH.toString()}px`)
+        .attr('fill', (d) => {
+          if (dataWithGeoJson.find(o => o.data.src === d.id) === undefined) {
+            return 'rgba(0, 0, 0, 0)';
+          }
+          const color = this.customColors[d.id];
+          return `rgb(${color.r.toString()}, ${color.g.toString()}, ${color.b.toString()}`;
+        })
+        .attr('d', d => this.path(d));
+      this.rootCountriesElSelection =
         this.rootCountriesEl
-          .selectAll(`.${styles.rootCountriesFeature}`)
-          .data(countries.features)
-          .enter()
-          .append('path')
-          .attr('class', styles.rootCountriesFeature)
-          .attr('stroke', d => {
-            if (dataWithGeoJson.find(o => o.data.src === d.id) !== undefined) {
-              return 'rgb(0, 0, 0)';
-            }
-            if (dataWithGeoJson.find(o => o.data.dst === d.id) !== undefined) {
-              return 'rgb(255, 255, 255)';
-            }
-            return 'rgb(32, 32, 32)';
-          })
-          .attr('stroke-width', `${COUNTRY_STROKE_WIDTH.toString()}px`)
-          .attr('fill', (d) => {
-            if (dataWithGeoJson.find(o => o.data.src === d.id) === undefined) {
-              return 'rgba(0, 0, 0, 0)';
-            }
-            const color = this.customColors[d.id];
-            return `rgb(${color.r.toString()}, ${color.g.toString()}, ${color.b.toString()}`;
-          })
-          .attr('d', d => this.path(d));
-        this.rootCountriesElSelection =
-          this.rootCountriesEl
-          .selectAll(`.${styles.rootCountriesFeature}`)
-          .data(countries.features);
+        .selectAll(`.${styles.rootCountriesFeature}`)
+        .data(boundaries.features);
+      this.rootLinesEl
+        .selectAll(`.${styles.rootLinesFeature}`)
+        .data(dataWithGeoJson)
+        .enter()
+        .append('path')
+        .attr('class', styles.rootLinesFeature)
+        .attr('stroke', (d) => {
+          const color = this.customColors[d.data.src];
+          // eslint-disable-next-line
+          return `rgba(${color.r.toString()}, ${color.g.toString()}, ${color.b.toString()}, 0.7)`;
+        })
+        .attr('style', d => `stroke-width: ${d.data.width.toString()}px;`)
+        .attr('d', d => this.path(d.geoJson))
+        .attr('stroke-dasharray', '100, 100')
+        .attr('stroke-dashoffset', 100)
+        .transition()
+        .duration(2000)
+        .attr('stroke-dashoffset', 0);
+      this.rootLinesElSelection =
         this.rootLinesEl
-          .selectAll(`.${styles.rootLinesFeature}`)
-          .data(dataWithGeoJson)
-          .enter()
-          .append('path')
-          .attr('class', styles.rootLinesFeature)
-          .attr('stroke', (d) => {
-            const color = this.customColors[d.data.src];
-            // eslint-disable-next-line
-            return `rgba(${color.r.toString()}, ${color.g.toString()}, ${color.b.toString()}, 0.7)`;
-          })
-          .attr('style', d => `stroke-width: ${d.data.width.toString()}px;`)
-          .attr('d', d => this.path(d.geoJson))
-          .attr('stroke-dasharray', '100, 100')
-          .attr('stroke-dashoffset', 100)
-          .transition()
-          .duration(2000)
-          .attr('stroke-dashoffset', 0);
-        this.rootLinesElSelection =
-          this.rootLinesEl
-          .selectAll(`.${styles.rootLinesFeature}`)
-          .data(dataWithGeoJson);
-        this.rootEl.node().addEventListener('mousedown', this.handleMouseDown);
-        this.rootEl.node().addEventListener('mousemove', this.handleMouseMove);
-        this.rootEl.node().addEventListener('mouseup', this.handleMouseUp);
-        this.rootEl.node().addEventListener('touchstart', this.handleTouchStart);
-        this.rootEl.node().addEventListener('touchmove', this.handleTouchMove);
-        this.rootEl.node().addEventListener('touchend', this.handleTouchEnd);
-      });
+        .selectAll(`.${styles.rootLinesFeature}`)
+        .data(dataWithGeoJson);
+      this.rootEl.node().addEventListener('mousedown', this.handleMouseDown);
+      this.rootEl.node().addEventListener('mousemove', this.handleMouseMove);
+      this.rootEl.node().addEventListener('mouseup', this.handleMouseUp);
+      this.rootEl.node().addEventListener('touchstart', this.handleTouchStart);
+      this.rootEl.node().addEventListener('touchmove', this.handleTouchMove);
+      this.rootEl.node().addEventListener('touchend', this.handleTouchEnd);
     });
   }
   componentWillReceiveProps({ rotation }) {
@@ -199,6 +197,7 @@ class GlobeView extends Component {
   }
 }
 GlobeView.propTypes = {
+  countries: PropTypes.object.isRequired,
   rotation: PropTypes.array.isRequired,
   setRotation: PropTypes.func.isRequired,
   trade: PropTypes.array.isRequired,

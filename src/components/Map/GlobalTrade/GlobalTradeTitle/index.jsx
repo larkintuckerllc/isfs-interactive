@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
+import style from './index.scss';
 
 const GlobalTradeTitle = ({ commodity, dst }) => (
-  <h2 style={{ color: 'white' }}>{dst} {commodity} imports</h2>
+  <div id={style.root}>{dst} {commodity} imports</div>
 );
 GlobalTradeTitle.propTypes = {
   commodity: PropTypes.string.isRequired,

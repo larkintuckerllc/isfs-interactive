@@ -1,30 +1,57 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
 import getColor from '../../../../util/color';
+import { GLOBAL_TRADE_ANIMATION_DELAY } from '../../../../config';
 import styles from './index.scss';
 
-const GlobalTradeLegend = ({ countries, trade }) => {
-  const customColors = {};
-  for (let i = 0; i < trade.length; i += 1) {
-    customColors[trade[i].src] = getColor(i);
+class GlobalTradeLegend extends Component {
+  constructor(props) {
+    super(props);
+    const { trade } = props;
+    this.customColors = {};
+    for (let i = 0; i < trade.length; i += 1) {
+      this.customColors[trade[i].src] = getColor(i);
+    }
+    this.state = {
+      numberShown: 1,
+    };
   }
-  return (
-    <div id={styles.root}>
-      {trade.map(o => {
-        const color = customColors[o.src];
-        return (
-          <div
-            key={o.src}
-            className={styles.rootSource}
-            style={{
-              // eslint-disable-next-line
-              backgroundColor: `rgb(${color.r.toString()}, ${color.g.toString()}, ${color.b.toString()}`,
-            }}
-          >{countries[o.src].name}</div>
-        );
-      })}
-    </div>
-  );
-};
+  componentDidMount() {
+    const { trade } = this.props;
+    const tradeLength = trade.length;
+    let numberShown = 1;
+    const numberShownInterval = window.setInterval(() => {
+      if (numberShown === tradeLength - 1) {
+        window.clearInterval(numberShownInterval);
+      }
+      numberShown += 1;
+      this.setState({
+        numberShown,
+      });
+    }, GLOBAL_TRADE_ANIMATION_DELAY);
+  }
+  render() {
+    const { countries, trade } = this.props;
+    const { numberShown } = this.state;
+    const shownTrade = trade.slice(0, numberShown);
+    return (
+      <div id={styles.root}>
+        {shownTrade.map(o => {
+          const color = this.customColors[o.src];
+          return (
+            <div
+              key={o.src}
+              className={styles.rootSource}
+              style={{
+                // eslint-disable-next-line
+                backgroundColor: `rgb(${color.r.toString()}, ${color.g.toString()}, ${color.b.toString()}`,
+              }}
+            >{countries[o.src].name}</div>
+          );
+        })}
+      </div>
+    );
+  }
+}
 GlobalTradeLegend.propTypes = {
   countries: PropTypes.object.isRequired,
   trade: PropTypes.array.isRequired,

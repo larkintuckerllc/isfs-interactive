@@ -1,7 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import * as d3Core from 'd3';
 import * as d3Geo from 'd3-geo';
-import { BASE_URL_UPLOAD } from '../../../../config';
+import {
+  BASE_URL_UPLOAD,
+  GLOBAL_TRADE_ANIMATION_DELAY,
+  GLOBAL_TRADE_ANIMATION_DURATION,
+} from '../../../../config';
 import getColor from '../../../../util/color';
 import styles from './index.scss';
 
@@ -83,14 +87,24 @@ class GlobeView extends Component {
           return 'rgb(32, 32, 32)';
         })
         .attr('stroke-width', `${COUNTRY_STROKE_WIDTH.toString()}px`)
+        .attr('fill', 'rgba(0, 0, 0)')
+        .attr('d', d => this.path(d))
+        .transition()
+        .delay(d => {
+          const index = dataWithGeoJson.findIndex(o => o.data.src === d.id);
+          if (index === -1) {
+            return 0;
+          }
+          return index * GLOBAL_TRADE_ANIMATION_DELAY;
+        })
+        .duration(0)
         .attr('fill', (d) => {
           if (dataWithGeoJson.find(o => o.data.src === d.id) === undefined) {
-            return 'rgba(0, 0, 0, 0)';
+            return 'rgba(0, 0, 0)';
           }
           const color = this.customColors[d.id];
           return `rgb(${color.r.toString()}, ${color.g.toString()}, ${color.b.toString()}`;
-        })
-        .attr('d', d => this.path(d));
+        });
       this.rootCountriesElSelection =
         this.rootCountriesEl
         .selectAll(`.${styles.rootCountriesFeature}`)
@@ -111,7 +125,8 @@ class GlobeView extends Component {
         .attr('stroke-dasharray', '100, 100')
         .attr('stroke-dashoffset', 100)
         .transition()
-        .duration(2000)
+        .delay((d, i) => i * GLOBAL_TRADE_ANIMATION_DELAY)
+        .duration(GLOBAL_TRADE_ANIMATION_DURATION)
         .attr('stroke-dashoffset', 0);
       this.rootLinesElSelection =
         this.rootLinesEl

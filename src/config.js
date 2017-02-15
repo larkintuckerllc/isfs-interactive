@@ -4,13 +4,15 @@ export const BASE_URL_APP = `${BASE}:${window.location.port}${window.location.pa
 export const BASE_URL_HTTP = `${BASE}:3000`;
 export const BASE_URL_SOCKET = `${BASE}:3001`;
 export const BASE_URL_DS = `${BASE}:3010`;
-export const BASE_URL_UPLOAD = '/upload/larkintuckerllc-isfs-interactive/';
-// export const BASE_URL_UPLOAD = 'http://localhost:8081/upload/larkintuckerllc-isfs-interactive/';
+// export const BASE_URL_UPLOAD = '/upload/larkintuckerllc-isfs-interactive/';
+export const BASE_URL_UPLOAD = 'http://localhost:8081/upload/larkintuckerllc-isfs-interactive/';
 export const VIDEO_MAX_DRIFT = 0.02;
 export const VIDEO_NETWORK_DELAY = 0.015;
 export const VIDEO_INITIAL_RESTART_DELAY = 0.1;
 export const VIDEO_RESTART_DELAY_SHIFT = 0.001;
 export const SLIDESHOW_INTERVAL = 30;
+export const GLOBAL_TRADE_ANIMATION_DELAY = 2000;
+export const GLOBAL_TRADE_ANIMATION_DURATION = 2000;
 export const MODES = [
   'single',
   'quad',

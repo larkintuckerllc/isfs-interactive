@@ -8,6 +8,7 @@ import * as fromGlobalTradeDetail from '../../../ducks/globalTradeDetail';
 import * as fromGlobalTradeOpen from '../../../ducks/globalTradeOpen';
 import GlobalTradeModal from './GlobalTradeModal';
 import GlobalTradeGlobe from './GlobalTradeGlobe';
+import GlobalTradeTitle from './GlobalTradeTitle';
 import GlobalTradeLegend from './GlobalTradeLegend';
 
 class GlobalTrade extends Component {
@@ -89,12 +90,18 @@ class GlobalTrade extends Component {
       <GlobalTradeModal
         resetGlobalTradeOpen={resetGlobalTradeOpen}
       >
+        <GlobalTradeTitle
+          commodity={commodity}
+          dst={dst}
+        />
         <GlobalTradeGlobe
           rotation={rotation}
           setRotation={setRotation}
           trade={trade}
         />
-        <GlobalTradeLegend />
+        <GlobalTradeLegend
+          trade={trade}
+        />
       </GlobalTradeModal>
     );
   }

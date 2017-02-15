@@ -2,15 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import * as d3Core from 'd3';
 import * as d3Geo from 'd3-geo';
 import { BASE_URL_UPLOAD } from '../../../../config';
+import getColor from '../../../../util/color';
 import styles from './index.scss';
 
-const pastelColors = () => {
-  const r = (Math.round(Math.random() * 127) + 127);
-  const g = (Math.round(Math.random() * 127) + 127);
-  const b = (Math.round(Math.random() * 127) + 127);
-  return { r, g, b };
-};
-const customColors = {};
 const RADIUS_X = 50;
 const RADIUS_Y = 30;
 const MAP_RADIUS = 15.94;
@@ -27,6 +21,7 @@ class GlobeView extends Component {
     this.handleTouchStart = this.handleTouchStart.bind(this);
     this.handleTouchMove = this.handleTouchMove.bind(this);
     this.handleTouchEnd = this.handleTouchEnd.bind(this);
+    this.customColors = {};
   }
   componentDidMount() {
     const { rotation, trade } = this.props;
@@ -41,6 +36,9 @@ class GlobeView extends Component {
         ],
       },
     });
+    for (let i = 0; i < trade.length; i += 1) {
+      this.customColors[trade[i].src] = getColor(i);
+    }
     this.rootEl = d3.select(`#${styles.root}`);
     this.projection = d3
       .geoEquirectangular()
@@ -90,8 +88,7 @@ class GlobeView extends Component {
             if (dataWithGeoJson.find(o => o.data.src === d.id) === undefined) {
               return 'rgba(0, 0, 0, 0)';
             }
-            const color = pastelColors();
-            customColors[d.id] = color;
+            const color = this.customColors[d.id];
             return `rgb(${color.r.toString()}, ${color.g.toString()}, ${color.b.toString()}`;
           })
           .attr('d', d => this.path(d));
@@ -106,7 +103,7 @@ class GlobeView extends Component {
           .append('path')
           .attr('class', styles.rootLinesFeature)
           .attr('stroke', (d) => {
-            const color = customColors[d.data.src];
+            const color = this.customColors[d.data.src];
             // eslint-disable-next-line
             return `rgba(${color.r.toString()}, ${color.g.toString()}, ${color.b.toString()}, 0.7)`;
           })

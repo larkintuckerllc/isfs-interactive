@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import getColor from '../../../../util/color';
-import style from './index.scss';
+import styles from './index.scss';
 
 const GlobalTradeLegend = ({ countries, trade }) => {
   const customColors = {};
@@ -8,13 +8,13 @@ const GlobalTradeLegend = ({ countries, trade }) => {
     customColors[trade[i].src] = getColor(i);
   }
   return (
-    <div>
+    <div id={styles.root}>
       {trade.map(o => {
         const color = customColors[o.src];
         return (
           <div
             key={o.src}
-            className={style.rootSource}
+            className={styles.rootSource}
             style={{
               // eslint-disable-next-line
               backgroundColor: `rgb(${color.r.toString()}, ${color.g.toString()}, ${color.b.toString()}`,

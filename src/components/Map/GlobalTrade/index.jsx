@@ -86,17 +86,20 @@ class GlobalTrade extends Component {
       return null;
     }
     const values = globalTradeOpen.split('_');
-    const commodity = values[0];
+    const commodityId = values[0];
     const dst = values[1];
-    const trade = globalTradeDetail.filter(o => (
-      o.commodity === commodity && o.dst === dst
-    ));
+    let commodityName;
+    const trade = globalTradeDetail.filter(o => {
+      const check = o.commodityId === commodityId && o.dst === dst;
+      if (check) commodityName = o.commodityName;
+      return check;
+    });
     return (
       <GlobalTradeModal
         resetGlobalTradeOpen={resetGlobalTradeOpen}
       >
         <GlobalTradeTitle
-          commodity={commodity}
+          commodity={commodityName}
           dst={this.countries[dst].name}
         />
         <GlobalTradeGlobe

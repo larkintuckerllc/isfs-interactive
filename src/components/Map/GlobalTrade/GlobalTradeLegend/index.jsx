@@ -19,9 +19,9 @@ class GlobalTradeLegend extends Component {
     const { trade } = this.props;
     const tradeLength = trade.length;
     let numberShown = 1;
-    const numberShownInterval = window.setInterval(() => {
+    this.numberShownInterval = window.setInterval(() => {
       if (numberShown === tradeLength - 1) {
-        window.clearInterval(numberShownInterval);
+        window.clearInterval(this.numberShownInterval);
       }
       numberShown += 1;
       this.setState({
@@ -29,19 +29,29 @@ class GlobalTradeLegend extends Component {
       });
     }, GLOBAL_TRADE_ANIMATION_DELAY);
   }
+  componentWillUnmount() {
+    window.clearInterval(this.numberShownInterval);
+  }
   render() {
     const { countries, trade } = this.props;
     const { numberShown } = this.state;
-    const shownTrade = trade.slice(0, numberShown);
+    for (let i = 0; i < trade.length; i += 1) {
+      if (i <= numberShown - 1) {
+        trade[i].visible = true;
+      } else {
+        trade[i].visible = false;
+      }
+    }
     return (
       <div id={styles.root}>
-        {shownTrade.map(o => {
+        {trade.map(o => {
           const color = this.customColors[o.src];
           return (
             <div
               key={o.src}
               className={styles.rootSource}
               style={{
+                visibility: o.visible ? 'visible' : 'hidden',
                 // eslint-disable-next-line
                 backgroundColor: `rgb(${color.r.toString()}, ${color.g.toString()}, ${color.b.toString()}`,
               }}

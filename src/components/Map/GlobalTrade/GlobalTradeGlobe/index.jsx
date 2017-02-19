@@ -40,10 +40,13 @@ class GlobeView extends Component {
         ],
       },
     });
+    this.blockTimeout = window.setTimeout(() => {
+      document.getElementById(styles.rootBlock).style.display = 'none';
+    }, trade.length * GLOBAL_TRADE_ANIMATION_DELAY);
     for (let i = 0; i < trade.length; i += 1) {
       this.customColors[trade[i].src] = getColor(i);
     }
-    this.rootEl = d3.select(`#${styles.root}`);
+    this.rootEl = d3.select(`#${styles.rootSvg}`);
     this.projection = d3
       .geoEquirectangular()
       .rotate(rotation)
@@ -72,11 +75,11 @@ class GlobeView extends Component {
         ),
       }));
       this.rootCountriesEl
-        .selectAll(`.${styles.rootCountriesFeature}`)
+        .selectAll(`.${styles.rootSvgCountriesFeature}`)
         .data(boundaries.features)
         .enter()
         .append('path')
-        .attr('class', styles.rootCountriesFeature)
+        .attr('class', styles.rootSvgCountriesFeature)
         .attr('stroke', d => {
           if (dataWithGeoJson.find(o => o.data.src === d.id) !== undefined) {
             return 'rgb(0, 0, 0)';
@@ -107,14 +110,14 @@ class GlobeView extends Component {
         });
       this.rootCountriesElSelection =
         this.rootCountriesEl
-        .selectAll(`.${styles.rootCountriesFeature}`)
+        .selectAll(`.${styles.rootSvgCountriesFeature}`)
         .data(boundaries.features);
       this.rootLinesEl
-        .selectAll(`.${styles.rootLinesFeature}`)
+        .selectAll(`.${styles.rootSvgLinesFeature}`)
         .data(dataWithGeoJson)
         .enter()
         .append('path')
-        .attr('class', styles.rootLinesFeature)
+        .attr('class', styles.rootSvgLinesFeature)
         .attr('stroke', (d) => {
           const color = this.customColors[d.data.src];
           // eslint-disable-next-line
@@ -130,7 +133,7 @@ class GlobeView extends Component {
         .attr('stroke-dashoffset', 0);
       this.rootLinesElSelection =
         this.rootLinesEl
-        .selectAll(`.${styles.rootLinesFeature}`)
+        .selectAll(`.${styles.rootSvgLinesFeature}`)
         .data(dataWithGeoJson);
       this.rootEl.node().addEventListener('mousedown', this.handleMouseDown);
       this.rootEl.node().addEventListener('mousemove', this.handleMouseMove);
@@ -150,6 +153,7 @@ class GlobeView extends Component {
     this.rootEl.node().removeEventListener('mousedown', this.handleMouseDown);
     this.rootEl.node().removeEventListener('mousemove', this.handleMouseMove);
     this.rootEl.node().removeEventListener('mouseup', this.hhandleTouchEnd);
+    window.clearTimeout(this.blockTimeout);
   }
   d3Render(rotation) {
     if (this.rootCountriesElSelection === undefined) return;
@@ -204,10 +208,15 @@ class GlobeView extends Component {
   }
   render() {
     return (
-      <svg
-        id={styles.root}
-        viewBox={`-${RADIUS_X} -${RADIUS_Y} ${RADIUS_X * 2} ${RADIUS_Y * 2}`}
-      />
+      <div id={styles.root}>
+        <div
+          id={styles.rootBlock}
+        />
+        <svg
+          id={styles.rootSvg}
+          viewBox={`-${RADIUS_X} -${RADIUS_Y} ${RADIUS_X * 2} ${RADIUS_Y * 2}`}
+        />
+      </div>
     );
   }
 }

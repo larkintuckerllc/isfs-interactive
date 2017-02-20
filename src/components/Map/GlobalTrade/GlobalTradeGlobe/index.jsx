@@ -80,17 +80,8 @@ class GlobeView extends Component {
         .enter()
         .append('path')
         .attr('class', styles.rootSvgCountriesFeature)
-        .attr('stroke', d => {
-          if (dataWithGeoJson.find(o => o.data.src === d.id) !== undefined) {
-            return 'rgb(0, 0, 0)';
-          }
-          if (dataWithGeoJson.find(o => o.data.dst === d.id) !== undefined) {
-            return 'rgb(255, 255, 255)';
-          }
-          return 'rgb(32, 32, 32)';
-        })
+        .attr('stroke', 'rgb(32, 32, 32)')
         .attr('stroke-width', `${COUNTRY_STROKE_WIDTH.toString()}px`)
-        .attr('fill', 'rgba(0, 0, 0)')
         .attr('d', d => this.path(d))
         .transition()
         .delay(d => {
@@ -102,6 +93,9 @@ class GlobeView extends Component {
         })
         .duration(0)
         .attr('fill', (d) => {
+          if (dataWithGeoJson.find(o => o.data.dst === d.id) !== undefined) {
+            return 'rgb(255, 255, 255)';
+          }
           if (dataWithGeoJson.find(o => o.data.src === d.id) === undefined) {
             return 'rgba(0, 0, 0)';
           }

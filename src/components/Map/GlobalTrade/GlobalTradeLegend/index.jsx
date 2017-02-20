@@ -35,11 +35,12 @@ class GlobalTradeLegend extends Component {
   render() {
     const { countries, trade } = this.props;
     const { numberShown } = this.state;
+    const tradeVisible = {};
     for (let i = 0; i < trade.length; i += 1) {
       if (i <= numberShown - 1) {
-        trade[i].visible = true;
+        tradeVisible[trade[i].src] = true;
       } else {
-        trade[i].visible = false;
+        tradeVisible[trade[i].src] = false;
       }
     }
     return (
@@ -51,7 +52,7 @@ class GlobalTradeLegend extends Component {
               key={o.src}
               className={styles.rootSource}
               style={{
-                visibility: o.visible ? 'visible' : 'hidden',
+                visibility: tradeVisible[o.src] ? 'visible' : 'hidden',
                 // eslint-disable-next-line
                 backgroundColor: `rgb(${color.r.toString()}, ${color.g.toString()}, ${color.b.toString()}`,
               }}

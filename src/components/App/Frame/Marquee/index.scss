@@ -13,3 +13,14 @@
   font-family: 'Roboto Mono', monospace;
   white-space: nowrap;
 }
+.rootCommodity {
+  display: inline-block;
+  font-weight: bold;
+  margin-left: 150px;
+}
+.rootCommodityChangeIncrease {
+  color: green;
+}
+.rootCommodityChangeDecrease {
+  color: red;
+}

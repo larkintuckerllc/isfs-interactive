@@ -5,7 +5,8 @@ import { getChannel } from '../../../../ducks/channel';
 import styles from './index.scss';
 import { getContentWidth } from '../../../../util/grid';
 import { getMasterChannel } from '../../../../util/parameters';
-import { MARQUEE_TEXT, MARQUEE_INTERVAL, MARQUEE_RUN } from '../../../../config';
+import { MARQEE_COMMODOTIES, MARQUEE_INTERVAL, MARQUEE_RUN } from '../../../../config';
+import { getCommodities } from '../../../../api/commodities';
 
 class Marquee extends Component {
   constructor() {
@@ -16,14 +17,27 @@ class Marquee extends Component {
   componentWillMount() {
     this.cancel = false;
     this.startX = getContentWidth();
+    this.marqueeText = 'PLACEHOLDER';
   }
   componentDidMount() {
     const { channel, setMarqueeOpen } = this.props;
     this.rootEl = document.getElementById(styles.root);
     this.endX = -1 * this.rootEl.offsetWidth;
-    if (channel === getMasterChannel()) {
-      this.interval = window.setInterval(() => setMarqueeOpen(true), MARQUEE_INTERVAL * 1000);
-    }
+    getCommodities().then(commodities => {
+      this.marqueeText = MARQEE_COMMODOTIES.map(o => (
+`<div class="${styles.rootCommodity}"">
+  <span>${o}</span>
+  <span>${commodities[o].last.toString()}</span>
+  <span
+    class="${commodities[o].last >= 0
+      ? styles.rootCommodityChangeIncrease : styles.rootCommodityChangeDecrease}"
+  >${commodities[o].change.toString()}</span>
+</div>`
+)).join('\n');
+      if (channel === getMasterChannel()) {
+        this.interval = window.setInterval(() => setMarqueeOpen(true), MARQUEE_INTERVAL * 1000);
+      }
+    });
   }
   componentWillReceiveProps(nextProps) {
     const nextMarqueeOpen = nextProps.marqueeOpen;
@@ -44,6 +58,7 @@ class Marquee extends Component {
   }
   startAnimation() {
     const { channel, setMarqueeOpen } = this.props;
+    this.rootEl.innerHTML = this.marqueeText;
     this.rootEl.style.transition = `transform ${MARQUEE_RUN}s linear`;
     this.rootEl.style.transform = `translateX(${this.endX}px)`;
     if (channel === getMasterChannel()) {
@@ -62,7 +77,7 @@ class Marquee extends Component {
         style={{
           transform: `translateX(${this.startX}px)`,
         }}
-      >{ MARQUEE_TEXT }</div>
+      >{this.marqueeText}</div>
     );
   }
 }

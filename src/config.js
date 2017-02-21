@@ -322,10 +322,11 @@ export const VIDEOS = [{
   caption: `${BASE_URL_UPLOAD}videos/salmon.en.vtt`,
   src: `${BASE_URL_UPLOAD}videos/salmon.mp4`,
 }];
-export const MARQUEE_TEXT = [
-  'Welcome to the Institute for Sustainable Food Systems. ',
-  'Interested in supplying content for this wall? ',
-  'Contact Jim Anderson.',
-].join('');
 export const MARQUEE_INTERVAL = 120;
 export const MARQUEE_RUN = 60;
+export const MARQEE_COMMODOTIES = [
+  'Corn',
+  'Wheat',
+  'Lean Hogs',
+  'Live Cattle',
+];

@@ -322,11 +322,15 @@ export const VIDEOS = [{
   caption: `${BASE_URL_UPLOAD}videos/salmon.en.vtt`,
   src: `${BASE_URL_UPLOAD}videos/salmon.mp4`,
 }];
-export const MARQUEE_INTERVAL = 120;
-export const MARQUEE_RUN = 60;
+export const MARQUEE_INTERVAL = 60;
+export const MARQUEE_RUN = 40;
 export const MARQEE_COMMODOTIES = [
   'Corn',
   'Wheat',
+  'Soybeans',
+  'Sugar #11',
   'Lean Hogs',
+  'Feeder Cattle',
   'Live Cattle',
+  'Oil  (Light Crude)',
 ];

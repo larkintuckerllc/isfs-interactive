@@ -22,14 +22,13 @@ class Marquee extends Component {
   componentDidMount() {
     const { channel, setMarqueeOpen } = this.props;
     this.rootEl = document.getElementById(styles.root);
-    this.endX = -1 * this.rootEl.offsetWidth;
     getCommodities().then(commodities => {
       this.marqueeText = MARQEE_COMMODOTIES.map(o => (
 `<div class="${styles.rootCommodity}"">
   <span>${o}</span>
   <span>${commodities[o].last.toString()}</span>
   <span
-    class="${commodities[o].last >= 0
+    class="${commodities[o].change >= 0
       ? styles.rootCommodityChangeIncrease : styles.rootCommodityChangeDecrease}"
   >${commodities[o].change.toString()}</span>
 </div>`
@@ -59,8 +58,9 @@ class Marquee extends Component {
   startAnimation() {
     const { channel, setMarqueeOpen } = this.props;
     this.rootEl.innerHTML = this.marqueeText;
+    const endX = -1 * this.rootEl.offsetWidth;
     this.rootEl.style.transition = `transform ${MARQUEE_RUN}s linear`;
-    this.rootEl.style.transform = `translateX(${this.endX}px)`;
+    this.rootEl.style.transform = `translateX(${endX}px)`;
     if (channel === getMasterChannel()) {
       window.setTimeout(() => setMarqueeOpen(false), MARQUEE_RUN * 1000);
     }

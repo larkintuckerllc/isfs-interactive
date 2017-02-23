@@ -9,7 +9,11 @@ class GlobalTradeLegend extends Component {
     const { trade } = props;
     this.customColors = {};
     for (let i = 0; i < trade.length; i += 1) {
-      this.customColors[trade[i].src] = getColor(i);
+      if (trade[i].direction === 'import') {
+        this.customColors[trade[i].src] = getColor(i);
+      } else {
+        this.customColors[trade[i].dst] = getColor(i);
+      }
     }
     this.state = {
       numberShown: 1,
@@ -38,25 +42,38 @@ class GlobalTradeLegend extends Component {
     const tradeVisible = {};
     for (let i = 0; i < trade.length; i += 1) {
       if (i <= numberShown - 1) {
-        tradeVisible[trade[i].src] = true;
+        if (trade[i].direction === 'import') {
+          tradeVisible[trade[i].src] = true;
+        } else {
+          tradeVisible[trade[i].dst] = true;
+        }
       } else {
-        tradeVisible[trade[i].src] = false;
+        // eslint-disable-next-line
+        if (trade[i].direction === 'import') {
+          tradeVisible[trade[i].src] = false;
+        } else {
+          tradeVisible[trade[i].dst] = false;
+        }
       }
     }
     return (
       <div id={styles.root}>
         {trade.map(o => {
-          const color = this.customColors[o.src];
+          const color = o.direction === 'import' ?
+            this.customColors[o.src] : this.customColors[o.dst];
           return (
             <div
-              key={o.src}
+              key={o.direction === 'import' ? o.src : o.dst}
               className={styles.rootSource}
               style={{
-                visibility: tradeVisible[o.src] ? 'visible' : 'hidden',
+                // eslint-disable-next-line
+                visibility: o.direction === 'import' ?
+                  tradeVisible[o.src] ? 'visible' : 'hidden' :
+                  tradeVisible[o.dst] ? 'visible' : 'hidden',
                 // eslint-disable-next-line
                 backgroundColor: `rgb(${color.r.toString()}, ${color.g.toString()}, ${color.b.toString()}`,
               }}
-            >{countries[o.src].name}</div>
+            >{o.direction === 'import' ? countries[o.src].name : countries[o.dst].name}</div>
           );
         })}
       </div>

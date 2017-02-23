@@ -44,7 +44,11 @@ class GlobeView extends Component {
       document.getElementById(styles.rootBlock).style.display = 'none';
     }, trade.length * GLOBAL_TRADE_ANIMATION_DELAY);
     for (let i = 0; i < trade.length; i += 1) {
-      this.customColors[trade[i].src] = getColor(i);
+      if (trade[i].direction === 'import') {
+        this.customColors[trade[i].src] = getColor(i);
+      } else {
+        this.customColors[trade[i].dst] = getColor(i);
+      }
     }
     this.rootEl = d3.select(`#${styles.rootSvg}`);
     this.projection = d3
@@ -59,6 +63,7 @@ class GlobeView extends Component {
       const data = trade.map(o => ({
         src: o.src,
         dst: o.dst,
+        direction: o.direction,
         width: o.value * LINE_SCALE,
         startLat: countries[o.src].lat,
         startLng: countries[o.src].lng,
@@ -85,7 +90,12 @@ class GlobeView extends Component {
         .attr('d', d => this.path(d))
         .transition()
         .delay(d => {
-          const index = dataWithGeoJson.findIndex(o => o.data.src === d.id);
+          let index;
+          if (dataWithGeoJson[0].data.direction === 'import') {
+            index = dataWithGeoJson.findIndex(o => o.data.src === d.id);
+          } else {
+            index = dataWithGeoJson.findIndex(o => o.data.dst === d.id);
+          }
           if (index === -1) {
             return 0;
           }
@@ -93,14 +103,25 @@ class GlobeView extends Component {
         })
         .duration(0)
         .attr('fill', (d) => {
-          if (dataWithGeoJson.find(o => o.data.dst === d.id) !== undefined) {
+          // eslint-disable-next-line
+          if (dataWithGeoJson.find(o => o.data.direction === 'import' && o.data.dst === d.id) !== undefined) {
             return 'rgb(255, 255, 255)';
           }
-          if (dataWithGeoJson.find(o => o.data.src === d.id) === undefined) {
-            return 'rgba(0, 0, 0)';
+          // eslint-disable-next-line
+          if (dataWithGeoJson.find(o => o.data.direction === 'export' && o.data.src === d.id) !== undefined) {
+            return 'rgb(255, 255, 255)';
           }
-          const color = this.customColors[d.id];
-          return `rgb(${color.r.toString()}, ${color.g.toString()}, ${color.b.toString()}`;
+          // eslint-disable-next-line
+          if (dataWithGeoJson.find(o => o.data.direction === 'import' && o.data.src === d.id) !== undefined) {
+            const color = this.customColors[d.id];
+            return `rgb(${color.r.toString()}, ${color.g.toString()}, ${color.b.toString()}`;
+          }
+          // eslint-disable-next-line
+          if (dataWithGeoJson.find(o => o.data.direction === 'export' && o.data.dst === d.id) !== undefined) {
+            const color = this.customColors[d.id];
+            return `rgb(${color.r.toString()}, ${color.g.toString()}, ${color.b.toString()}`;
+          }
+          return 'rgba(0, 0, 0)';
         });
       this.rootCountriesElSelection =
         this.rootCountriesEl
@@ -113,7 +134,12 @@ class GlobeView extends Component {
         .append('path')
         .attr('class', styles.rootSvgLinesFeature)
         .attr('stroke', (d) => {
-          const color = this.customColors[d.data.src];
+          let color;
+          if (d.data.direction === 'import') {
+            color = this.customColors[d.data.src];
+          } else {
+            color = this.customColors[d.data.dst];
+          }
           // eslint-disable-next-line
           return `rgba(${color.r.toString()}, ${color.g.toString()}, ${color.b.toString()}, 0.7)`;
         })

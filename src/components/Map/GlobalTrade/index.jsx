@@ -86,11 +86,17 @@ class GlobalTrade extends Component {
       return null;
     }
     const values = globalTradeOpen.split('_');
-    const commodityId = values[0];
-    const dst = values[1];
+    const direction = values[0];
+    const commodityId = values[1];
+    const target = values[2];
     let commodityName;
     const trade = globalTradeDetail.filter(o => {
-      const check = o.commodityId === commodityId && o.dst === dst;
+      let check = false;
+      if (direction === 'import') {
+        check = o.direction === direction && o.commodityId === commodityId && o.dst === target;
+      } else {
+        check = o.direction === direction && o.commodityId === commodityId && o.src === target;
+      }
       if (check) commodityName = o.commodityName;
       return check;
     });
@@ -100,7 +106,8 @@ class GlobalTrade extends Component {
       >
         <GlobalTradeTitle
           commodity={commodityName}
-          dst={this.countries[dst].name}
+          target={this.countries[target].name}
+          direction={direction}
         />
         <GlobalTradeGlobe
           rotation={rotation}

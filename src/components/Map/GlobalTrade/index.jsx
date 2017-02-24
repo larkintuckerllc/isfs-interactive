@@ -47,7 +47,7 @@ class GlobalTrade extends Component {
       for (let i = 0; i < nextGlobalTrade.length; i++) {
         const tr = nextGlobalTrade[i];
         const icon = L.icon({
-          iconUrl: `${BASE_URL_UPLOAD}global_trade/markers/${tr.commodity}.png`,
+          iconUrl: `${BASE_URL_UPLOAD}global_trade/markers/${tr.direction}_${tr.commodity}.png`,
           iconSize: [64, 64],
         });
         const marker = L.marker(tr.latlng, { icon });

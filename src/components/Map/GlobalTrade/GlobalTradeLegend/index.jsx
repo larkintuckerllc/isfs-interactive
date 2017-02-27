@@ -73,7 +73,10 @@ class GlobalTradeLegend extends Component {
                 // eslint-disable-next-line
                 backgroundColor: `rgb(${color.r.toString()}, ${color.g.toString()}, ${color.b.toString()}`,
               }}
-            >{o.direction === 'import' ? countries[o.src].name : countries[o.dst].name}</div>
+            >
+              {o.direction === 'import' ?
+                countries[o.src].name :
+                countries[o.dst].name} ${Math.round(o.value / 1000000)}MM</div>
           );
         })}
       </div>

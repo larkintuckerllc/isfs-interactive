@@ -76,7 +76,7 @@ class GlobalTradeLegend extends Component {
             >
               {o.direction === 'import' ?
                 countries[o.src].name :
-                countries[o.dst].name} ${Math.round(o.value / 1000000)}MM</div>
+                countries[o.dst].name} (${Math.round(o.value / 1000000)} Mil)</div>
           );
         })}
       </div>

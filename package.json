@@ -1,6 +1,6 @@
 {
   "name": "isfs-interactive",
-  "version": "0.33.1",
+  "version": "0.34.0",
   "description": "Interactive",
   "scripts": {
     "build": "NODE_ENV=production webpack -p -d source-map",

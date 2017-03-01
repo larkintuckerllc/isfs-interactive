@@ -76,6 +76,7 @@ class GlobalTrade extends Component {
   }
   render() {
     const {
+      globalTrade,
       globalTradeDetail,
       globalTradeOpen,
       resetGlobalTradeOpen,
@@ -89,6 +90,7 @@ class GlobalTrade extends Component {
     const direction = values[0];
     const commodityId = values[1];
     const target = values[2];
+    const value = globalTrade.filter(o => o.id === globalTradeOpen)[0].value;
     let commodityName;
     const trade = globalTradeDetail.filter(o => {
       let check = false;
@@ -108,6 +110,7 @@ class GlobalTrade extends Component {
           commodity={commodityName}
           target={this.countries[target].name}
           direction={direction}
+          value={value}
         />
         <GlobalTradeGlobe
           rotation={rotation}

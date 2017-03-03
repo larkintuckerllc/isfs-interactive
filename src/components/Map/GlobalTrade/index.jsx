@@ -71,7 +71,7 @@ class GlobalTrade extends Component {
   }
   handleClick(e) {
     const { setGlobalTradeOpen, setRotation } = this.props;
-    setRotation([e.latlng.lng * -1, 0, 0]);
+    setRotation([(e.latlng.lng * -1) - 75, 0, 0]);
     setGlobalTradeOpen(e.target.id);
   }
   render() {

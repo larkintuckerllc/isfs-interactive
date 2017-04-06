@@ -67,7 +67,7 @@ export const MODE_BY_ID = {
       [3, 4, 5],
       [6, 7, 8, 9],
     ],
-    zoomMin: 4,
+    zoomMin: 5,
     dimensions: [{
       width: 1920,
       height: 1080,
@@ -162,7 +162,7 @@ export const MODE_BY_ID = {
       [3, 4, 5],
       [6, 7, 8, 9],
     ],
-    zoomMin: 4,
+    zoomMin: 5,
     dimensions: [{
       width: 1920,
       height: 1080,
@@ -199,7 +199,7 @@ export const MODE_BY_ID = {
       [3, 4, 5],
       [6, 7, 8, 9],
     ],
-    zoomMin: 4,
+    zoomMin: 5,
     dimensions: [{
       width: 1920,
       height: 1080,

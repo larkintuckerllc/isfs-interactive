@@ -40,8 +40,8 @@ class Frame extends Component {
     }
   }
   checkIdle() {
-    const { idle, location: { pathname }, setIdle } = this.props;
-    if (pathname === '/' || pathname === '/image') return;
+    const { drawingOpen, idle, location: { pathname }, setIdle } = this.props;
+    if (pathname === '/' || pathname === '/image' || drawingOpen) return;
     if (!idle) {
       setIdle(true);
     } else {

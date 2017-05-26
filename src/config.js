@@ -322,6 +322,9 @@ export const VIDEOS = [{
   caption: `${BASE_URL_UPLOAD}videos/salmon.en.vtt`,
   src: `${BASE_URL_UPLOAD}videos/salmon.mp4`,
 }];
+export const POSTERS = [{
+  id: 'fpi',
+}];
 export const MARQUEE_INTERVAL = 45;
 export const MARQUEE_RUN = 40;
 export const MARQEE_COMMODOTIES = [

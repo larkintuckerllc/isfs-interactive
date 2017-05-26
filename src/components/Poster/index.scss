@@ -1,0 +1,20 @@
+#rootLibrary {
+  position: absolute;
+  z-index: 1001;
+  bottom: 300px;
+  height: 100px;
+}
+#rootPosters {
+  position: absolute;
+  display: flex;
+  z-index: 1000;
+  bottom: 300px;
+  height: 100px;
+  transition: transform 1s;
+}
+.rootPostersClosed {
+  transform: translateX(-200px);
+}
+.rootPostersOpen {
+  transform: translateX(0px);
+}

@@ -33,6 +33,7 @@ import scale from './ducks/scale';
 import globalTrade from './ducks/globalTrade';
 import globalTradeDetail from './ducks/globalTradeDetail';
 import globalTradeOpen from './ducks/globalTradeOpen';
+import postersOpen from './ducks/postersOpen';
 
 export default combineReducers({
   form: formReducer,
@@ -69,4 +70,5 @@ export default combineReducers({
   globalTrade,
   globalTradeDetail,
   globalTradeOpen,
+  postersOpen,
 });

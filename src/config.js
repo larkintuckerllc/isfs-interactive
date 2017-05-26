@@ -324,6 +324,7 @@ export const VIDEOS = [{
 }];
 export const POSTERS = [{
   id: 'fpi',
+  url: 'http://slides.com/johntucker-1/deck/embed/',
 }];
 export const MARQUEE_INTERVAL = 45;
 export const MARQUEE_RUN = 40;

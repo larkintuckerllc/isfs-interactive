@@ -12,9 +12,40 @@
   height: 100px;
   transition: transform 1s;
 }
+#rootPoster {
+  position: absolute;
+  z-index: 1;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+}
+#rootCover {
+  position: absolute;
+  z-index: 2;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+  height: 100px;
+  background-color: black;
+}
 .rootPostersClosed {
   transform: translateX(-200px);
 }
 .rootPostersOpen {
   transform: translateX(0px);
+}
+.rootMessage {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  color: white;
+  font-size: 64px;
 }

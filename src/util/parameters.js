@@ -51,3 +51,4 @@ export const getMarquee = () => mode.marquee;
 export const getSlideFile = () => (slideFile !== undefined ? slideFile : 'sample.pdf');
 export const getSlideCycle = () => slideCycle;
 export const getSlidePage = () => slidePage;
+export const getSingle = () => modeId === 'single';

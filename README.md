@@ -1,4 +1,4 @@
-# React Redux Boilerplate
+# ISFS Interactive
 
 ## Introduction
 

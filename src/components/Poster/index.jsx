@@ -9,10 +9,11 @@ import * as fromPoster from '../../ducks/poster';
 import styles from './index.scss';
 import library from './img/library.png';
 import fpi from './img/fpi.png';
+import seed from './img/seed.png';
 import map from './img/map.png';
 
 const buttonIcons = {
-  fpi,
+  fpi, seed,
 };
 const Poster = ({ drawingOpen, poster, postersOpen, push, setPoster, setPostersOpen }) => (
   <div>

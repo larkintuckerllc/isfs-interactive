@@ -11,9 +11,10 @@ import library from './img/library.png';
 import fpi from './img/fpi.png';
 import seed from './img/seed.png';
 import map from './img/map.png';
+import agmip from './img/agmip.png';
 
 const buttonIcons = {
-  fpi, seed,
+  fpi, seed, agmip,
 };
 const Poster = ({ drawingOpen, poster, postersOpen, push, setPoster, setPostersOpen }) => (
   <div>

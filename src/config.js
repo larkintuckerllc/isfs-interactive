@@ -328,6 +328,9 @@ export const POSTERS = [{
 }, {
   id: 'seed',
   url: 'http://slides.com/johntucker-1/deck-1/embed/',
+}, {
+  id: 'agmip',
+  url: 'http://slides.com/johntucker-1/deck-2/embed/',
 }];
 export const MARQUEE_INTERVAL = 45;
 export const MARQUEE_RUN = 40;

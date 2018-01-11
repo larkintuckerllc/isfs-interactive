@@ -15,6 +15,7 @@ import styles from './index.scss';
 import single from './img/single.png';
 import quad from './img/quad.png';
 import full from './img/full.png';
+import animation from './img/animation.png';
 import Drawing from './Drawing';
 import Video from './Video';
 import Marquee from './Marquee';
@@ -119,6 +120,20 @@ class Frame extends Component {
         <Video />
         { getMenu() && channel === 6 && !drawingOpen && (
           <div>
+            <div
+              id={styles.rootAnimation}
+            >
+              <img
+                src={animation}
+                width="100" height="100" alt={modeId}
+                onClick={() => {
+                  thr0w([10, 11, 12, 13, 14, 15, 16, 17, 18, 19], {
+                    action: 'update',
+                    url: 'http://192.168.1.2/isfs-animation/?wall=true',
+                  });
+                }}
+              />
+            </div>
             <div
               id={styles.rootMode}
               style={{ left: getLeftBottom() }}

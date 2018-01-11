@@ -120,20 +120,23 @@ class Frame extends Component {
         <Video />
         { getMenu() && channel === 6 && !drawingOpen && (
           <div>
-            <div
-              id={styles.rootAnimation}
-            >
-              <img
-                src={animation}
-                width="100" height="100" alt={modeId}
-                onClick={() => {
-                  thr0w([10, 11, 12, 13, 14, 15, 16, 17, 18, 19], {
-                    action: 'update',
-                    url: 'http://192.168.1.2/isfs-animation/?wall=true',
-                  });
-                }}
-              />
-            </div>
+            { modeId === 'full' &&
+              <div
+                id={styles.rootAnimation}
+                style={{ left: getLeftBottom() }}
+              >
+                <img
+                  src={animation}
+                  width="100" height="100" alt="animation"
+                  onClick={() => {
+                    thr0w([10, 11, 12, 13, 14, 15, 16, 17, 18, 19], {
+                      action: 'update',
+                      url: 'http://192.168.1.2/isfs-animation/?wall=true',
+                    });
+                  }}
+                />
+              </div>
+            }
             <div
               id={styles.rootMode}
               style={{ left: getLeftBottom() }}

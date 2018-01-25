@@ -2,7 +2,8 @@ import { combineReducers } from 'redux';
 import * as fromThr0w from '../api/thr0w';
 import { getChannel } from './channel';
 import { Thr0wException } from '../util/exceptions';
-import { ACTION_PREFIX } from '../config';
+import { ACTION_PREFIX, BASE_URL_APP } from '../config';
+import { fresh } from '../util/parameters';
 
 // API
 // REDUCER MOUNT POINT
@@ -63,6 +64,12 @@ export const connect = () => (dispatch, getState) => {
         type: SET_CONNECTED_SUCCESS,
         value: true,
       });
+      if (fresh) {
+        fromThr0w.thr0w([10, 11, 12, 13, 14, 15, 16, 17, 18, 19], {
+          action: 'update',
+          url: `${BASE_URL_APP}`,
+        });
+      }
     },
     error => {
       dispatch({

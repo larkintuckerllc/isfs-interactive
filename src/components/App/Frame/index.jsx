@@ -131,7 +131,7 @@ class Frame extends Component {
                   onClick={() => {
                     thr0w([10, 11, 12, 13, 14, 15, 16, 17, 18, 19], {
                       action: 'update',
-                      url: 'http://192.168.1.2/isfs-animation/?wall=true',
+                      url: 'http://192.168.1.2/isfs-saver/',
                     });
                   }}
                 />

@@ -24,7 +24,7 @@ class Connect extends Component {
       );
     };
     const checkEsc = (e) => {
-      if (e.keyCode !== 27) return;
+      if (e.keyCode !== 192) return true;
       const frameEl = document.getElementById('frame');
       const frameContentEl = document.getElementById('frame__content');
       document.removeEventListener('keydown', checkEsc);
@@ -38,6 +38,7 @@ class Connect extends Component {
       connecting = false;
       removeChannel();
       disconnect();
+      return false;
     };
     document.addEventListener('keydown', checkEsc);
     repeat();

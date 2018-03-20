@@ -38,7 +38,7 @@ import under from './img/under.png';
 import overweight from './img/overweight.png';
 import zoomIn from './img/zoomIn.png';
 import zoomOut from './img/zoomOut.png';
-import poster from './img/poster.png';
+// import poster from './img/poster.png';
 
 const buttonIcons = {
   satellite,
@@ -401,6 +401,8 @@ class Map extends Component {
                 </div>
               ))}
             </div>
+            {/*
+            // GETTING RID OF POSTER FEATURE
             <div
               id={styles.rootPoster}
               style={{ left: getLeftBottom() }}
@@ -409,6 +411,7 @@ class Map extends Component {
                 push('/poster');
               }}
             ><img src={poster} width="100" height="100" alt="poster" /></div>
+            */}
           </div>
         )}
         {children !== null ? React.cloneElement(children, { map: this.map }) : null}
